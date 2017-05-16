@@ -51,14 +51,14 @@ module.exports.deleteOne = function(paletteObject, callback){
 }
 
 // add palleteItem
-// module.exports.addPaletteItem = function(paletteObject, callback){
-//   Palette.update({paletteId: paletteObject.paletteId}, {$push: {paletteItem: {paletteObject.paletteItem}}}, callback)
-// }
+module.exports.addPaletteItem = function(paletteObject, callback){
+  Palette.update({paletteId: paletteObject.paletteId}, {$push: {paletteItems: paletteObject.paletteItem}}, callback)
+}
 
 // remove paletteItem
-// module.exports.deletePaletteItem = function(paletteObject, callback){
-//   Palette.update({paletteId: paletteObject.paletteId}, {$pull: {paletteItem: {paletteItemId: paletteObject.paletteItemId}}}, callback)
-// }
+module.exports.deletePaletteItem = function(paletteObject, callback){
+  Palette.update({paletteId: paletteObject.paletteId}, {$pull: {paletteItems: {paletteItemId: paletteObject.paletteItemId}}}, callback)
+}
 
 // update palette
 module.exports.updatePalette = function(paletteObject, callback){

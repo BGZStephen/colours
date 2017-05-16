@@ -5,6 +5,66 @@ const Counter = require('../models/counter');
 const User = require('../models/user');
 const Palette = require('../models/palette');
 
+// add paletteItem
+router.post("/addPaletteItem", (req, res, next) => {
+  let paletteObject = {
+    paletteId: req.body.paletteId,
+    paletteItem: {
+      name: req.body.paletteItem.name,
+      hex: req.body.paletteItem.hex,
+    },
+  }
+
+  counterQuery = { // used to check if counter already exists
+    name: "paletteItemId"
+  }
+
+  Counter.getOne(counterQuery, (err, callback) => {
+    if(err) throw(err)
+    if(!callback) {
+      res.json({success: false, message: "Unable to retrieve paletteItem counter"})
+    } else {
+      paletteObject.paletteItem.paletteItemId = callback.count
+      Palette.addPaletteItem(paletteObject, (err, callback) => {
+        if(err) throw(err)
+        if(!callback) {
+          res.json({success: false, message: "Failed to add PaletteItem"})
+        } else {
+          let newCount = paletteObject.paletteItem.paletteItemId += 1;
+          let counterIncrementQuery = {
+            count: newCount,
+            name: "paletteItemId"
+          }
+          Counter.increment(counterIncrementQuery, (err, callback) => {
+            if(!callback) {
+              res.json({success: false, message: "Counter increment failed"})
+            } else {
+              res.json({success: true, message: "PaletteItem added"})
+            }
+          })
+        }
+      })
+    }
+  })
+})
+
+// delete paletteItem
+router.post("/deletePaletteItem", (req, res, next) => {
+  let paletteObject = {
+    paletteId: req.body.paletteId,
+    paletteItemId: req.body.paletteItemId
+  }
+
+  Palette.deletePaletteItem(paletteObject, (err, callback) => {
+    if(err) throw(err)
+    if(callback.nModified == 0) {
+      res.json({success: false, message: "Failed to delete PaletteItem"})
+    } else {
+      res.json({success: true, message: "PaletteItem deletion success"})
+    }
+  })
+})
+
 // save new Palette to db
 router.post("/create", (req, res, next) => {
   let createdAtDate = new Date().getTime() // define date for user creation
