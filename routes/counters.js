@@ -52,8 +52,6 @@ router.post("/deleteByName", (req, res, next) => {
       })
     }
   })
-
-
 })
 
 // get all Counters from the db (used for admin purposes)

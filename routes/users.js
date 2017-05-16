@@ -109,7 +109,7 @@ router.post("/register", (req, res, next) => {
                 if(!callback) {
                   res.json({success: false, message: "User creation failed"})
                 } else {
-                  let newCount = userObject.userId + 1;
+                  let newCount = userObject.userId += 1;
                   let counterIncrementQuery = {
                     count: newCount,
                     name: "userId"

@@ -38,9 +38,11 @@ app.use(bodyParser.json())
 // make routes accessible
 const users = require("./routes/users")
 const counters = require("./routes/counters")
+const palettes = require("./routes/palettes")
 
 app.use('/users', users)
 app.use('/counters', counters)
+app.use('/palettes', palettes)
 
 
 // index route
