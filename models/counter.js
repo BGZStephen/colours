@@ -35,3 +35,8 @@ module.exports.getAll = function(callback){
 module.exports.getOne = function(counterObject, callback) {
   Counter.findOne(counterObject, callback)
 }
+
+// increment counter
+module.exports.increment = function(counterObject, callback) {
+  Counter.update({name: counterObject.name}, {count: counterObject.count}, callback)
+}

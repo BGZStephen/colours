@@ -11,6 +11,14 @@ const UserSchema = mongoose.Schema({
     required: true,
     type: String,
   },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
   palettes: {
     type: Array,
   },
@@ -53,7 +61,7 @@ module.exports.deleteProject = function(projectObject, callback) {
 
 // save new User to db
 module.exports.create = function(userObject, callback) {
-
+  userObject.save(callback)
 }
 
 // delete one user from the db
