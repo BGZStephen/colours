@@ -46,7 +46,7 @@ module.exports.addPalette = function(palleteObject, callback) {
 
 // pull palette to user palettes array
 module.exports.deletePalette = function(palleteObject, callback) {
-  User.update({userId: palleteObject.createdBy}, {$pull: {palettes: {paletteId: palleteObject.paletteId}}}, callback)
+  User.update({userId: palleteObject.userId}, {$pull: {palettes: {paletteId: palleteObject.paletteId}}}, callback)
 }
 
 // push project to user projects array

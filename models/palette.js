@@ -16,14 +16,7 @@ const PaletteSchema = mongoose.Schema({
     type: Number,
     unique: true
   },
-  paletteItems: [{
-    paletteItemId: {
-      type: Number,
-      unique: true
-    },
-    title: String,
-    color: Object,
-  }],
+  paletteItems: Array,
   name: {
     required: true,
     type: String,

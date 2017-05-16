@@ -55,6 +55,41 @@ router.post("/create", (req, res, next) => {
   })
 })
 
+// delete palette
+router.post("/deleteOne", (req, res, next) => {
+  let paletteObject = {
+    paletteId: req.body.paletteId,
+    userId: req.body.userId
+  }
+
+  let paletteQuery = {
+    paletteId: req.body.paletteId,
+  }
+
+  Palette.getOne(paletteQuery, (err, callback) => {
+    if(err) throw(err)
+    if(callback == null) {
+      res.json({success: false, message: "Palette doesn't exist"})
+    } else {
+      User.deletePalette(paletteObject, (err, callback) => {
+        if(err) throw(err)
+        if(callback.nModified == 0) {
+          res.json({success: false, message: "Failed to delete Palette"})
+        } else {
+          Palette.deleteOne(paletteQuery, (err, callback) => {
+            if(err) throw(err)
+            if(callback != null) { // if there is any response other than null, the counter has been deleted
+              res.json({success: true, message: "Palette deleted"})
+            } else { // if the counter is null, something has gone wrong
+              res.json({success: false, message: "Failed to delete palette from palette collection"})
+            }
+          })
+        }
+      })
+    }
+  })
+})
+
 // get by id
 router.post("/getById", (req, res, next) => {
   let paletteObject = {
