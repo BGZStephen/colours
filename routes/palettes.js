@@ -182,4 +182,32 @@ router.post("/getByUserId", (req, res, next) => {
   })
 })
 
+// get by user
+router.post("/update", (req, res, next) => {
+  let paletteObject = {
+    paletteId: req.body.paletteId,
+    name: req.body.name
+  }
+
+  let paletteQuery = {
+    paletteId: req.body.paletteId,
+  }
+
+  Palette.getOne(paletteQuery, (err, callback) => {
+    if(err) throw(err)
+    if(callback == null) {
+      res.json({success: false, message: "Palette doesn't exist"})
+    } else {
+      Palette.updatePalette(paletteObject, (err, callback) => {
+        if(err) throw(err)
+        if(callback) {
+          res.json({success: true, message: "Palette update success"})
+        } else {
+          res.json({success: false, message: "Failed to retrieve Palette"})
+        }
+      })
+    }
+  })
+})
+
 module.exports = router;
