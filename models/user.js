@@ -50,23 +50,28 @@ module.exports.deletePalette = function(palleteObject, callback) {
 }
 
 // push project to user projects array
-module.exports.addProject = function(projectObject, callback) {
-
-}
+// module.exports.addProject = function(projectObject, callback) {
+//
+// }
 
 // pull project to user projects array
-module.exports.deleteProject = function(projectObject, callback) {
-
-}
+// module.exports.deleteProject = function(projectObject, callback) {
+//
+// }
 
 // save new User to db
 module.exports.create = function(userObject, callback) {
-  userObject.save(callback)
+  bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(userObject.password, salt, function(err, hash) {
+        userObject.password = hash
+        userObject.save(callback)
+    });
+  });
 }
 
 // delete one user from the db
 module.exports.deleteOne = function(userObject, callback){
-
+  User.findOne(userObject, callback).remove().exec()
 }
 
 // get all users from the db (used for admin purposes)
@@ -81,15 +86,23 @@ module.exports.getOne = function(userObject, callback) {
 
 // compare password to the bcrypt encrypted password within the db
 module.exports.comparePassword = function(userObject, callback) {
-
+  bcrypt.compare(userObject.queryPassword, userObject.storedHash, function(err, isMatch) {
+    if(err) throw(err)
+    callback(null, isMatch)
+  });
 }
 
 // update password, used in association with comparePassword to check if submitted passwords match before actioning
 module.exports.updatePassword = function(userObject, callback) {
-
+  bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(userObject.newPassword, salt, function(err, hash) {
+        userObject.password = hash
+        User.update({userId: userObject.userId},{password: userObject.password}, callback)
+    });
+  });
 }
 
 // update a users profile within the db
 module.exports.updateUser = function(userObject, callback) {
-
+  User.update({userId: userObject.userId}, userObject, callback)
 }

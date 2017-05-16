@@ -7,7 +7,67 @@ const Counter = require('../models/counter');
 
 // admin update password
 
+// authanticate
+router.post("/authenticate", (req, res, next) => {
+
+  let userObject = {
+    email: req.body.email,
+    queryPassword: req.body.password,
+  }
+
+  User.getOne({email: userObject.email}, (err, callback) => {
+    if(err) throw(err)
+    if(!callback) {
+      res.json({success: false, message: "Incorrect email or password"})
+    } else {
+      userObject.storedHash = callback.password
+      console.log(userObject.storedHash)
+      User.comparePassword(userObject, (err, isMatch) => {
+        if(err) throw(err)
+        if(!isMatch) {
+          res.json({success: false, message: "Incorrect email or password"})
+        } else if(isMatch) {
+          const token = jwt.sign(callback, config.secret, {
+            expiresIn: 604800 // 1 week
+          });
+          res.json({
+            success: true,
+            message: "Authentication successful",
+            token: "JWT" + token,
+            user: {
+              email: callback.email,
+              userId: callback.userId,
+              username: callback.username
+            }
+          })
+        }
+      })
+    }
+  })
+})
+
 // delete user
+router.post("/deleteOne", (req, res, next) => {
+  let userObject = {
+    userId: req.body.userId
+  }
+
+  User.getOne({userId: userObject.userId}, (err, callback) => {
+    if(err) throw(err)
+    if(callback == null) {
+      res.json({success: false, message: "UserID not found"})
+    } else {
+      User.deleteOne(userObject, (err, callback) => {
+        if(err) throw(err)
+        if(callback) {
+          res.json({success: true, message: "User deleted"})
+        } else {
+          res.json({success: false, message: "Something went wrong, user not deleted"})
+        }
+      })
+    }
+  })
+})
 
 // get user by id
 router.post("/getById", (req, res, next) => {
@@ -133,7 +193,74 @@ router.post("/register", (req, res, next) => {
 })
 
 // update user
+router.post("/update", (req, res, next) => {
 
-// user update password
+  let userObject = {
+    email: req.body.email,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    username: req.body.username,
+    userId: req.body.userId
+  }
+
+  // check username to make sure it doesn't already exist except in the case of it being the updaters current username
+  User.getOne({username: userObject.username}, (err, callback) => {
+    if(err) throw(err)
+    if(callback == null || callback.userId == userObject.userId) {
+      User.getOne({email: userObject.email}, (err, callback) => {
+        if(err) throw(err)
+        if(callback == null || callback.userId == userObject.userId) {
+          User.updateUser(userObject, (err, callback) => {
+            if(err) throw(err)
+            if(callback) {
+              res.json({success: true, message: "User update successful"})
+            } else {
+              res.json({success: false, message: "Something went wrong, update failed"})
+            }
+          })
+        } else {
+          res.json({success: false, message: "Email already exists"})
+        }
+      })
+    } else {
+      res.json({success: false, message: "Username already exists"})
+    }
+  })
+})
+
+// update password
+router.post("/updatepassword", (req, res, next) => {
+
+  let userObject = {
+    userId: req.body.userId,
+    queryPassword: req.body.currentPassword,
+    newPassword: req.body.newPassword
+  }
+
+  User.getOne({userId: userObject.userId}, (err, callback) => {
+    if(err) throw(err)
+    if(callback == null) {
+      res.json({success: false, message: "Failed to retrieve user"})
+    } else {
+      userObject.storedHash = callback.password
+      console.log(userObject.storedHash)
+      User.comparePassword(userObject, (err, isMatch) => {
+        if(err) throw(err)
+        if(!isMatch) {
+          res.json({success: false, message: "Passwords didn't match"})
+        } else if(isMatch) {
+          User.updatePassword(userObject, (err, callback) => {
+            if(err) throw(err)
+            if(callback) {
+              res.json({success: true, message: "Password Updated"})
+            } else {
+              res.json({success: false, message: "Failed to update password"})
+            }
+          })
+        }
+      })
+    }
+  })
+})
 
 module.exports = router;
