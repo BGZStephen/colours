@@ -19,6 +19,9 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  password: {
+    type: String
+  },
   palettes: {
     type: Array,
   },

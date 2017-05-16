@@ -119,7 +119,7 @@ router.post("/getByEmail", (req, res, next) => {
 
 // get all users
 router.get("/getAll", (req, res, next) => {
-  User.getAll(userObject, (err, callback) => {
+  User.getAll((err, callback) => {
     if(err) throw(err)
     if(callback) {
       res.json({success: true, message: callback})
@@ -135,10 +135,11 @@ router.post("/register", (req, res, next) => {
 
   let userObject = new User({
     createdAt: createdAtDate,
+    email: req.body.email,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    username: req.body.username,
-    email: req.body.email
+    password: req.body.password,
+    username: req.body.username
   })
 
   let counterQuery = { // set counter to call for assigning unique id
