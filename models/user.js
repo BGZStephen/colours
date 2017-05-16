@@ -26,7 +26,7 @@ const UserSchema = mongoose.Schema({
     required: true,
     type: String,
     unique: true
-  },
+  }
 })
 
 const User = module.exports = mongoose.model('User', UserSchema)

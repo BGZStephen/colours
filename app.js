@@ -36,8 +36,12 @@ app.use(bodyParser.json())
 // routing
 
 // make routes accessible
-// const users = require("./routes/users")
-// app.use('/users', users)
+const users = require("./routes/users")
+const counters = require("./routes/counters")
+
+app.use('/users', users)
+app.use('/counters', counters)
+
 
 // index route
 app.get('/', (req, res) => {

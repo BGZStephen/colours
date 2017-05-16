@@ -15,7 +15,7 @@ router.post("/getById", (req, res, next) => {
     userId: req.body.userId
   }
 
-  User.getOne(userObject, (err, callback) {
+  User.getOne(userObject, (err, callback) => {
     if(err) throw(err)
     if(callback) {
       res.json({success: true, message: callback})
@@ -31,7 +31,7 @@ router.post("/getByUsername", (req, res, next) => {
     username: req.body.username
   }
 
-  User.getOne(userObject, (err, callback) {
+  User.getOne(userObject, (err, callback) => {
     if(err) throw(err)
     if(callback) {
       res.json({success: true, message: callback})
@@ -47,7 +47,7 @@ router.post("/getByEmail", (req, res, next) => {
     email: req.body.email
   }
 
-  User.getOne(userObject, (err, callback) {
+  User.getOne(userObject, (err, callback) => {
     if(err) throw(err)
     if(callback) {
       res.json({success: true, message: callback})
@@ -59,8 +59,7 @@ router.post("/getByEmail", (req, res, next) => {
 
 // get all users
 router.get("/getAll", (req, res, next) => {
-
-  User.getAll(userObject, (err, callback) {
+  User.getAll(userObject, (err, callback) => {
     if(err) throw(err)
     if(callback) {
       res.json({success: true, message: callback})
@@ -71,7 +70,23 @@ router.get("/getAll", (req, res, next) => {
 })
 
 // register user
+router.post("register", (req, res, next) => {
+  let createdAtDate = new Date().getTime() // define date for user creation
+
+  let userObject = new User({
+    createdAt: createdAtDate,
+    username: req.body.username,
+    email: req.body.email,
+  })
+
+  let counterQuery = { // set counter to call for assigning unique id
+    name: "userId"
+  }
+
+})
 
 // update user
 
 // user update password
+
+module.exports = router;
