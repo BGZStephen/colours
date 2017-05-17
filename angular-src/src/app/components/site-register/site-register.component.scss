@@ -30,13 +30,14 @@
 }
 
 .form-row {
-  margin: 3px 0;
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  margin: 3px 0;
   width: 100%;
   @media (min-width: 768px) {
     flex-direction: row;
+    align-items: center;
   }
 }
 
