@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { HomeViewComponent } from './views/views-barrel';
 
 //components
-import { SiteNavbarComponent, SiteIntroComponent, SiteRegisterComponent} from './components/components-barrel';
+import { SiteNavbarComponent, SiteIntroComponent, SiteRegisterComponent, SiteLoginComponent} from './components/components-barrel';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,8 @@ import { SiteNavbarComponent, SiteIntroComponent, SiteRegisterComponent} from '.
     HomeViewComponent,
     SiteNavbarComponent,
     SiteIntroComponent,
-    SiteRegisterComponent
+    SiteRegisterComponent,
+    SiteLoginComponent
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,7 @@
       <li class="navbar-item"(mouseenter)="setHoverStyle(2)" (mouseleave)="setHoverStyle(2)" [ngStyle]="applyHoverStyle(2)"><i class="fa fa-envelope navbar-icon"></i>Contact</li>
       <div class="navbar-action-list" [ngStyle]="setActionBarVisibility()">
         <li class="navbar-action-item" (mouseenter)="setHoverStyle(3)" (mouseleave)="setHoverStyle(3)" [ngStyle]="applyHoverStyle(3)" (click)="setComponent('register')"><i class="fa fa-pencil navbar-action-icon"></i>Register</li>
-        <li class="navbar-action-item" (mouseenter)="setHoverStyle(4)" (mouseleave)="setHoverStyle(4)" [ngStyle]="applyHoverStyle(4)"><i class="fa fa-sign-in navbar-action-icon"></i>Login</li>
+        <li class="navbar-action-item" (mouseenter)="setHoverStyle(4)" (mouseleave)="setHoverStyle(4)" [ngStyle]="applyHoverStyle(4)" (click)="setComponent('login')"><i class="fa fa-sign-in navbar-action-icon"></i>Login</li>
       </div>
     </ul>
   </div>

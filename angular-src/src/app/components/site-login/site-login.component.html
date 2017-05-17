@@ -1,0 +1,21 @@
+<div class="main-container">
+  <form class="login-form">
+    <div class="form-row">
+      <label class="form-label" for="username">Username:</label>
+      <div class="form-input-wrapper">
+        <input class="form-input" type="text" name="username" placeholder="Username" [ngStyle]="applyInputStyle()" id="username">
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label" for="password">Password:</label>
+      <div class="form-input-wrapper">
+        <input class="form-input" type="password" name="password" placeholder="P@$$W0r|)" [ngStyle]="applyInputStyle()" id="password">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-button-wrapper">
+        <button class="form-button" [ngStyle]="applyButtonStyle()">Login</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -84,10 +84,13 @@ export class SiteNavbarComponent implements OnInit {
 
   // component navigation
 
-    setComponent(component) {
-      this.router.navigate(['/home', {outlets: {'siteOutlet': [component]}}]);
+  setComponent(component) {
+    if(screen.width < 1024) { // used to toggle menu visibility on small screens
+      this.navbarVisibility = false
     }
+    this.router.navigate(['/home', {outlets: {'siteOutlet': [component]}}]);
+  }
 
-  //
+  // component navigation end
 
 }
