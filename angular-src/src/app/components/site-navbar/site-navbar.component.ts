@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router"
 
 @Component({
   selector: 'app-site-navbar',
@@ -7,7 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SiteNavbarComponent implements OnInit {
 
-  colours: Array<object> = [
+  constructor(
+    private router: Router,
+  ) {
+    this.resizeToggleNavbar() // set navbar visibility on page load, used to make sure it's hidden on small screen loads, and visible on large screen loads
+  }
+
+
+  ngOnInit() {
+  }
+
+  colours: Array<object> = [ // colours array to use for random hover effects
     {"background": "#00be9c", "color": "#1D1F25"},
     {"background": "#20ce6d", "color": "#1D1F25"},
     {"background": "#2c97df", "color": "#f5f5f5"},
@@ -18,15 +29,12 @@ export class SiteNavbarComponent implements OnInit {
     {"background": "#ea4b36", "color": "#f5f5f5"}
   ]
 
+  navbarVisibility: boolean = false; // used to set visibility of the navbar, toggled with menu-toggle
   activeHover: number = -1 // used to check with LI is being hovered, if none, revert to -1
 
-  setHoverStyle(index) { // triggered on both mouse over and mouse out events to toggle application of applyHoverStyle
-    if(index == this.activeHover) {
-      this.activeHover = -1
-    } else {
-      this.activeHover = index
-    }
-  }
+  // styling functions
+
+  //hover styling
 
   applyHoverStyle(index) {
     if(index == this.activeHover) {
@@ -36,15 +44,27 @@ export class SiteNavbarComponent implements OnInit {
     }
   }
 
-  navbarVisibility: boolean = false;
-
-  resizeToggleNavbar() {
-    if(screen.width > 1024) {
-      this.navbarVisibility = true;
+  setHoverStyle(index) { // triggered on both mouse over and mouse out events to toggle application of applyHoverStyle
+    if(index == this.activeHover) {
+      this.activeHover = -1
+    } else {
+      this.activeHover = index
     }
   }
 
-  setNavbarVisibility() {
+  // hover styling end
+
+  // navbar visibility
+
+  resizeToggleNavbar() { // function to check screen size, called on window resize
+    if(screen.width > 1024) {
+      this.navbarVisibility = true;
+    } else {
+      this.navbarVisibility = false;
+    }
+  }
+
+  setNavbarVisibility() {  // set main navbar visibility, used to toggle slide effect on smaller screens
     if(this.navbarVisibility == true) {
       return {"left": "0"}
     } else {
@@ -52,7 +72,7 @@ export class SiteNavbarComponent implements OnInit {
     }
   }
 
-  setActionBarVisibility() {
+  setActionBarVisibility() { // used to set styles for Login / Register which sit seperate to the main navbar in smaller views
     if(this.navbarVisibility == true) {
       return {"right": "0%"}
     } else {
@@ -60,12 +80,14 @@ export class SiteNavbarComponent implements OnInit {
     }
   }
 
-  constructor() {
-    this.resizeToggleNavbar()
-  }
+  // navbar visibility end
 
+  // component navigation
 
-  ngOnInit() {
-  }
+    setComponent(component) {
+      this.router.navigate(['/home', {outlets: {'siteOutlet': [component]}}]);
+    }
+
+  //
 
 }

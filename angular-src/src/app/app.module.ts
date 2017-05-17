@@ -11,14 +11,15 @@ import { AppComponent } from './app.component';
 import { HomeViewComponent } from './views/views-barrel';
 
 //components
-import { SiteNavbarComponent, SiteIntroComponent} from './components/components-barrel';
+import { SiteNavbarComponent, SiteIntroComponent, SiteRegisterComponent} from './components/components-barrel';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeViewComponent,
     SiteNavbarComponent,
-    SiteIntroComponent
+    SiteIntroComponent,
+    SiteRegisterComponent
   ],
   imports: [
     BrowserModule,
