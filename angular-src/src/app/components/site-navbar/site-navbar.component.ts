@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-home-navbar',
-  templateUrl: './home-navbar.component.html',
-  styleUrls: ['./home-navbar.component.scss']
+  selector: 'app-site-navbar',
+  templateUrl: './site-navbar.component.html',
+  styleUrls: ['./site-navbar.component.scss']
 })
-export class HomeNavbarComponent implements OnInit {
+export class SiteNavbarComponent implements OnInit {
 
   colours: Array<object> = [
     {"background": "#00be9c", "color": "#1D1F25"},
