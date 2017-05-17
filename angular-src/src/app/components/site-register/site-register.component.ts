@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FlashMessagesService } from "angular2-flash-messages"
+import { UsersApiService } from "../../services/users-api.service"
 
 @Component({
   selector: 'app-site-register',
@@ -10,6 +11,7 @@ export class SiteRegisterComponent implements OnInit {
 
   constructor(
     private flashMessage: FlashMessagesService,
+    private usersApiService: UsersApiService,
   ) {}
 
   ngOnInit() {
@@ -52,6 +54,21 @@ export class SiteRegisterComponent implements OnInit {
 
   // set styling end
 
+  // user registation / validation
+
+  registerUser(userObject) {
+    if(this.validate(userObject)) {
+      this.usersApiService.registerUser(userObject)
+      .subscribe(res => {
+        if(res.success) {
+          this.flashMessage.show("Regisrtation successful", {cssClass: "flash-success", timeout: 2000})
+        } else {
+          this.flashMessage.show(res.message, {cssClass: "flash-failure", timeout: 2000})
+        }
+      })
+    }
+  }
+
   validate(userObject) {
     if(this.validateInput("First Name", userObject.firstName) && this.validateInput("Last Name", userObject.lastName) && this.validateEmail(userObject.email) && this.validateInput("Username", userObject.username) && this.validatePassword(userObject.password)) {
       return true
@@ -84,4 +101,6 @@ export class SiteRegisterComponent implements OnInit {
       this.flashMessage.show("Password must be longer than 6 characters", {cssClass: "flash-failure", timeout: 3000})
     }
   }
+
+  // user registation / validation end
 }

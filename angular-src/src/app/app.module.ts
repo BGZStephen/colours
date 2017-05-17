@@ -5,6 +5,9 @@ import { HttpModule } from '@angular/http';
 import { router } from "./app.routes"
 import { FlashMessagesModule } from "angular2-flash-messages"
 
+// sevices
+import { UsersApiService } from "./services/users-api.service"
+
 // modules
 import { AppComponent } from './app.component';
 
@@ -30,7 +33,7 @@ import { SiteNavbarComponent, SiteIntroComponent, SiteRegisterComponent, SiteLog
     router,
     FlashMessagesModule
   ],
-  providers: [],
+  providers: [UsersApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,7 +8,8 @@
   padding: 0;
 }
 
-.flash-failure {
+.flash-failure,
+.flash-success {
   background: darken(red, 15%);
   border: 8px solid black;;
   color: #f5f5f5;
@@ -26,4 +27,8 @@
     margin-left: 20px;
     margin-top: 5px;
   }
+}
+
+.flash-success {
+  background: darken(green, 5%);
 }
