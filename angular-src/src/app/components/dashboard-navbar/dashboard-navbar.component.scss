@@ -43,6 +43,7 @@
 
 .top-level-list {
   background: lighten($primary-dark-blue, 3%);
+  cursor: pointer;
   display: flex;
   flex-wrap: wrap;
   list-style: none;
@@ -70,11 +71,6 @@
   text-transform: uppercase;
   transition: 0.3s ease;
   width: 100%;
-}
-
-.top-level-content:hover {
-  background: $primary-white;
-  color: $primary-dark-blue;
 }
 
 .top-level-content > .fa:first-of-type {
@@ -118,11 +114,12 @@
   padding-left: 30px;
   position: relative;
   text-transform: uppercase;
+  transition: all 0.3s ease;
   width: 100%;
 }
 
 .second-level-content:hover {
-  background: $primary-white;
+  background: darken($primary-white, 5%);
   color: $primary-dark-blue;
 }
 

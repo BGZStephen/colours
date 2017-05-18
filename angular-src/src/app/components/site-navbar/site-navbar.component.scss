@@ -29,6 +29,7 @@
 .menu-toggle-container {
   align-items: center;
   color: $primary-white;
+  cursor: pointer;
   display: flex;
   @media(min-width: 1024px) {
     display: none;
@@ -70,6 +71,7 @@
 
 .navbar-item {
   color: $primary-white;
+  cursor: pointer;
   font-size: 1.2em;
   font-weight: 900;
   padding: 12px 20px;
@@ -114,6 +116,7 @@
 
 .navbar-action-item {
   color: $primary-white;
+  cursor: pointer;
   font-size: 1.2em;
   font-weight: 900;
   padding: 12px 20px;

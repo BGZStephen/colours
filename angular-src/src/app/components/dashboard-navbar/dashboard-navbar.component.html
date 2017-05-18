@@ -5,13 +5,13 @@
   </div>
   <div class="navbar-container" [ngStyle]="setMenuStyle()">
     <ul class="top-level-list">
-      <li class="top-level-item">
-        <div class="top-level-content">
+      <li class="top-level-item" (mouseover)="hoverActive = 0" (mouseleave)="hoverActive = -1">
+        <div class="top-level-content" (click)="setActiveSubMenu(-1)" [ngStyle]="hoverActive == 0 ? setHoverStyle(0) : {}">
           <i class="fa fa-home"></i><p>Home</p>
         </div>
       </li>
-      <li class="top-level-item">
-        <div class="top-level-content" (click)="setActiveSubMenu(0)">
+      <li class="top-level-item" (mouseover)="hoverActive = 1" (mouseleave)="hoverActive = -1">
+        <div class="top-level-content" (click)="setActiveSubMenu(0)" [ngStyle]="hoverActive == 1 ? setHoverStyle(1) : {}">
           <i class="fa fa-user"></i><p>Profile</p><i class="fa fa-caret-down"></i>
         </div>
         <ul class="second-level-list" [ngStyle]="setSubMenuStyle(0)">
@@ -27,16 +27,21 @@
           </li>
           <li class="second-level-item">
             <div class="second-level-content">
-              <i class="fa fa-cog"></i><p>Change Password</p>
+              <i class="fa fa-lock"></i><p>Change Password</p>
             </div>
           </li>
         </ul>
       </li>
-      <li class="top-level-item">
-        <div class="top-level-content" (click)="setActiveSubMenu(1)">
+      <li class="top-level-item" (mouseover)="hoverActive = 2" (mouseleave)="hoverActive = -1" >
+        <div class="top-level-content" (click)="setActiveSubMenu(1)" [ngStyle]="hoverActive == 2 ? setHoverStyle(2) : {}">
           <i class="fa fa-list"></i><p>Projects</p><i class="fa fa-caret-down"></i>
         </div>
         <ul class="second-level-list" [ngStyle]="setSubMenuStyle(1)">
+          <li class="second-level-item">
+            <div class="second-level-content">
+              <i class="fa fa-plus"></i><p>Add</p>
+            </div>
+          </li>
           <li class="second-level-item">
             <div class="second-level-content">
               <i class="fa fa-search"></i><p>View</p>
@@ -49,11 +54,16 @@
           </li>
         </ul>
       </li>
-      <li class="top-level-item">
-        <div class="top-level-content" (click)="setActiveSubMenu(2)">
+      <li class="top-level-item" (mouseover)="hoverActive = 3" (mouseleave)="hoverActive = -1">
+        <div class="top-level-content" (click)="setActiveSubMenu(2)" [ngStyle]="hoverActive == 3 ? setHoverStyle(3) : {}">
           <i class="fa fa-paint-brush"></i><p>Palettes</p><i class="fa fa-caret-down"></i>
         </div>
         <ul class="second-level-list" [ngStyle]="setSubMenuStyle(2)">
+          <li class="second-level-item">
+            <div class="second-level-content">
+              <i class="fa fa-plus"></i><p>Add</p>
+            </div>
+          </li>
           <li class="second-level-item">
             <div class="second-level-content">
               <i class="fa fa-search"></i><p>View</p>

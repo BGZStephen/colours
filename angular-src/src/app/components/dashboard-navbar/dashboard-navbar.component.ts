@@ -12,6 +12,7 @@ export class DashboardNavbarComponent implements OnInit {
   ngOnInit() {
   }
 
+  colours: Array<string> = ["#00be9c", "#20ce6d", "#2c97df", "#9c56b8", "#f3c500", "#e87e04"]
   menuVisibility: boolean = false;
   activeSubMenu: number = -1;
 
@@ -21,6 +22,10 @@ export class DashboardNavbarComponent implements OnInit {
     } else {
       this.activeSubMenu = index
     }
+  }
+
+  setHoverStyle(index) {
+    return {"background": this.colours[index], "color": "#1D1F25"}
   }
 
   setMenuStyle() {
