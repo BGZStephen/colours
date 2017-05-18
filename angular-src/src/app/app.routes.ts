@@ -8,7 +8,7 @@ import { HomeViewComponent, DashboardViewComponent} from './views/views-barrel';
 import { SiteIntroComponent, SiteRegisterComponent, SiteLoginComponent } from "./components/components-barrel"
 
 //dashboard
-import { DashboardProfileComponent } from "./components/components-barrel"
+import { DashboardProfileComponent, DashboardProfileEditComponent, DashboardChangePasswordComponent} from "./components/components-barrel"
 
 const APP_ROUTES: Routes = [
   {path: "", redirectTo: "/home/(siteOutlet:intro)", pathMatch: 'full'},
@@ -19,8 +19,8 @@ const APP_ROUTES: Routes = [
   ]},
   {path: "dashboard", component: DashboardViewComponent, children: [
     {path: "profile", component: DashboardProfileComponent, outlet: "dashboardOutlet"},
-    {path: "profile-edit", component: SiteRegisterComponent, outlet: "dashboardOutlet"},
-    {path: "profile-password-edit", component: SiteLoginComponent, outlet: "dashboardOutlet"},
+    {path: "profile-edit", component: DashboardProfileEditComponent, outlet: "dashboardOutlet"},
+    {path: "profile-password-edit", component: DashboardChangePasswordComponent, outlet: "dashboardOutlet"},
   ]}
 ]
 
