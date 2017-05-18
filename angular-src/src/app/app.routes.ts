@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from "@angular/router"
-import { HomeViewComponent } from './views/views-barrel';
+import { HomeViewComponent, DashboardViewComponent} from './views/views-barrel';
 import { SiteIntroComponent, SiteRegisterComponent, SiteLoginComponent } from "./components/components-barrel"
 
 const APP_ROUTES: Routes = [
@@ -9,6 +9,7 @@ const APP_ROUTES: Routes = [
     {path: "register", component: SiteRegisterComponent, outlet: "siteOutlet"},
     {path: "login", component: SiteLoginComponent, outlet: "siteOutlet"},
   ]},
+  {path: "dashboard", component: DashboardViewComponent}
 ]
 
 export const router = RouterModule.forRoot(APP_ROUTES)

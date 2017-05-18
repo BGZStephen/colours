@@ -1,0 +1,132 @@
+@import "../../sass/_variables.scss";
+
+.main-container {
+  width: 100%;
+}
+
+.logo-container {
+  background: $primary-dark-blue;
+  align-items: center;
+  display: flex;
+  height: 60px;
+  padding-left: 15px;
+  position: relative;
+  @media(min-width: 1024px) {
+    border-bottom: 1px solid lighten($primary-dark-blue, 10%);
+  }
+}
+
+.logo {
+  color: $primary-white;
+}
+
+.navbar-container {
+  background: $primary-dark-blue;
+  display: flex;
+  flex-direction: column;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  @media(min-width: 1024px) {
+    min-height: 100vh;
+  }
+}
+
+.menu-toggle {
+  color: $primary-white;
+  position: absolute;
+  right: 15px;
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+.top-level-list {
+  background: lighten($primary-dark-blue, 3%);
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  width: 100%;
+}
+
+.top-level-item {
+  border-bottom: 1px solid lighten($primary-dark-blue, 10%);
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.top-level-content {
+  align-items: center;
+  color: $primary-white;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1.2em;
+  font-weight: 700;
+  height: 45px;
+  letter-spacing: 0.075em;
+  padding-left: 15px;
+  position: relative;
+  text-transform: uppercase;
+  transition: 0.3s ease;
+  width: 100%;
+}
+
+.top-level-content:hover {
+  background: $primary-white;
+  color: $primary-dark-blue;
+}
+
+.top-level-content > .fa:first-of-type {
+  margin-right: 10px;
+  width: 24px;
+}
+
+.fa-caret-down {
+  position: absolute;
+  right: 20px;
+}
+
+.second-level-list {
+  background: lighten($primary-dark-blue, 3%);
+  color: $primary-white;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  width: 100%;
+}
+
+.second-level-item {
+  border-top: 1px solid lighten($primary-dark-blue, 10%);
+  display: flex;
+  flex-wrap: wrap;
+  height: 45px;
+  width: 100%;
+}
+
+.second-level-content {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1.2em;
+  font-weight: 700;
+  height: 45px;
+  letter-spacing: 0.075em;
+  padding-left: 30px;
+  position: relative;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.second-level-content:hover {
+  background: $primary-white;
+  color: $primary-dark-blue;
+}
+
+.second-level-content > .fa:first-of-type {
+  margin-right: 10px;
+  width: 24px;
+}

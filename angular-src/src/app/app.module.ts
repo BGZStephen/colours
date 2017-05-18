@@ -12,10 +12,15 @@ import { UsersApiService } from "./services/users-api.service"
 import { AppComponent } from './app.component';
 
 // views
-import { HomeViewComponent } from './views/views-barrel';
+import { HomeViewComponent, DashboardViewComponent } from './views/views-barrel';
 
 //components
+
+// site specific
 import { SiteNavbarComponent, SiteIntroComponent, SiteRegisterComponent, SiteLoginComponent} from './components/components-barrel';
+
+// dashboard specific
+import { DashboardNavbarComponent, DashboardNotificationBarComponent } from './components/components-barrel';
 
 @NgModule({
   declarations: [
@@ -24,7 +29,10 @@ import { SiteNavbarComponent, SiteIntroComponent, SiteRegisterComponent, SiteLog
     SiteNavbarComponent,
     SiteIntroComponent,
     SiteRegisterComponent,
-    SiteLoginComponent
+    SiteLoginComponent,
+    DashboardViewComponent,
+    DashboardNavbarComponent,
+    DashboardNotificationBarComponent
   ],
   imports: [
     BrowserModule,
