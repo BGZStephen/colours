@@ -16,7 +16,7 @@
         </div>
         <ul class="second-level-list" [ngStyle]="setSubMenuStyle(0)">
           <li class="second-level-item">
-            <div class="second-level-content">
+            <div class="second-level-content" (click)="setComponent('profile')">
               <i class="fa fa-search"></i><p>View Profile</p>
             </div>
           </li>

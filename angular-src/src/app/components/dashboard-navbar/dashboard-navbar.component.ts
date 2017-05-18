@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router"
 
 @Component({
   selector: 'app-dashboard-navbar',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardNavbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
@@ -44,6 +47,10 @@ export class DashboardNavbarComponent implements OnInit {
     } else {
       return {"max-height": "0"}
     }
+  }
+
+  setComponent(component) {
+    this.router.navigate(['/dashboard', {outlets: {'dashboardOutlet': [component]}}]);
   }
 
 }

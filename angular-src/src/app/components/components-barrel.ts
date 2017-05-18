@@ -9,3 +9,4 @@ export { SiteLoginComponent } from "./site-login/site-login.component"
 
 export { DashboardNavbarComponent } from "./dashboard-navbar/dashboard-navbar.component"
 export { DashboardNotificationBarComponent } from "./dashboard-notification-bar/dashboard-notification-bar.component"
+export { DashboardProfileComponent } from "./dashboard-profile/dashboard-profile.component"
