@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FlashMessagesService } from "angular2-flash-messages"
+import { UsersApiService } from "../../services/users-api.service"
+import { Router } from "@angular/router"
 
 @Component({
   selector: 'app-site-login',
@@ -7,7 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SiteLoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private flashMessage: FlashMessagesService,
+    private usersApiService: UsersApiService,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
     this.generateInputStyles() // generate styles for both inputs and buttonss to give random color effect
@@ -45,6 +52,27 @@ export class SiteLoginComponent implements OnInit {
 
   applyButtonStyle(index) {
     return this.buttonStyles[index]
+  }
+
+  // set styling end
+
+  login(userObject) {
+    console.log(userObject)
+    this.usersApiService.authenticate(userObject)
+    .subscribe(res => {
+      if(res.success) {
+        this.flashMessage.show("Login successful", {cssClass: "flash-success", timeout: 1500})
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 2000)
+      } else {
+        this.flashMessage.show(res.message, {cssClass: "flash-failure", timeout: 2000})
+      }
+    })
+  }
+
+  setComponent(component) {
+    this.router.navigate(['/home', {outlets: {'siteOutlet': [component]}}]);
   }
 
 }
