@@ -8,7 +8,7 @@
   background: $primary-dark-blue;
   align-items: center;
   display: flex;
-  height: 60px;
+  height: 50px;
   padding-left: 15px;
   position: relative;
   @media(min-width: 1024px) {
@@ -28,8 +28,14 @@
   overflow: hidden;
   transition: max-height 0.3s ease;
   @media(min-width: 1024px) {
-    min-height: 100vh;
+    min-height: calc(100vh - 95px);
+    max-height: calc(100vh - 95px);
+    overflow: scroll;
   }
+}
+
+.navbar-container::-webkit-scrollbar {
+  display: none;
 }
 
 .menu-toggle {
@@ -126,4 +132,13 @@
 .second-level-content > .fa:first-of-type {
   margin-right: 10px;
   width: 24px;
+}
+
+.logout-item {
+  background: lighten($primary-dark-blue, 3%);
+  @media (min-width: 1024px) {
+    bottom: 0;
+    position: absolute;
+    width: 300px;
+  }
 }

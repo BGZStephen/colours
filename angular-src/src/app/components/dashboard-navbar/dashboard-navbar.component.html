@@ -76,6 +76,11 @@
           </li>
         </ul>
       </li>
+      <li class="top-level-item logout-item" (mouseover)="hoverActive = 4" (mouseleave)="hoverActive = -1">
+        <div class="top-level-content" (click)="setActiveSubMenu(-1)" [ngStyle]="hoverActive == 4 ? setHoverStyle(4) : {}">
+          <i class="fa fa-power-off"></i><p>Logout</p>
+        </div>
+      </li>
     </ul>
   </div>
 </div>
