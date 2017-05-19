@@ -16,3 +16,4 @@ export { DashboardChangePasswordComponent } from "./dashboard-change-password/da
 // dashboard palette specific
 
 export { DashboardPalettesManageComponent } from "./dashboard-palettes-manage/dashboard-palettes-manage.component"
+export { DashboardPaletteIndividualComponent } from "./dashboard-palette-individual/dashboard-palette-individual.component"

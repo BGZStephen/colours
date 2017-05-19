@@ -9,7 +9,7 @@ import { SiteIntroComponent, SiteRegisterComponent, SiteLoginComponent } from ".
 
 //dashboard
 import { DashboardProfileComponent, DashboardProfileEditComponent, DashboardChangePasswordComponent,
-        DashboardPalettesManageComponent } from "./components/components-barrel"
+        DashboardPalettesManageComponent, DashboardPaletteIndividualComponent } from "./components/components-barrel"
 
 const APP_ROUTES: Routes = [
   {path: "", redirectTo: "/home/(siteOutlet:intro)", pathMatch: 'full'},
@@ -19,6 +19,7 @@ const APP_ROUTES: Routes = [
     {path: "login", component: SiteLoginComponent, outlet: "siteOutlet"},
   ]},
   {path: "dashboard", component: DashboardViewComponent, children: [
+    {path: "palette", component: DashboardPaletteIndividualComponent, outlet: "dashboardOutlet"},
     {path: "palettes-manage", component: DashboardPalettesManageComponent, outlet: "dashboardOutlet"},
     {path: "profile", component: DashboardProfileComponent, outlet: "dashboardOutlet"},
     {path: "profile-edit", component: DashboardProfileEditComponent, outlet: "dashboardOutlet"},
