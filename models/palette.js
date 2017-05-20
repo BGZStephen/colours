@@ -11,6 +11,9 @@ const PaletteSchema = mongoose.Schema({
     required: true,
     type: Number
   },
+  description: {
+    type: String
+  }
   paletteId: {
     required: true,
     type: Number,

@@ -72,6 +72,7 @@ router.post("/create", (req, res, next) => {
   let paletteObject = new Palette({
     createdAt: createdAtDate,
     createdBy: req.body.userId,
+    description: req.body.description,
     name: req.body.name
   })
 

@@ -60,7 +60,7 @@
         </div>
         <ul class="second-level-list" [ngStyle]="setSubMenuStyle(2)">
           <li class="second-level-item">
-            <div class="second-level-content">
+            <div class="second-level-content" (click)="setComponent('palette-add')">
               <i class="fa fa-plus"></i><p>Add</p>
             </div>
           </li>
