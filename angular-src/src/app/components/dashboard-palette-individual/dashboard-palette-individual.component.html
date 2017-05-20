@@ -14,17 +14,17 @@
       <div class="add-colour-header-container">
         <h2 class="add-colour-header">Add Colour</h2>
       </div>
-      <form class="add-colour-form">
+      <form #f="ngForm" class="add-colour-form">
         <div class="form-row">
           <label class="add-colour-label">Hex: </label>
-          <input class="add-colour-input" type="text" placeholder="#369369">
+          <input class="add-colour-input" type="text" placeholder="#369369" [value]="hexConversion" id="hex" #hex name="hex" (keyup)="0">
         </div>
         <div class="form-row">
           <label class="add-colour-label">RGB: </label>
           <div class="rgb-container">
-            <input class="add-colour-input rgb-input" type="text" placeholder="255">
-            <input class="add-colour-input rgb-input" type="text" placeholder="255">
-            <input class="add-colour-input rgb-input" type="text" placeholder="255">
+            <input class="add-colour-input rgb-input" type="text" placeholder="255" [value]="rgbConversion.red" id="rgbR" #rgbR name="rgbR" (keyup)="setRgbColor('red', rgbR.value); convertRgbToHex()">
+            <input class="add-colour-input rgb-input" type="text" placeholder="255" [value]="rgbConversion.green" id="rgbG" #rgbG name="rgbG" (keyup)="setRgbColor('green', rgbG.value); convertRgbToHex()">
+            <input class="add-colour-input rgb-input" type="text" placeholder="255" [value]="rgbConversion.blue" id="rgbB" #rgbB name="rgbB" (keyup)="setRgbColor('blue', rgbB.value); convertRgbToHex()">
           </div>
         </div>
         <div class="form-row">
