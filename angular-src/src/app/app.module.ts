@@ -22,8 +22,9 @@ import { SiteNavbarComponent, SiteIntroComponent, SiteRegisterComponent, SiteLog
 // dashboard specific
 import { DashboardNavbarComponent, DashboardNotificationBarComponent, DashboardProfileComponent,
          DashboardProfileEditComponent, DashboardChangePasswordComponent, DashboardPalettesManageComponent,
-         DashboardPaletteIndividualComponent, DashboardPalettesViewComponent, DashboardPaletteAddComponent
-       } from './components/components-barrel';
+         DashboardPaletteIndividualComponent, DashboardPalettesViewComponent, DashboardPaletteAddComponent,
+         DashboardPaletteEditComponent } from './components/components-barrel';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { DashboardNavbarComponent, DashboardNotificationBarComponent, DashboardP
     DashboardViewComponent, DashboardNavbarComponent, DashboardNotificationBarComponent,
     DashboardProfileComponent, DashboardProfileEditComponent, DashboardChangePasswordComponent,
     DashboardPalettesManageComponent, DashboardPaletteIndividualComponent, DashboardPalettesViewComponent,
-    DashboardPaletteAddComponent
+    DashboardPaletteAddComponent, DashboardPaletteEditComponent
   ],
   imports: [
     BrowserModule,
