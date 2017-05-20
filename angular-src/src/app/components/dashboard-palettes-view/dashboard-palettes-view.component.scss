@@ -41,27 +41,6 @@
   padding: 5px 15px;
 }
 
-.fa-pencil {
-  font-size: 1.6em;
-  margin-left: 8px;
-  padding: 8px;
-  transition: color 0.3s ease;
-}
-
-.fa-pencil:hover {
-  color: $primary-purple;
-}
-
-.fa-trash {
-  font-size: 1.6em;
-  padding: 8px;
-  transition: color 0.3s ease;
-}
-
-.fa-trash:hover {
-  color: darken(red, 10%);
-}
-
 .palette-output-container {
   background: $primary-dark-blue;
   display: flex;
