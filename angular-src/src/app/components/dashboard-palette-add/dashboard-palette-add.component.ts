@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router"
 import { PalettesApiService } from "../../services/palettes-api.service"
 import { FlashMessagesService } from "angular2-flash-messages"
 
@@ -11,7 +12,8 @@ export class DashboardPaletteAddComponent implements OnInit {
 
   constructor(
     private palettesApiService: PalettesApiService,
-    private flashMessage: FlashMessagesService
+    private flashMessage: FlashMessagesService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -26,6 +28,10 @@ export class DashboardPaletteAddComponent implements OnInit {
         this.flashMessage.show("Failed to create Palette", {cssClass: "flash-failure--dashboard", timeout: 3000})
       }
     })
+  }
+
+  setComponent(component) {
+    this.router.navigate(['/dashboard', {outlets: {'dashboardOutlet': [component]}}]);
   }
 
 }

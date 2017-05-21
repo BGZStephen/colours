@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router"
+import { Router, ActivatedRoute } from "@angular/router"
 import { FlashMessagesService } from "angular2-flash-messages"
 import { PalettesApiService } from "../../services/palettes-api.service"
 
@@ -13,7 +13,8 @@ export class DashboardPaletteEditComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private palettesApiService: PalettesApiService,
-    private flashMessage: FlashMessagesService
+    private flashMessage: FlashMessagesService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -33,6 +34,10 @@ export class DashboardPaletteEditComponent implements OnInit {
         this.palette = res
       })
     })
+  }
+
+  setComponent(component) {
+    this.router.navigate(['/dashboard', {outlets: {'dashboardOutlet': [component]}}]);
   }
 
   updatePalette(paletteObject, paletteId) {

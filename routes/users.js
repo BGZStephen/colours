@@ -78,7 +78,7 @@ router.post("/getById", (req, res, next) => {
   User.getOne(userObject, (err, callback) => {
     if(err) throw(err)
     if(callback) {
-      res.json({success: true, message: callback})
+      res.json(callback)
     } else {
       res.json({success: false, message: "User not found"})
     }

@@ -13,7 +13,7 @@
         <input class="form-input" type="text" placeholder="Palette Description #1" ngModel="{{palette.description}}" id="description" #description name="description">
       </div>
       <div class="form-row">
-        <button class="input-cancel">Cancel</button>
+        <button class="input-cancel" (click)="setComponent('palettes-manage')">Cancel</button>
         <input type="submit" value="Save" class="input-save">
       </div>
     </form>

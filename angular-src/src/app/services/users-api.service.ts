@@ -18,6 +18,13 @@ export class UsersApiService {
     .map(res => res.json())
   }
 
+  getCurrentUser() {
+    this.loadToken()
+    let userObject = {"userId": JSON.parse(this.user).userId}
+    return this.http.post("http://localhost:3006/users/getById", userObject)
+    .map(res => res.json())
+  }
+
   loadToken() {
     this.authToken = localStorage.getItem('token')
     this.user = localStorage.getItem('user')
@@ -46,4 +53,9 @@ export class UsersApiService {
     this.user = userObject.user;
   }
 
+  updateProfile(userObject) {
+    userObject.userId = JSON.parse(this.user).userId
+    return this.http.post("http://localhost:3006/users/update", userObject)
+    .map(res => res.json())
+  }
 }
