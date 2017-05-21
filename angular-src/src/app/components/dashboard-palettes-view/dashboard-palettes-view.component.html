@@ -2,80 +2,17 @@
   <div class="header-container">
     <h2 class="main-header">Palettes > View</h2>
   </div>
-  <div class="palettes-container">
-    <div class="palette">
+  <div class="palettes-container" *ngIf="userPalettes">
+    <div class="palette" *ngFor="let palette of userPalettes">
       <div class="palette-header-container">
-        <h2 class="palette-header" (click)="setPalette('8')">Test Palette Header</h2>
+        <h2 class="palette-header" (click)="setPalette(palette.paletteId)">{{palette.name}}</h2>
       </div>
-      <div class="palette-output-container">
-        <div class="palette-item">
+      <div class="palette-output-container" *ngIf="palette.paletteItems">
+        <div class="palette-item" *ngFor="let paletteItem of palette.paletteItems">
           <div class="palette-item-color-display">
           </div>
           <div class="palette-item-description">
-            <p>#333666</p>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-item-color-display">
-          </div>
-          <div class="palette-item-description">
-            <p>#333666</p>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-item-color-display">
-          </div>
-          <div class="palette-item-description">
-            <p>#333666</p>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-item-color-display">
-          </div>
-          <div class="palette-item-description">
-            <p>#333666</p>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-item-color-display">
-          </div>
-          <div class="palette-item-description">
-            <p>#333666</p>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-item-color-display">
-          </div>
-          <div class="palette-item-description">
-            <p>#333666</p>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-item-color-display">
-          </div>
-          <div class="palette-item-description">
-            <p>#333666</p>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-item-color-display">
-          </div>
-          <div class="palette-item-description">
-            <p>#333666</p>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-item-color-display">
-          </div>
-          <div class="palette-item-description">
-            <p>#333666</p>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-item-color-display">
-          </div>
-          <div class="palette-item-description">
-            <p>#333666</p>
+            <p>#{{paletteItem.hex}}</p>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router"
+import { PalettesApiService } from "../../services/palettes-api.service"
 
 @Component({
   selector: 'app-dashboard-palettes-view',
@@ -9,10 +10,21 @@ import { Router } from "@angular/router"
 export class DashboardPalettesViewComponent implements OnInit {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private palettesApiService: PalettesApiService
   ) { }
 
   ngOnInit() {
+    this.loadUserPalettes()
+  }
+
+  userPalettes: Array<object>
+
+  loadUserPalettes() {
+    this.palettesApiService.getPalettesByUserId()
+    .subscribe(res => {
+      this.userPalettes = res;
+    })
   }
 
   setComponent(component) {

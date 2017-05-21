@@ -2,8 +2,8 @@
   <div class="header-container">
     <h2 class="main-header">Palette</h2>
   </div>
-  <div class="output-container">
-    <div class="output-left" *ngIf="palette">
+  <div class="output-container" *ngIf="palette">
+    <div class="output-left">
       <div class="palette-header-container">
         <h2 class="palette-header">{{palette.name}}</h2>
       </div>
@@ -43,7 +43,7 @@
         </div>
       </form>
     </div>
-    <div class="output-right" *ngIf="palette.paletteItems">
+    <div class="output-right">
       <div class="palette-items-contaoiner">
         <div class="palette-item" *ngFor="let paletteItem of paletteItems">
           <div class="palette-colour-preview">

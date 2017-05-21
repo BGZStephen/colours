@@ -24,10 +24,10 @@ export class DashboardPaletteIndividualComponent implements OnInit {
         this.palette = res
       })
     })
+    this.convertRgbToHex()
   }
 
   ngOnInit() {
-    this.convertRgbToHex()
   }
 
   hexConversion: string = "FFFFFF";
