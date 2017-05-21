@@ -65,7 +65,7 @@ router.post("/deletePaletteItem", (req, res, next) => {
   })
 })
 
-// save new Palette to db
+// create new Palette
 router.post("/create", (req, res, next) => {
   let createdAtDate = new Date().getTime() // define date for user creation
 

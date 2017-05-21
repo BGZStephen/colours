@@ -10,6 +10,14 @@ export class PalettesApiService {
 
   user: any;
 
+  createPalette(paletteObject) {
+    this.loadToken()
+    paletteObject.userId = JSON.parse(this.user).userId
+    console.log(paletteObject)
+    return this.http.post("http://localhost:3006/palettes/create", paletteObject)
+    .map(res => res.json())
+  }
+
   loadToken() {
     this.user = localStorage.getItem('user')
   }
