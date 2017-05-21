@@ -14,20 +14,11 @@ export class DashboardPaletteIndividualComponent implements OnInit {
     private palettesApiService: PalettesApiService,
     private activatedRoute: ActivatedRoute
   ) {
-    this.activatedRoute.params
-    .map(params => params['paletteId'])
-    .subscribe((paletteId) => {
-      let paletteObject = {paletteId: paletteId}
-      this.palettesApiService.getPaletteById(paletteObject)
-      .subscribe(res => {
-        console.log(res)
-        this.palette = res
-      })
-    })
-    this.convertRgbToHex()
   }
 
   ngOnInit() {
+    this.loadPalette()
+    this.convertRgbToHex()
   }
 
   hexConversion: string = "FFFFFF";
@@ -71,6 +62,19 @@ export class DashboardPaletteIndividualComponent implements OnInit {
       this.rgbConversion.blue = blueHex
 
     }
+  }
+
+  loadPalette() {
+    this.activatedRoute.params
+    .map(params => params['paletteId'])
+    .subscribe((paletteId) => {
+      let paletteObject = {paletteId: paletteId}
+      this.palettesApiService.getPaletteById(paletteObject)
+      .subscribe(res => {
+        console.log(res)
+        this.palette = res
+      })
+    })
   }
 
 }

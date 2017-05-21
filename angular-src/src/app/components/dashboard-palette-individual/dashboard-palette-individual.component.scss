@@ -110,6 +110,7 @@
   border: none;
   background: #ea4b36;
   color: $primary-dark-blue;
+  cursor: pointer;
   font-size: 1.5em;
   font-weight: 900;
   height: 50px;
@@ -250,6 +251,7 @@
 .action-delete {
   background: $primary-dark-blue;
   color: $primary-white;
+  cursor: pointer;
   font-size: 1.4em;
   padding: 10px;
   transition: color 0.3s ease;
