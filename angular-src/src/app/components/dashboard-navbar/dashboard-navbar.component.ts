@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UsersApiService } from "../../services/users-api.service"
 import { Router } from "@angular/router"
 
 @Component({
@@ -9,8 +10,9 @@ import { Router } from "@angular/router"
 export class DashboardNavbarComponent implements OnInit {
 
   constructor(
+    private usersApiService: UsersApiService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
   }
@@ -18,6 +20,8 @@ export class DashboardNavbarComponent implements OnInit {
   colours: Array<string> = ["#00be9c", "#20ce6d", "#2c97df", "#9c56b8", "#f3c500", "#e87e04"]
   menuVisibility: boolean = false;
   activeSubMenu: number = -1;
+
+  //  style functions
 
   setActiveSubMenu(index) {
     if(index == this.activeSubMenu) {
@@ -49,8 +53,20 @@ export class DashboardNavbarComponent implements OnInit {
     }
   }
 
+  // component navigation functions
+
+  clearComponent() {
+    this.router.navigate(['/dashboard', {outlets: {'dashboardOutlet': null}}]);
+  }
+
   setComponent(component) {
     this.router.navigate(['/dashboard', {outlets: {'dashboardOutlet': [component]}}]);
   }
 
+  // geneeral functions
+
+  logout() {
+    this.usersApiService.logout()
+    this.router.navigate(['/'])
+  }
 }

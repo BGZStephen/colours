@@ -61,6 +61,7 @@ export class SiteLoginComponent implements OnInit {
     this.usersApiService.authenticate(userObject)
     .subscribe(res => {
       if(res.success) {
+        this.usersApiService.storeToken(res)
         this.flashMessage.show("Login successful", {cssClass: "flash-success", timeout: 1500})
         setTimeout(() => {
           this.router.navigate(['/dashboard']);
