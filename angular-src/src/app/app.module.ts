@@ -7,6 +7,7 @@ import { FlashMessagesModule } from "angular2-flash-messages"
 
 // sevices
 import { UsersApiService } from "./services/users-api.service"
+import { PalettesApiService } from "./services/palettes-api.service"
 
 // modules
 import { AppComponent } from './app.component';
@@ -43,7 +44,7 @@ import { DashboardNavbarComponent, DashboardNotificationBarComponent, DashboardP
     router,
     FlashMessagesModule
   ],
-  providers: [UsersApiService],
+  providers: [UsersApiService, PalettesApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
