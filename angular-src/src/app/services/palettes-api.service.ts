@@ -18,14 +18,19 @@ export class PalettesApiService {
     .map(res => res.json())
   }
 
-  loadToken() {
-    this.user = localStorage.getItem('user')
+  getPaletteById(paletteObject) {
+    return this.http.post("http://localhost:3006/palettes/getById", paletteObject)
+    .map(res => res.json())
   }
 
   getPalettesByUserId() {
     this.loadToken()
     return this.http.post("http://localhost:3006/palettes/getByUserId", {"userId": this.user.userId})
     .map(res => res.json())
+  }
+
+  loadToken() {
+    this.user = localStorage.getItem('user')
   }
 
 }

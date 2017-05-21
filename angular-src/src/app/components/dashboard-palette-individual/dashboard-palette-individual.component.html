@@ -3,12 +3,12 @@
     <h2 class="main-header">Palette</h2>
   </div>
   <div class="output-container">
-    <div class="output-left">
+    <div class="output-left" *ngIf="palette">
       <div class="palette-header-container">
-        <h2 class="palette-header">Test Palette Header</h2>
+        <h2 class="palette-header">{{palette.name}}</h2>
       </div>
       <div class="palette-description-container">
-        <p class="palette-description">Test Palette Description. This will be a description added by the user to detail the project associated with the palette.</p>
+        <p class="palette-description">{{palette.description}}</p>
       </div>
       <hr class="palette-seperator">
       <div class="add-colour-header-container">
@@ -43,113 +43,14 @@
         </div>
       </form>
     </div>
-    <div class="output-right">
+    <div class="output-right" *ngIf="palette.paletteItems">
       <div class="palette-items-contaoiner">
-        <div class="palette-item">
+        <div class="palette-item" *ngFor="let paletteItem of paletteItems">
           <div class="palette-colour-preview">
           </div>
           <div class="palette-item-description-container">
-            <p class="palette-item-color">#369369</p>
-            <p class="palette-item-description">Palette Item Description. Palette Item Description. Palette Item Description</p>
-            <div class="palette-item-actions-container">
-              <i class="fa fa-trash action-delete"></i>
-            </div>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-colour-preview">
-          </div>
-          <div class="palette-item-description-container">
-            <p class="palette-item-color">#369369</p>
-            <p class="palette-item-description">Palette Item Description. Palette Item Description. Palette Item Description</p>
-            <div class="palette-item-actions-container">
-              <i class="fa fa-trash action-delete"></i>
-            </div>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-colour-preview">
-          </div>
-          <div class="palette-item-description-container">
-            <p class="palette-item-color">#369369</p>
-            <p class="palette-item-description">Palette Item Description. Palette Item Description. Palette Item Description</p>
-            <div class="palette-item-actions-container">
-              <i class="fa fa-trash action-delete"></i>
-            </div>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-colour-preview">
-          </div>
-          <div class="palette-item-description-container">
-            <p class="palette-item-color">#369369</p>
-            <p class="palette-item-description">Palette Item Description. Palette Item Description. Palette Item Description</p>
-            <div class="palette-item-actions-container">
-              <i class="fa fa-trash action-delete"></i>
-            </div>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-colour-preview">
-          </div>
-          <div class="palette-item-description-container">
-            <p class="palette-item-color">#369369</p>
-            <p class="palette-item-description">Palette Item Description. Palette Item Description. Palette Item Description</p>
-            <div class="palette-item-actions-container">
-              <i class="fa fa-trash action-delete"></i>
-            </div>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-colour-preview">
-          </div>
-          <div class="palette-item-description-container">
-            <p class="palette-item-color">#369369</p>
-            <p class="palette-item-description">Palette Item Description. Palette Item Description. Palette Item Description</p>
-            <div class="palette-item-actions-container">
-              <i class="fa fa-trash action-delete"></i>
-            </div>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-colour-preview">
-          </div>
-          <div class="palette-item-description-container">
-            <p class="palette-item-color">#369369</p>
-            <p class="palette-item-description">Palette Item Description. Palette Item Description. Palette Item Description</p>
-            <div class="palette-item-actions-container">
-              <i class="fa fa-trash action-delete"></i>
-            </div>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-colour-preview">
-          </div>
-          <div class="palette-item-description-container">
-            <p class="palette-item-color">#369369</p>
-            <p class="palette-item-description">Palette Item Description. Palette Item Description. Palette Item Description</p>
-            <div class="palette-item-actions-container">
-              <i class="fa fa-trash action-delete"></i>
-            </div>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-colour-preview">
-          </div>
-          <div class="palette-item-description-container">
-            <p class="palette-item-color">#369369</p>
-            <p class="palette-item-description">Palette Item Description. Palette Item Description. Palette Item Description</p>
-            <div class="palette-item-actions-container">
-              <i class="fa fa-trash action-delete"></i>
-            </div>
-          </div>
-        </div>
-        <div class="palette-item">
-          <div class="palette-colour-preview">
-          </div>
-          <div class="palette-item-description-container">
-            <p class="palette-item-color">#369369</p>
-            <p class="palette-item-description">Palette Item Description. Palette Item Description. Palette Item Description</p>
+            <p class="palette-item-color">#{{paletteItem.hex}}</p>
+            <p class="palette-item-description">{{paletteItem.description}}</p>
             <div class="palette-item-actions-container">
               <i class="fa fa-trash action-delete"></i>
             </div>

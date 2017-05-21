@@ -160,7 +160,7 @@ router.post("/getById", (req, res, next) => {
   Palette.getOne(paletteObject, (err, callback) => {
     if(err) throw(err)
     if(callback) {
-      res.json({success: true, message: callback})
+      res.json(callback)
     } else {
       res.json({success: false, message: "Failed to retrieve Palette"})
     }

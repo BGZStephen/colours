@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ActivatedRoute } from "@angular/router"
+import { PalettesApiService } from "../../services/palettes-api.service"
+import "rxjs/Rx"
 
 @Component({
   selector: 'app-dashboard-palette-individual',
@@ -8,7 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardPaletteIndividualComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private palettesApiService: PalettesApiService,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.activatedRoute.params
+    .map(params => params['paletteId'])
+    .subscribe((paletteId) => {
+      let paletteObject = {paletteId: paletteId}
+      this.palettesApiService.getPaletteById(paletteObject)
+      .subscribe(res => {
+        console.log(res)
+        this.palette = res
+      })
+    })
+  }
 
   ngOnInit() {
     this.convertRgbToHex()
@@ -16,6 +32,7 @@ export class DashboardPaletteIndividualComponent implements OnInit {
 
   hexConversion: string = "FFFFFF";
   rgbConversion: any = { "red": "051", "green": "102", "blue": "153"}
+  palette: object;
 
   setRgbColor(color, value) {
     if(color == "red") {

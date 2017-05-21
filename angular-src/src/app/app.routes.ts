@@ -20,7 +20,7 @@ const APP_ROUTES: Routes = [
     {path: "login", component: SiteLoginComponent, outlet: "siteOutlet"},
   ]},
   {path: "dashboard", component: DashboardViewComponent, children: [
-    {path: "palette", component: DashboardPaletteIndividualComponent, outlet: "dashboardOutlet"},
+    {path: "palette/:paletteId", component: DashboardPaletteIndividualComponent, outlet: "dashboardOutlet"},
     {path: "palette-add", component: DashboardPaletteAddComponent, outlet: "dashboardOutlet"},
     {path: "palette-edit", component: DashboardPaletteEditComponent, outlet: "dashboardOutlet"},
     {path: "palettes-manage", component: DashboardPalettesManageComponent, outlet: "dashboardOutlet"},

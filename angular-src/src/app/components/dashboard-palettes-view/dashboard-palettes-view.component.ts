@@ -19,4 +19,8 @@ export class DashboardPalettesViewComponent implements OnInit {
     this.router.navigate(['/dashboard', {outlets: {'dashboardOutlet': [component]}}]);
   }
 
+  setPalette(component) {
+    this.router.navigate(['/dashboard', {outlets: {'dashboardOutlet': ['palette', component]}}]);
+  }
+
 }
