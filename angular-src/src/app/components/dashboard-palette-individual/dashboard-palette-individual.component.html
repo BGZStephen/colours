@@ -17,7 +17,7 @@
       <form #f="ngForm" class="add-colour-form">
         <div class="form-row">
           <label class="add-colour-label">Hex: </label>
-          <input class="add-colour-input" type="text" placeholder="#369369" [value]="hexConversion" id="hex" #hex name="hex" (keyup)="0">
+          <input class="add-colour-input" type="text" placeholder="#369369" [value]="hexConversion" id="hex" #hex name="hex" (keyup)="convertHexToRgb(hex.value)">
         </div>
         <div class="form-row">
           <label class="add-colour-label">RGB: </label>
@@ -34,6 +34,12 @@
         <div class="form-row">
           <button class="input-cancel">Cancel</button>
           <input type="submit" value="Add" class="input-save">
+        </div>
+        <hr class="palette-seperator">
+        <div class="colour-add-row">
+          <h3 class="colour-add-preview-header">Colour preview:</h3>
+          <div class="colour-add-preview" [ngStyle]="{'background': '#' + hex.value}">
+          </div>
         </div>
       </form>
     </div>

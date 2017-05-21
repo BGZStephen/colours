@@ -13,7 +13,7 @@ const PaletteSchema = mongoose.Schema({
   },
   description: {
     type: String
-  }
+  },
   paletteId: {
     required: true,
     type: Number,

@@ -14,8 +14,8 @@ export class DashboardPaletteIndividualComponent implements OnInit {
     this.convertRgbToHex()
   }
 
-  hexConversion: string = "#Hex";
-  rgbConversion: any = { "red": "369", "green": "369", "blue": "369"}
+  hexConversion: string = "FFFFFF";
+  rgbConversion: any = { "red": "051", "green": "102", "blue": "153"}
 
   setRgbColor(color, value) {
     if(color == "red") {
@@ -42,6 +42,18 @@ export class DashboardPaletteIndividualComponent implements OnInit {
     }
     let hexConstructor = redValue + greenValue + blueValue
     this.hexConversion = hexConstructor
+  }
+
+  convertHexToRgb(hexValue) {
+    if(hexValue.length == 6) {
+      let redHex = parseInt(hexValue.substr(0, 2), 16)
+      this.rgbConversion.red = redHex
+      let greenHex = parseInt(hexValue.substr(2, 2), 16)
+      this.rgbConversion.green = greenHex
+      let blueHex = parseInt(hexValue.substr(4, 2), 16)
+      this.rgbConversion.blue = blueHex
+
+    }
   }
 
 }

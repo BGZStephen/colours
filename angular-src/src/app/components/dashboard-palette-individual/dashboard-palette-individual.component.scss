@@ -126,6 +126,25 @@
    background: #2c97df;
  }
 
+ .colour-add-row {
+   align-items: center;
+   display: flex;
+   height: 60px;
+ }
+
+.colour-add-preview-header {
+  color: $primary-dark-blue;
+  display: inline-block;
+  font-size: 1.8em;
+  margin-right: 20px;
+}
+
+.colour-add-preview {
+  display: inline-block;
+  height: 60px;
+  width: 60px;
+}
+
 
 .output-right {
   display: flex;
