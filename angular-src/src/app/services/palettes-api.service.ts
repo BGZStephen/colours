@@ -33,4 +33,9 @@ export class PalettesApiService {
     this.user = localStorage.getItem('user')
   }
 
+  updatePalette(paletteObject) {
+    return this.http.post("http://localhost:3006/palettes/update", paletteObject)
+    .map(res => res.json())
+  }
+
 }

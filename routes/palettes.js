@@ -186,6 +186,7 @@ router.post("/getByUserId", (req, res, next) => {
 // get by user
 router.post("/update", (req, res, next) => {
   let paletteObject = {
+    description: req.body.description,
     paletteId: req.body.paletteId,
     name: req.body.name
   }

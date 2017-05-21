@@ -24,6 +24,10 @@ export class DashboardPalettesManageComponent implements OnInit {
     this.router.navigate(['/dashboard', {outlets: {'dashboardOutlet': [component]}}]);
   }
 
+  setPalette(component) {
+    this.router.navigate(['/dashboard', {outlets: {'dashboardOutlet': ['palette-edit', component]}}]);
+  }
+
   loadUserPalettes() {
     this.palettesApiService.getPalettesByUserId()
     .subscribe(res => {

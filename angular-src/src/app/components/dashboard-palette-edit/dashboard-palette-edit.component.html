@@ -2,15 +2,15 @@
   <div class="header-container">
     <h2 class="main-header">Palette > Edit</h2>
   </div>
-  <div class="output-container">
-    <form class="palette-edit-form">
+  <div class="output-container" *ngIf="palette">
+    <form #f="ngForm" (ngSubmit)="updatePalette(f.value, palette.paletteId)" class="palette-edit-form">
       <div class="form-row">
         <label class="form-label" for="name">Palette Name: </label>
-        <input class="form-input" type="text" placeholder="Colour Palette #1" id="name" #name name="name" ngModel>
+        <input class="form-input" type="text" placeholder="Colour Palette #1" ngModel="{{palette.name}}" id="name" #name name="name">
       </div>
       <div class="form-row">
         <label class="form-label" for="description">Palette Description: </label>
-        <input class="form-input" type="text" placeholder="Palette Description #1" id="description" #description name="description" gModel>
+        <input class="form-input" type="text" placeholder="Palette Description #1" ngModel="{{palette.description}}" id="description" #description name="description">
       </div>
       <div class="form-row">
         <button class="input-cancel">Cancel</button>
