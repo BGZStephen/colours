@@ -32,7 +32,7 @@
           </li>
         </ul>
       </li>
-      <li class="top-level-item" (mouseover)="hoverActive = 2" (mouseleave)="hoverActive = -1" >
+      <!-- <li class="top-level-item" (mouseover)="hoverActive = 2" (mouseleave)="hoverActive = -1" >
         <div class="top-level-content" (click)="setActiveSubMenu(1)" [ngStyle]="hoverActive == 2 ? setHoverStyle(2) : {}">
           <i class="fa fa-list"></i><p>Projects</p><i class="fa fa-caret-down"></i>
         </div>
@@ -53,12 +53,12 @@
             </div>
           </li>
         </ul>
-      </li>
+      </li> -->
       <li class="top-level-item" (mouseover)="hoverActive = 3" (mouseleave)="hoverActive = -1">
-        <div class="top-level-content" (click)="setActiveSubMenu(2)" [ngStyle]="hoverActive == 3 ? setHoverStyle(3) : {}">
+        <div class="top-level-content" (click)="setActiveSubMenu(1)" [ngStyle]="hoverActive == 3 ? setHoverStyle(3) : {}">
           <i class="fa fa-paint-brush"></i><p>Palettes</p><i class="fa fa-caret-down"></i>
         </div>
-        <ul class="second-level-list" [ngStyle]="setSubMenuStyle(2)">
+        <ul class="second-level-list" [ngStyle]="setSubMenuStyle(1)">
           <li class="second-level-item">
             <div class="second-level-content" (click)="setComponent('palette-add')">
               <i class="fa fa-plus"></i><p>Add</p>

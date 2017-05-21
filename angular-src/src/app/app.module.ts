@@ -5,12 +5,15 @@ import { HttpModule } from '@angular/http';
 import { router } from "./app.routes"
 import { FlashMessagesModule } from "angular2-flash-messages"
 
+// modules
+import { AppComponent } from './app.component';
+
 // sevices
 import { UsersApiService } from "./services/users-api.service"
 import { PalettesApiService } from "./services/palettes-api.service"
 
-// modules
-import { AppComponent } from './app.component';
+// guards
+import { AuthGuard } from "./guards/auth.guard"
 
 // views
 import { HomeViewComponent, DashboardViewComponent } from './views/views-barrel';
@@ -44,7 +47,7 @@ import { DashboardNavbarComponent, DashboardNotificationBarComponent, DashboardP
     router,
     FlashMessagesModule
   ],
-  providers: [UsersApiService, PalettesApiService],
+  providers: [UsersApiService, PalettesApiService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

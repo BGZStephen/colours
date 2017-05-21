@@ -1,5 +1,8 @@
 import { Routes, RouterModule } from "@angular/router"
 
+//guards
+import { AuthGuard } from "./guards/auth.guard"
+
 // views
 import { HomeViewComponent, DashboardViewComponent} from './views/views-barrel';
 
@@ -28,7 +31,7 @@ const APP_ROUTES: Routes = [
     {path: "profile", component: DashboardProfileComponent, outlet: "dashboardOutlet"},
     {path: "profile-edit", component: DashboardProfileEditComponent, outlet: "dashboardOutlet"},
     {path: "profile-password-edit", component: DashboardChangePasswordComponent, outlet: "dashboardOutlet"},
-  ]}
+  ],  canActivate:[AuthGuard]}
 ]
 
 export const router = RouterModule.forRoot(APP_ROUTES)
