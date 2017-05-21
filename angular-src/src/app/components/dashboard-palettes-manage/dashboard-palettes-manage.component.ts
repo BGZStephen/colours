@@ -20,6 +20,15 @@ export class DashboardPalettesManageComponent implements OnInit {
     this.loadUserPalettes()
   }
 
+  deletePalette(paletteId) {
+    let paletteObject = {paletteId: paletteId}
+    this.palettesApiService.deletePalette(paletteObject)
+    .subscribe(res => {
+      console.log(res)
+      this.loadUserPalettes()
+    })
+  }
+
   setComponent(component) {
     this.router.navigate(['/dashboard', {outlets: {'dashboardOutlet': [component]}}]);
   }
