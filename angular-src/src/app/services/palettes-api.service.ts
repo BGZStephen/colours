@@ -10,6 +10,11 @@ export class PalettesApiService {
 
   user: any;
 
+  addPaletteItem(paletteObject) {
+    return this.http.post("http://localhost:3006/palettes/addPaletteItem", paletteObject)
+    .map(res => res.json())
+  }
+
   createPalette(paletteObject) {
     this.loadToken()
     paletteObject.userId = JSON.parse(this.user).userId
@@ -21,6 +26,11 @@ export class PalettesApiService {
     this.loadToken()
     paletteObject.userId = JSON.parse(this.user).userId
     return this.http.post("http://localhost:3006/palettes/deleteOne", paletteObject)
+    .map(res => res.json())
+  }
+
+  deletePaletteItem(paletteObject) {
+    return this.http.post("http://localhost:3006/palettes/deletePaletteItem", paletteObject)
     .map(res => res.json())
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router"
+import { FlashMessagesService } from "angular2-flash-messages"
 import { PalettesApiService } from "../../services/palettes-api.service"
 import "rxjs/Rx"
 
@@ -12,6 +13,7 @@ export class DashboardPaletteIndividualComponent implements OnInit {
 
   constructor(
     private palettesApiService: PalettesApiService,
+    private flashMessage: FlashMessagesService,
     private activatedRoute: ActivatedRoute
   ) {
   }
@@ -25,14 +27,16 @@ export class DashboardPaletteIndividualComponent implements OnInit {
   rgbConversion: any = { "red": "051", "green": "102", "blue": "153"}
   palette: object;
 
-  setRgbColor(color, value) {
-    if(color == "red") {
-      this.rgbConversion.red = value
-    } else if (color == "green") {
-      this.rgbConversion.green = value
-    } else if (color == "blue") {
-      this.rgbConversion.blue = value
-    }
+  addPaletteItem(paletteObject) {
+    this.palettesApiService.addPaletteItem(paletteObject)
+    .subscribe(res => {
+      if(res.success) {
+        this.flashMessage.show("Palette item added", {cssClass: "flash-success--dashboard", timeout: 3000})
+        this.loadPalette()
+      } else {
+        this.flashMessage.show("Palette item addition failed", {cssClass: "flash-failure--dashboard", timeout: 3000})
+      }
+    })
   }
 
   convertRgbToHex() {
@@ -64,6 +68,18 @@ export class DashboardPaletteIndividualComponent implements OnInit {
     }
   }
 
+  deletePaletteItem(paletteObject) {
+    this.palettesApiService.deletePaletteItem(paletteObject)
+    .subscribe(res => {
+      if(res.success) {
+        this.flashMessage.show("Palette item deleted", {cssClass: "flash-success--dashboard", timeout: 3000})
+        this.loadPalette()
+      } else {
+        this.flashMessage.show("Palette item deletion failed", {cssClass: "flash-failure--dashboard", timeout: 3000})
+      }
+    })
+  }
+
   loadPalette() {
     this.activatedRoute.params
     .map(params => params['paletteId'])
@@ -75,6 +91,16 @@ export class DashboardPaletteIndividualComponent implements OnInit {
         this.palette = res
       })
     })
+  }
+
+  setRgbColor(color, value) {
+    if(color == "red") {
+      this.rgbConversion.red = value
+    } else if (color == "green") {
+      this.rgbConversion.green = value
+    } else if (color == "blue") {
+      this.rgbConversion.blue = value
+    }
   }
 
 }

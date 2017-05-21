@@ -10,7 +10,7 @@ router.post("/addPaletteItem", (req, res, next) => {
   let paletteObject = {
     paletteId: req.body.paletteId,
     paletteItem: {
-      name: req.body.paletteItem.name,
+      description: req.body.paletteItem.description,
       hex: req.body.paletteItem.hex,
     },
   }
