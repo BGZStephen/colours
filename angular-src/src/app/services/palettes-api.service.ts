@@ -41,7 +41,8 @@ export class PalettesApiService {
 
   getPalettesByUserId() {
     this.loadToken()
-    return this.http.post("http://localhost:3006/palettes/getByUserId", {"userId": this.user.userId})
+    let userObject = {"createdBy": JSON.parse(this.user).userId}
+    return this.http.post("http://localhost:3006/palettes/getByUserId", userObject)
     .map(res => res.json())
   }
 

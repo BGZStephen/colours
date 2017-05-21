@@ -38,7 +38,6 @@ export class UsersApiService {
     localStorage.clear()
     this.authToken = ""
     this.user = ""
-    return true
   }
 
   registerUser(userObject) {

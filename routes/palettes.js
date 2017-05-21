@@ -170,7 +170,7 @@ router.post("/getById", (req, res, next) => {
 // get by user
 router.post("/getByUserId", (req, res, next) => {
   let paletteObject = {
-    userId: req.body.userId
+    createdBy: req.body.createdBy
   }
 
   Palette.getByUserId(paletteObject, (err, callback) => {
