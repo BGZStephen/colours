@@ -24,13 +24,17 @@ module.exports.create = function(counterObject) {
 }
 
 // delete one Counter from the db
-module.exports.deleteOne = function(counterObject, callback){
-  Counter.findOne(counterObject, callback).remove().exec()
+module.exports.deleteOne = function(counterObject){
+  return new Promise(resolve => {
+    resolve(Counter.findOne(counterObject).remove())
+  })
 }
 
 // get all Counters from the db (used for admin purposes)
 module.exports.getAll = function(callback){
-  Counter.find({}, callback)
+  return new Promise(resolve => {
+    resolve(Counter.find({}))
+  })
 }
 
 // get one Counter from the database
@@ -42,5 +46,7 @@ module.exports.getOne = function(counterObject) {
 
 // increment counter
 module.exports.increment = function(counterObject, callback) {
-  Counter.update({name: counterObject.name}, {count: counterObject.count}, callback)
+  return new Promise(resolve => {
+    resolve(Counter.update({name: counterObject.name}, {count: counterObject.count}))
+  })
 }

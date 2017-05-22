@@ -33,31 +33,27 @@ router.post("/deleteByName", (req, res, next) => {
     name: req.body.name
   }
 
-  Counter.getOne(counterQuery, (err, callback) => {
-    if(err) throw(err)
-    if(callback == null) { // if the findOne call returns null, counter doesn't exist
-      res.json({success: false, message: "Counter does not exist"})
+  Counter.getOne(counterQuery).then(result => {
+    if(result == null) {
+      return res.json({success: false, message: "Counter doesn't exist"})
     } else {
-      Counter.deleteOne(counterQuery, (err, callback) => {
-        if(err) throw(err)
-        if(callback != null) { // if there is any response other than null, the counter has been deleted
-          res.json({success: true, message: "Counter deleted"})
-        } else { // if the counter is null, something has gone wrong
-          res.json({success: false, message: "Failed to delete counter"})
-        }
-      })
+      return Counter.deleteOne(counterQuery)
+    }
+  }).then(result => {
+    if(JSON.parse(result).n == 1) {
+      return res.json({success: true, message: "Counter deleted successfully"})
     }
   })
 })
 
 // get all Counters from the db (used for admin purposes)
 router.get("/getAll", (req, res, next) => {
-  Counter.getAll((err, callback) => {
-    if(err) throw(err)
-    if(callback) {
-      res.json({success: true, message: callback})
+  Counter.getAll()
+  .then(result => {
+    if(result.length < 1) {
+      return res.json({success: false, message: "No counters found"})
     } else {
-      res.json({success: false, message: "Counter does not exist"})
+      return res.json(result)
     }
   })
 })
@@ -68,12 +64,11 @@ router.post("/getByName", (req, res, next) => {
     name: req.body.name
   }
 
-  Counter.getOne(counterQuery, (err, callback) => {
-    if(err) throw(err)
-    if(callback) {
-      res.json({success: true, message: callback})
+  Counter.getOne(counterQuery).then(result => {
+    if(result == null) {
+      return res.json({success: false, message: "Counter doesn't exist"})
     } else {
-      res.json({success: false, message: "Counter does not exist"})
+      return res.json(result)
     }
   })
 })
