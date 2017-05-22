@@ -17,8 +17,10 @@ const CounterSchema = mongoose.Schema({
 const Counter = module.exports = mongoose.model('Counter', CounterSchema)
 
 // save new Counter to db
-module.exports.create = function(counterObject, callback) {
-  counterObject.save(callback)
+module.exports.create = function(counterObject) {
+  return new Promise(resolve => {
+      resolve(counterObject.save())
+  })
 }
 
 // delete one Counter from the db
@@ -32,8 +34,10 @@ module.exports.getAll = function(callback){
 }
 
 // get one Counter from the database
-module.exports.getOne = function(counterObject, callback) {
-  Counter.findOne(counterObject, callback)
+module.exports.getOne = function(counterObject) {
+  return new Promise(resolve => {
+    resolve(Counter.findOne(counterObject))
+  })
 }
 
 // increment counter

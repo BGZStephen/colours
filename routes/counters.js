@@ -14,19 +14,15 @@ router.post("/create", (req, res, next) => {
     name: req.body.name
   })
 
-  Counter.getOne(counterQuery, (err, callback) => {
-    if(err) throw(err)
-    if(callback) {
-      res.json({success: false, message: "Counter already exists"}) // if the query returns a callback, the counter already exists
+  Counter.getOne(counterQuery).then(result => {
+    if(result != null) {
+      res.json({success: false, message: "Counter already exists"})
     } else {
-      Counter.create(counterObject, (err, callback) => {
-        if(err) throw(err)
-        if(callback) {
-          res.json({success: true, message: "Counter created"})
-        } else {
-          res.json({success: false, message: "Failed to create counter"})
-        }
-      })
+      return Counter.create(counterObject)
+    }
+  }).then(result => {
+    if(result != null) {
+      res.json({success: true, message: "Counter created successfully"})
     }
   })
 })
