@@ -29,7 +29,7 @@ const PaletteSchema = mongoose.Schema({
 const Palette = module.exports = mongoose.model('Palette', PaletteSchema)
 
 // save new Palette to db
-module.exports.create = function(paletteObject, callback) {
+module.exports.create = function(paletteObject) {
   return new Promise(resolve => {
     resolve(paletteObject.save())
   })

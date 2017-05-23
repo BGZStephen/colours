@@ -80,40 +80,84 @@ router.post("/create", (req, res, next) => {
     name: "paletteId"
   }
 
-  Counter.getOne(counterQuery, (err, callback) => {
-    if(err) throw(err)
-    if(!callback) {
-      res.json({success: false, message: "Unable to retrieve palette counter"})
+  Counter.getOne(counterQuery)
+  .then(result => {
+    paletteObject.paletteId = result.count
+    if(result == null) {
+      return Promise.reject({success: false, message: "Unable to retrieve palette counter"})
     } else {
-      paletteObject.paletteId = callback.count
-      Palette.create(paletteObject, (err, callback) => {
-        if(err) throw(err)
-        if(!callback) {
-          res.json({success: false, message: "Palette creation failed"})
-        } else {
-          User.addPalette(paletteObject, (err, callback) => {
-            if(err) throw(err)
-            if(!callback) {
-              res.json({success: false, message: "Failed to add Palette"})
-            } else {
-              let newCount = paletteObject.paletteId += 1;
-              let counterIncrementQuery = {
-                count: newCount,
-                name: "paletteId"
-              }
-              Counter.increment(counterIncrementQuery, (err, callback) => {
-                if(!callback) {
-                  res.json({success: false, message: "Counter increment failed"})
-                } else {
-                  res.json({success: true, message: "Palette creation success"})
-                }
-              })
-            }
-          })
-        }
-      })
+      return Palette.create(paletteObject)
     }
+  }).then(result => {
+    if(result.length == 0) {
+      return Promise.reject({success: false, message: "Palette creation failed"})
+    } else {
+      return User.addPalette(paletteObject)
+    }
+  }).then(result => {
+    if(result.nModified == 0) {
+      return Promise.reject({success: false, message: "Failed to add palette to user"})
+    } else {
+      let newCount = paletteObject.paletteId += 1;
+      let counterIncrementQuery = {
+        count: newCount,
+        name: "paletteId"
+      }
+      return Counter.increment(counterIncrementQuery)
+    }
+  }).then(result => {
+    if(result.n >= 1) {
+      return res.json({success: true, message: "Palette created successfully"})
+    }
+  }).catch(error => {
+    console.log(error)
   })
+
+
+
+  // User.addPalette(paletteObject)
+  //
+  // let newCount = paletteObject.paletteId += 1;
+  // let counterIncrementQuery = {
+  //   count: newCount,
+  //   name: "paletteId"
+  // }
+  // Counter.increment(counterIncrementQuery)
+  //
+  // Counter.getOne(counterQuery, (err, callback) => {
+  //   if(err) throw(err)
+  //   if(!callback) {
+  //     res.json({success: false, message: "Unable to retrieve palette counter"})
+  //   } else {
+  //     paletteObject.paletteId = callback.count
+  //     Palette.create(paletteObject, (err, callback) => {
+  //       if(err) throw(err)
+  //       if(!callback) {
+  //         res.json({success: false, message: "Palette creation failed"})
+  //       } else {
+  //         User.addPalette(paletteObject, (err, callback) => {
+  //           if(err) throw(err)
+  //           if(!callback) {
+  //             res.json({success: false, message: "Failed to add Palette"})
+  //           } else {
+  //             let newCount = paletteObject.paletteId += 1;
+  //             let counterIncrementQuery = {
+  //               count: newCount,
+  //               name: "paletteId"
+  //             }
+  //             Counter.increment(counterIncrementQuery, (err, callback) => {
+  //               if(!callback) {
+  //                 res.json({success: false, message: "Counter increment failed"})
+  //               } else {
+  //                 res.json({success: true, message: "Palette creation success"})
+  //               }
+  //             })
+  //           }
+  //         })
+  //       }
+  //     })
+  //   }
+  // })
 })
 
 // delete palette
@@ -127,27 +171,27 @@ router.post("/deleteOne", (req, res, next) => {
     paletteId: req.body.paletteId,
   }
 
-  Palette.getOne(paletteQuery, (err, callback) => {
-    if(err) throw(err)
-    if(callback == null) {
-      res.json({success: false, message: "Palette doesn't exist"})
+  Palette.getOne(paletteObject)
+  .then(result => {
+    if(result == null) {
+      return Promise.reject(res.json({success: false, message: "No Palette Found"}))
     } else {
-      User.deletePalette(paletteObject, (err, callback) => {
-        if(err) throw(err)
-        if(callback.nModified == 0) {
-          res.json({success: false, message: "Failed to delete Palette"})
-        } else {
-          Palette.deleteOne(paletteQuery, (err, callback) => {
-            if(err) throw(err)
-            if(callback != null) { // if there is any response other than null, the counter has been deleted
-              res.json({success: true, message: "Palette deleted"})
-            } else { // if the counter is null, something has gone wrong
-              res.json({success: false, message: "Failed to delete palette from palette collection"})
-            }
-          })
-        }
-      })
+      return User.deletePalette(paletteObject)
     }
+  }).then(result => {
+    if(result.nModified == 0) {
+      return Promise.reject(res.json({success: false, message: "Failed to delete Palette"}))
+    } else {
+      Palette.deleteOne(paletteQuery)
+    }
+  }).then(result => {
+    if(JSON.parse(result).n == 1) {
+      return res.json({success: true, message: "User deleted successfully"})
+    } else {
+      return Promise.reject(res.json({success: false, message: "User deletion failed"}))
+    }
+  }).catch(error => {
+    console.log(error)
   })
 })
 
@@ -157,12 +201,12 @@ router.post("/getById", (req, res, next) => {
     paletteId: req.body.paletteId
   }
 
-  Palette.getOne(paletteObject, (err, callback) => {
-    if(err) throw(err)
-    if(callback) {
-      res.json(callback)
+  Palette.getOne(paletteObject)
+  .then(result => {
+    if(result == null) {
+      res.json({success: false, message: "No Palette Found"})
     } else {
-      res.json({success: false, message: "Failed to retrieve Palette"})
+      res.json(callback)
     }
   })
 })
@@ -173,17 +217,17 @@ router.post("/getByUserId", (req, res, next) => {
     createdBy: req.body.createdBy
   }
 
-  Palette.getByUserId(paletteObject, (err, callback) => {
-    if(err) throw(err)
-    if(callback) {
-      res.json(callback)
+  Palette.getByUserId(paletteObject)
+  .then(result => {
+    if(result.length < 1) {
+      return Promise.reject(res.json({success: false, message: "No palettes found for user"}))
     } else {
-      res.json({success: false, message: "Failed to retrieve Palette"})
+      res.json(callback)
     }
   })
 })
 
-// get by user
+// update
 router.post("/update", (req, res, next) => {
   let paletteObject = {
     description: req.body.description,
@@ -195,19 +239,18 @@ router.post("/update", (req, res, next) => {
     paletteId: req.body.paletteId,
   }
 
-  Palette.getOne(paletteQuery, (err, callback) => {
-    if(err) throw(err)
-    if(callback == null) {
-      res.json({success: false, message: "Palette doesn't exist"})
+  Palette.getOne(paletteQuery)
+  .then(result => {
+    if(result == null) {
+      return Promise.reject(res.json({success: false, message: "Failed to retrieve Palette"}))
     } else {
-      Palette.updatePalette(paletteObject, (err, callback) => {
-        if(err) throw(err)
-        if(callback) {
-          res.json({success: true, message: "Palette update success"})
-        } else {
-          res.json({success: false, message: "Failed to retrieve Palette"})
-        }
-      })
+      return Palette.updatePalette(paletteObject)
+    }
+  }).then(result => {
+    if(result.nModified == 0) {
+      res.json({success: true, message: "Nothing to update"})
+    } else if(result.nModified >= 1) {
+      res.json({success: true, message: "User updated successfully"})
     }
   })
 })

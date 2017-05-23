@@ -211,7 +211,7 @@ router.post("/update", (req, res, next) => {
   }).then(result => {
     if(result.nModified == 0) {
       res.json({success: true, message: "Nothing to update"})
-    } else if(result.nModified >= 0) {
+    } else if(result.nModified >= 1) {
       res.json({success: true, message: "User updated successfully"})
     }
   })
@@ -241,7 +241,7 @@ router.post("/updatepassword", (req, res, next) => {
       return User.updatePassword(userObject)
     }
   }).then(result => {
-    if(result.nModified >= 0) {
+    if(result.nModified >= 1) {
       return res.json({success: true, message: "Password updated successfully"})
     } else {
       return Promise.reject(res.json({success: false, message: "Password update failed"}))
