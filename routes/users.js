@@ -195,26 +195,24 @@ router.post("/update", (req, res, next) => {
   }
 
   // check username to make sure it doesn't already exist except in the case of it being the updaters current username
-  User.getOne({username: userObject.username}, (err, callback) => {
-    if(err) throw(err)
-    if(callback == null || callback.userId == userObject.userId) {
-      User.getOne({email: userObject.email}, (err, callback) => {
-        if(err) throw(err)
-        if(callback == null || callback.userId == userObject.userId) {
-          User.updateUser(userObject, (err, callback) => {
-            if(err) throw(err)
-            if(callback) {
-              res.json({success: true, message: "User update successful"})
-            } else {
-              res.json({success: false, message: "Something went wrong, update failed"})
-            }
-          })
-        } else {
-          res.json({success: false, message: "Email already exists"})
-        }
-      })
+  User.getOne({username: userObject.username})
+  .then(result => {
+    if(result != null && result.userId != userObject.userId) {
+      return Promise.reject(res.json({success: false, message: "Username already taken"}))
     } else {
-      res.json({success: false, message: "Username already exists"})
+      User.getOne({email: userObject.email})
+    }
+  }).then(result => {
+    if(result != null && result.email != userObject.email) {
+      return Promise.reject(res.json({success: false, message: "Email address already registered"}))
+    } else {
+      return User.updateUser(userObject)
+    }
+  }).then(result => {
+    if(result.nModified == 0) {
+      res.json({success: true, message: "Nothing to update"})
+    } else if(result.nModified >= 0) {
+      res.json({success: true, message: "User updated successfully"})
     }
   })
 })
@@ -228,29 +226,28 @@ router.post("/updatepassword", (req, res, next) => {
     newPassword: req.body.newPassword
   }
 
-  User.getOne({userId: userObject.userId}, (err, callback) => {
-    if(err) throw(err)
-    if(callback == null) {
-      res.json({success: false, message: "Failed to retrieve user"})
+  User.getOne({userId: userObject.userId})
+  .then(result => {
+    if(result == null) {
+      return Promise.reject(res.json({success: false, message: "Failed to retrieve user"}))
     } else {
-      userObject.storedHash = callback.password
-      console.log(userObject.storedHash)
-      User.comparePassword(userObject, (err, isMatch) => {
-        if(err) throw(err)
-        if(!isMatch) {
-          res.json({success: false, message: "Passwords didn't match"})
-        } else if(isMatch) {
-          User.updatePassword(userObject, (err, callback) => {
-            if(err) throw(err)
-            if(callback) {
-              res.json({success: true, message: "Password Updated"})
-            } else {
-              res.json({success: false, message: "Failed to update password"})
-            }
-          })
-        }
-      })
+      userObject.storedHash = result.password
+      return User.comparePassword(userObject)
     }
+  }).then(result => {
+    if(result == false) {
+      return Promise.reject(res.json({success: false, message: "Current password entry doesn't match stored password"}))
+    } else {
+      return User.updatePassword(userObject)
+    }
+  }).then(result => {
+    if(result.nModified >= 0) {
+      return res.json({success: true, message: "Password updated successfully"})
+    } else {
+      return Promise.reject(res.json({success: false, message: "Password update failed"}))
+    }
+  }).catch(error => {
+    console.log(error)
   })
 })
 
