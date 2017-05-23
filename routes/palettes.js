@@ -126,7 +126,7 @@ router.post("/deleteOne", (req, res, next) => {
     paletteId: req.body.paletteId,
   }
 
-  Palette.getOne(paletteObject)
+  Palette.getOne(paletteQuery)
   .then(result => {
     if(result == null) {
       return Promise.reject(res.json({success: false, message: "No Palette Found"}))
@@ -137,17 +137,19 @@ router.post("/deleteOne", (req, res, next) => {
     if(result.nModified == 0) {
       return Promise.reject(res.json({success: false, message: "Failed to delete Palette"}))
     } else {
-      Palette.deleteOne(paletteQuery)
+      return Palette.deleteOne(paletteQuery)
     }
   }).then(result => {
+    console.log(result)
     if(JSON.parse(result).n == 1) {
-      return res.json({success: true, message: "User deleted successfully"})
+      return res.json({success: true, message: "Palette deleted successfully"})
     } else {
       return Promise.reject(res.json({success: false, message: "User deletion failed"}))
     }
   }).catch(error => {
     console.log(error)
   })
+
 })
 
 // get by id

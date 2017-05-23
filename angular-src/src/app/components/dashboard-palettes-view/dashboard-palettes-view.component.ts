@@ -23,8 +23,9 @@ export class DashboardPalettesViewComponent implements OnInit {
   loadUserPalettes() {
     this.palettesApiService.getPalettesByUserId()
     .subscribe(res => {
-      console.log(res)
-      this.userPalettes = res;
+      if(res.success != false) {
+        this.userPalettes = res;
+      }
     })
   }
 

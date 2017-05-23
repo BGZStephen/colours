@@ -10,7 +10,7 @@
         <i class="fa fa-trash" (click)="deletePalette(palette.paletteId)"></i>
       </div>
       <div class="palette-output-container" *ngIf="palette.paletteItems">
-        <div class="palette-item" *ngFor="let paletteItem of palette.paletteItems | slice:0:10">
+        <div class="palette-item" *ngFor="let paletteItem of palette.paletteItems | slice:0:8">
           <div class="palette-item-color-display">
           </div>
           <div class="palette-item-description">

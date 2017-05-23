@@ -24,7 +24,6 @@ export class DashboardPalettesManageComponent implements OnInit {
     let paletteObject = {paletteId: paletteId}
     this.palettesApiService.deletePalette(paletteObject)
     .subscribe(res => {
-      console.log(res)
       this.loadUserPalettes()
     })
   }
@@ -40,7 +39,11 @@ export class DashboardPalettesManageComponent implements OnInit {
   loadUserPalettes() {
     this.palettesApiService.getPalettesByUserId()
     .subscribe(res => {
-      this.userPalettes = res;
+      if(res.success == false) {
+        this.userPalettes = [];
+      } else {
+        this.userPalettes = res;
+      }
     })
   }
 
