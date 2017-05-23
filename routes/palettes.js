@@ -44,6 +44,8 @@ router.post("/addPaletteItem", (req, res, next) => {
     } else if(result.nModified >= 1) {
       res.json({success: true, message: "Palette Item added successfully"})
     }
+  }).catch(error => {
+    console.log(error)
   })
 })
 
@@ -159,7 +161,7 @@ router.post("/getById", (req, res, next) => {
     if(result == null) {
       res.json({success: false, message: "No Palette Found"})
     } else {
-      res.json(callback)
+      res.json(result)
     }
   })
 })
@@ -175,8 +177,10 @@ router.post("/getByUserId", (req, res, next) => {
     if(result.length < 1) {
       return Promise.reject(res.json({success: false, message: "No palettes found for user"}))
     } else {
-      res.json(callback)
+      res.json(result)
     }
+  }).catch(error => {
+    console.log(error)
   })
 })
 
@@ -205,6 +209,8 @@ router.post("/update", (req, res, next) => {
     } else if(result.nModified >= 1) {
       res.json({success: true, message: "User updated successfully"})
     }
+  }).catch(error => {
+    console.log(error)
   })
 })
 

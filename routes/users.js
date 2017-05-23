@@ -214,6 +214,8 @@ router.post("/update", (req, res, next) => {
     } else if(result.nModified >= 1) {
       res.json({success: true, message: "User updated successfully"})
     }
+  }).catch(error => {
+    console.log(error)
   })
 })
 

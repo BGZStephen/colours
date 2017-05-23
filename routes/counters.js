@@ -16,7 +16,7 @@ router.post("/create", (req, res, next) => {
 
   Counter.getOne(counterQuery).then(result => {
     if(result != null) {
-      res.json({success: false, message: "Counter already exists"})
+      return Promise.reject(res.json({success: false, message: "Counter already exists"}))
     } else {
       return Counter.create(counterObject)
     }
@@ -24,6 +24,8 @@ router.post("/create", (req, res, next) => {
     if(result != null) {
       res.json({success: true, message: "Counter created successfully"})
     }
+  }).catch(error => {
+    console.log(error)
   })
 })
 
@@ -35,7 +37,7 @@ router.post("/deleteByName", (req, res, next) => {
 
   Counter.getOne(counterQuery).then(result => {
     if(result == null) {
-      return res.json({success: false, message: "Counter doesn't exist"})
+      return Promise.reject(res.json({success: false, message: "Counter doesn't exist"}))
     } else {
       return Counter.deleteOne(counterQuery)
     }
@@ -43,6 +45,8 @@ router.post("/deleteByName", (req, res, next) => {
     if(JSON.parse(result).n == 1) {
       return res.json({success: true, message: "Counter deleted successfully"})
     }
+  }).catch(error => {
+    console.log(error)
   })
 })
 
