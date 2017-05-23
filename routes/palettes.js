@@ -19,31 +19,30 @@ router.post("/addPaletteItem", (req, res, next) => {
     name: "paletteItemId"
   }
 
-  Counter.getOne(counterQuery, (err, callback) => {
-    if(err) throw(err)
-    if(!callback) {
-      res.json({success: false, message: "Unable to retrieve paletteItem counter"})
+  Counter.getOne(counterQuery)
+  .then(result => {
+    if(result == null) {
+      return Promise.reject(res.json({success: false, message: "Failed to retrieve counter"}))
     } else {
-      paletteObject.paletteItem.paletteItemId = callback.count
-      Palette.addPaletteItem(paletteObject, (err, callback) => {
-        if(err) throw(err)
-        if(!callback) {
-          res.json({success: false, message: "Failed to add PaletteItem"})
-        } else {
-          let newCount = paletteObject.paletteItem.paletteItemId += 1;
-          let counterIncrementQuery = {
-            count: newCount,
-            name: "paletteItemId"
-          }
-          Counter.increment(counterIncrementQuery, (err, callback) => {
-            if(!callback) {
-              res.json({success: false, message: "Counter increment failed"})
-            } else {
-              res.json({success: true, message: "PaletteItem added"})
-            }
-          })
-        }
-      })
+      paletteObject.paletteItem.paletteItemId = result.count
+      return Palette.addPaletteItem(paletteObject)
+    }
+  }).then(result => {
+    if(result.length == 0) {
+      return Promise.reject(res.json({success: false, message: "Failed to add PaletteItem"}))
+    } else {
+      let newCount = paletteObject.paletteItem.paletteItemId += 1;
+      let counterIncrementQuery = {
+        count: newCount,
+        name: "paletteItemId"
+      }
+      return Counter.increment(counterIncrementQuery)
+    }
+  }).then(result => {
+    if(result.nModified == 0) {
+      res.json({success: false, message: "Counter update failed"})
+    } else if(result.nModified >= 1) {
+      res.json({success: true, message: "Palette Item added successfully"})
     }
   })
 })
@@ -55,12 +54,12 @@ router.post("/deletePaletteItem", (req, res, next) => {
     paletteItemId: req.body.paletteItemId
   }
 
-  Palette.deletePaletteItem(paletteObject, (err, callback) => {
-    if(err) throw(err)
-    if(callback.nModified == 0) {
-      res.json({success: false, message: "Failed to delete PaletteItem"})
+  Palette.deletePaletteItem(paletteObject)
+  .then(result => {
+    if(result.nModified == 0) {
+      return res.json({success: false, message: "Failed to delete PaletteItem (does it exist?)"})
     } else {
-      res.json({success: true, message: "PaletteItem deletion success"})
+      return res.json({success: true, message: "PaletteItem deletion success"})
     }
   })
 })
@@ -112,52 +111,6 @@ router.post("/create", (req, res, next) => {
   }).catch(error => {
     console.log(error)
   })
-
-
-
-  // User.addPalette(paletteObject)
-  //
-  // let newCount = paletteObject.paletteId += 1;
-  // let counterIncrementQuery = {
-  //   count: newCount,
-  //   name: "paletteId"
-  // }
-  // Counter.increment(counterIncrementQuery)
-  //
-  // Counter.getOne(counterQuery, (err, callback) => {
-  //   if(err) throw(err)
-  //   if(!callback) {
-  //     res.json({success: false, message: "Unable to retrieve palette counter"})
-  //   } else {
-  //     paletteObject.paletteId = callback.count
-  //     Palette.create(paletteObject, (err, callback) => {
-  //       if(err) throw(err)
-  //       if(!callback) {
-  //         res.json({success: false, message: "Palette creation failed"})
-  //       } else {
-  //         User.addPalette(paletteObject, (err, callback) => {
-  //           if(err) throw(err)
-  //           if(!callback) {
-  //             res.json({success: false, message: "Failed to add Palette"})
-  //           } else {
-  //             let newCount = paletteObject.paletteId += 1;
-  //             let counterIncrementQuery = {
-  //               count: newCount,
-  //               name: "paletteId"
-  //             }
-  //             Counter.increment(counterIncrementQuery, (err, callback) => {
-  //               if(!callback) {
-  //                 res.json({success: false, message: "Counter increment failed"})
-  //               } else {
-  //                 res.json({success: true, message: "Palette creation success"})
-  //               }
-  //             })
-  //           }
-  //         })
-  //       }
-  //     })
-  //   }
-  // })
 })
 
 // delete palette
