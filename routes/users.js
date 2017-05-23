@@ -15,34 +15,33 @@ router.post("/authenticate", (req, res, next) => {
     queryPassword: req.body.password,
   }
 
-  User.getOne({email: userObject.email}, (err, callback) => {
-    if(err) throw(err)
-    if(!callback) {
-      res.json({success: false, message: "Incorrect email or password"})
+  User.getOne({email: userObject.email})
+  .then(result => {
+    if(result == null) {
+      return Promise.reject(res.json({success: false, message: "Incorrect email address or password"}))
     } else {
-      userObject.storedHash = callback.password
-      console.log(userObject.storedHash)
-      User.comparePassword(userObject, (err, isMatch) => {
-        if(err) throw(err)
-        if(!isMatch) {
-          res.json({success: false, message: "Incorrect email or password"})
-        } else if(isMatch) {
-          const token = jwt.sign(callback, config.secret, {
-            expiresIn: 604800 // 1 week
-          });
-          res.json({
-            success: true,
-            message: "Authentication successful",
-            token: "JWT" + token,
-            user: {
-              email: callback.email,
-              userId: callback.userId,
-              username: callback.username
-            }
-          })
+      userObject.storedHash = result.password
+      userObject.userId = result.userId // used for signing tokens for use with localStorage on front-end
+      return User.comparePassword(userObject)
+    }
+  }).then(result => {
+    if(result == false) {
+      return Promise.reject(res.json({success: false, message: "Incorrect email address or password"}))
+    } else {
+      const token = jwt.sign(userObject, config.secret, {expiresIn: 604800});
+      return res.json({
+        success: true,
+        message: "Authentication successful",
+        token: "JWT" + token,
+        user: {
+          email: userObject.email,
+          userId: userObject.userId,
+          username: userObject.username
         }
       })
     }
+  }).catch(error => {
+    console.log(error)
   })
 })
 
@@ -52,20 +51,19 @@ router.post("/deleteOne", (req, res, next) => {
     userId: req.body.userId
   }
 
-  User.getOne({userId: userObject.userId}, (err, callback) => {
-    if(err) throw(err)
-    if(callback == null) {
-      res.json({success: false, message: "UserID not found"})
+  User.getOne(userObject)
+  .then(result => {
+    if(result == null) {
+      return Promise.reject(res.json({success: false, message: "User not found"}))
     } else {
-      User.deleteOne(userObject, (err, callback) => {
-        if(err) throw(err)
-        if(callback) {
-          res.json({success: true, message: "User deleted"})
-        } else {
-          res.json({success: false, message: "Something went wrong, user not deleted"})
-        }
-      })
+      return User.deleteOne(userObject)
     }
+  }).then(result => {
+    if(JSON.parse(result).n == 1) {
+      return res.json({success: true, message: "User deleted successfully"})
+    }
+  }).catch(error => {
+    console.log(error)
   })
 })
 
