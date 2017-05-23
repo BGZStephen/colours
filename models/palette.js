@@ -30,40 +30,56 @@ const Palette = module.exports = mongoose.model('Palette', PaletteSchema)
 
 // save new Palette to db
 module.exports.create = function(paletteObject, callback) {
-  paletteObject.save(callback)
+  return new Promise(resolve => {
+    resolve(paletteObject.save())
+  })
 }
 
 // get one palette
-module.exports.getOne = function(paletteObject, callback) {
-  Palette.findOne(paletteObject, callback)
+module.exports.getOne = function(paletteObject) {
+  return new Promise(resolve => {
+    resolve(Palette.findOne(paletteObject))
+  })
 }
 
 // get palettes by userId
-module.exports.getByUserId = function(paletteObject, callback) {
-  Palette.find(paletteObject, callback)
+module.exports.getByUserId = function(paletteObject) {
+  return new Promise(resolve => {
+    resolve(Palette.find(paletteObject))
+  })
 }
 
 // get all palettes
-module.exports.getAll = function(paletteObject, callback) {
-  Palette.find({}, callback)
+module.exports.getAll = function(paletteObject) {
+  return new Promise(resolve => {
+    resolve(Palette.find({}))
+  })
 }
 
 // delete one palette
-module.exports.deleteOne = function(paletteObject, callback){
-  Palette.findOne(paletteObject, callback).remove().exec()
+module.exports.deleteOne = function(paletteObject){
+  return new Promise(resolve => {
+    resolve(Palette.findOne(paletteObject).remove().exec())
+  })
 }
 
 // add palleteItem
-module.exports.addPaletteItem = function(paletteObject, callback){
-  Palette.update({paletteId: paletteObject.paletteId}, {$push: {paletteItems: paletteObject.paletteItem}}, callback)
+module.exports.addPaletteItem = function(paletteObject){
+  return new Promise(resolve => {
+    resolve(Palette.update({paletteId: paletteObject.paletteId}, {$push: {paletteItems: paletteObject.paletteItem}}))
+  })
 }
 
 // remove paletteItem
-module.exports.deletePaletteItem = function(paletteObject, callback){
-  Palette.update({paletteId: paletteObject.paletteId}, {$pull: {paletteItems: {paletteItemId: paletteObject.paletteItemId}}}, callback)
+module.exports.deletePaletteItem = function(paletteObject){
+  return new Promise(resolve => {
+    resolve(Palette.update({paletteId: paletteObject.paletteId}, {$pull: {paletteItems: {paletteItemId: paletteObject.paletteItemId}}}))
+  })
 }
 
 // update palette
-module.exports.updatePalette = function(paletteObject, callback){
-  Palette.update({paletteId: paletteObject.paletteId}, paletteObject, callback)
+module.exports.updatePalette = function(paletteObject){
+  return new Promise(resolve => {
+    resolve(Palette.update({paletteId: paletteObject.paletteId}, paletteObject))
+  })
 }

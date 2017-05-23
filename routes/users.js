@@ -75,12 +75,12 @@ router.post("/getById", (req, res, next) => {
     userId: req.body.userId
   }
 
-  User.getOne(userObject, (err, callback) => {
-    if(err) throw(err)
-    if(callback) {
-      res.json(callback)
+  User.getOne(userObject)
+  .then(result => {
+    if(result == null) {
+      return res.json({success: false, message: "User not found"})
     } else {
-      res.json({success: false, message: "User not found"})
+      return res.json(result)
     }
   })
 })
@@ -91,12 +91,12 @@ router.post("/getByUsername", (req, res, next) => {
     username: req.body.username
   }
 
-  User.getOne(userObject, (err, callback) => {
-    if(err) throw(err)
-    if(callback) {
-      res.json({success: true, message: callback})
+  User.getOne(userObject)
+  .then(result => {
+    if(result == null) {
+      return res.json({success: false, message: "User not found"})
     } else {
-      res.json({success: false, message: "User not found"})
+      return res.json(result)
     }
   })
 })
@@ -107,24 +107,24 @@ router.post("/getByEmail", (req, res, next) => {
     email: req.body.email
   }
 
-  User.getOne(userObject, (err, callback) => {
-    if(err) throw(err)
-    if(callback) {
-      res.json({success: true, message: callback})
+  User.getOne(userObject)
+  .then(result => {
+    if(result == null) {
+      return res.json({success: false, message: "User not found"})
     } else {
-      res.json({success: false, message: "User not found"})
+      return res.json(result)
     }
   })
 })
 
 // get all users
 router.get("/getAll", (req, res, next) => {
-  User.getAll((err, callback) => {
-    if(err) throw(err)
-    if(callback) {
-      res.json({success: true, message: callback})
+  User.getAll()
+  .then(result => {
+    if(result.length < 1) {
+      return res.json({success: false, message: "No users found"})
     } else {
-      res.json({success: false, message: "User not found"})
+      return res.json(result)
     }
   })
 })
@@ -146,49 +146,41 @@ router.post("/register", (req, res, next) => {
     name: "userId"
   }
 
-  Counter.getOne(counterQuery, (err, callback) => {
-    if(err) throw(err)
-    if(!callback) {
-      res.json({success: false, message: "Unable to retrieve user counter"})
+  Counter.getOne(counterQuery)
+  .then(result => {
+    if(result == null) {
+      return Promise.reject(res.json({success: false, message: "Unable to retrieve user counter"}))
     } else {
-      userObject.userId = callback.count
-      let usernameQuery = {
-        username: userObject.username
-      }
-      User.getOne(usernameQuery, (err, callback) => {
-        if(callback) {
-          res.json({success: false, message: "Username already exists"})
-        } else {
-          let emailQuery = {
-            email: userObject.email
-          }
-          User.getOne(emailQuery, (err, callback) => {
-            if(callback) {
-              res.json({success: false, message: "Email already exists"})
-            } else {
-              User.create(userObject, (err, callback) => {
-                if(!callback) {
-                  res.json({success: false, message: "User creation failed"})
-                } else {
-                  let newCount = userObject.userId += 1;
-                  let counterIncrementQuery = {
-                    count: newCount,
-                    name: "userId"
-                  }
-                  Counter.increment(counterIncrementQuery, (err, callback) => {
-                    if(!callback) {
-                      res.json({success: false, message: "Counter increment failed"})
-                    } else {
-                      res.json({success: true, message: "User creation success"})
-                    }
-                  })
-                }
-              })
-            }
-          })
-        }
-      })
+      userObject.userId = result.count
+      let usernameQuery = {username: userObject.username}
+      return User.getOne(usernameQuery)
     }
+  }).then(result => {
+    if(result != null) {
+      return Promise.reject(res.json({success: false, message: "Username already exists"}))
+    } else {
+      let emailQuery = {email: userObject.email}
+      return User.getOne(emailQuery)
+    }
+  }).then(result => {
+    if(result != null) {
+      return Promise.reject(res.json({success: false, message: "Email already exists"}))
+    } else {
+      return User.create(userObject)
+    }
+  }).then(result => {
+    let newCount = userObject.userId += 1;
+    let counterIncrementQuery = {
+      count: newCount,
+      name: "userId"
+    }
+    return Counter.increment(counterIncrementQuery)
+  }).then(result => {
+    if(result.n >= 1) {
+      return res.json({success: true, message: "User created successfully"})
+    }
+  }).catch(error => {
+    console.log(error)
   })
 
 })

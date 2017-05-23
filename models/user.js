@@ -43,13 +43,17 @@ const UserSchema = mongoose.Schema({
 const User = module.exports = mongoose.model('User', UserSchema)
 
 // push palette to user palettes array
-module.exports.addPalette = function(palleteObject, callback) {
-  User.update({userId: palleteObject.createdBy}, {$push: {palettes: {paletteId: palleteObject.paletteId}}}, callback)
+module.exports.addPalette = function(palleteObject) {
+  return new Promise(resolve => {
+    resolve(User.update({userId: palleteObject.createdBy}, {$push: {palettes: {paletteId: palleteObject.paletteId}}}))
+  })
 }
 
 // pull palette to user palettes array
-module.exports.deletePalette = function(palleteObject, callback) {
-  User.update({userId: palleteObject.userId}, {$pull: {palettes: {paletteId: palleteObject.paletteId}}}, callback)
+module.exports.deletePalette = function(palleteObject) {
+  return new Promise(resolve => {
+    resolve(User.update({userId: palleteObject.userId}, {$pull: {palettes: {paletteId: palleteObject.paletteId}}}))
+  })
 }
 
 // push project to user projects array
@@ -63,49 +67,57 @@ module.exports.deletePalette = function(palleteObject, callback) {
 // }
 
 // save new User to db
-module.exports.create = function(userObject, callback) {
-  bcrypt.genSalt(10, function(err, salt) {
-    bcrypt.hash(userObject.password, salt, function(err, hash) {
-        userObject.password = hash
-        userObject.save(callback)
-    });
-  });
+module.exports.create = function(userObject) {
+  return new Promise(resolve => {
+    var salt = bcrypt.genSaltSync(10)
+    var hash = bcrypt.hashSync(userObject.password, salt)
+    userObject.password = hash;
+    resolve(userObject.save())
+  })
 }
 
 // delete one user from the db
-module.exports.deleteOne = function(userObject, callback){
-  User.findOne(userObject, callback).remove().exec()
+module.exports.deleteOne = function(userObject){
+  return new Promise(resolve => {
+    resolve(User.findOne(userObject).remove().exec())
+  })
 }
 
 // get all users from the db (used for admin purposes)
-module.exports.getAll = function(userObject, callback){
-  User.find({}, callback)
+module.exports.getAll = function(userObject){
+  return new Promise(resolve => {
+    resolve(User.find({}))
+  })
 }
 
 // get one user from the database
-module.exports.getOne = function(userObject, callback) {
-  User.findOne(userObject, callback)
+module.exports.getOne = function(userObject) {
+  return new Promise(resolve => {
+    resolve(User.findOne(userObject))
+  })
 }
 
 // compare password to the bcrypt encrypted password within the db
-module.exports.comparePassword = function(userObject, callback) {
-  bcrypt.compare(userObject.queryPassword, userObject.storedHash, function(err, isMatch) {
-    if(err) throw(err)
-    callback(null, isMatch)
-  });
+module.exports.comparePassword = function(userObject) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(userObject.queryPassword, userObject.storedHash).then(res => {
+      resolve(res)
+    })
+  })
 }
 
 // update password, used in association with comparePassword to check if submitted passwords match before actioning
-module.exports.updatePassword = function(userObject, callback) {
-  bcrypt.genSalt(10, function(err, salt) {
-    bcrypt.hash(userObject.newPassword, salt, function(err, hash) {
-        userObject.password = hash
-        User.update({userId: userObject.userId},{password: userObject.password}, callback)
-    });
-  });
+module.exports.updatePassword = function(userObject) {
+  return new Promise(resolve => {
+    var salt = bcrypt.genSaltSync(10)
+    var hash = bcrypt.hashSync(userObject.newPassword, salt)
+    resolve(User.update({userId: userObject.userId},{password: hash}))
+  })
 }
 
 // update a users profile within the db
-module.exports.updateUser = function(userObject, callback) {
-  User.update({userId: userObject.userId}, userObject, callback)
+module.exports.updateUser = function(userObject) {
+  return new Promise(resolve => {
+    resolve(User.update({userId: userObject.userId}, userObject))
+  })
 }
