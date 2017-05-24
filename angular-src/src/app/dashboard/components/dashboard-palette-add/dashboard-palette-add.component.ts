@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router"
-import { PalettesApiService } from "../../services/palettes-api.service"
+import { PalettesApiService } from "../../../services/palettes-api.service"
 import { FlashMessagesService } from "angular2-flash-messages"
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router"
 import { FlashMessagesService } from "angular2-flash-messages"
-import { PalettesApiService } from "../../services/palettes-api.service"
+import { PalettesApiService } from "../../../services/palettes-api.service"
 import "rxjs/Rx"
 
 @Component({

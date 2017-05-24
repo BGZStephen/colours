@@ -8,12 +8,12 @@ import { HomeViewComponent, DashboardViewComponent} from './views/views-barrel';
 
 // components for aux routes
 // site
-import { SiteIntroComponent, SiteRegisterComponent, SiteLoginComponent } from "./components/components-barrel"
+import { SiteIntroComponent, SiteRegisterComponent, SiteLoginComponent } from "./site/components/site-components-barrel"
 
 //dashboard
 import { DashboardProfileComponent, DashboardProfileEditComponent, DashboardChangePasswordComponent,
         DashboardPalettesManageComponent, DashboardPaletteIndividualComponent,
-        DashboardPalettesViewComponent, DashboardPaletteAddComponent, DashboardPaletteEditComponent } from "./components/components-barrel"
+        DashboardPalettesViewComponent, DashboardPaletteAddComponent, DashboardPaletteEditComponent } from "./dashboard/components/dashboard-components-barrel"
 
 const APP_ROUTES: Routes = [
   {path: "", redirectTo: "/home/(siteOutlet:intro)", pathMatch: 'full'},

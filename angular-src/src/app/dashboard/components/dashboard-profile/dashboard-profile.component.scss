@@ -1,4 +1,4 @@
-@import "../../sass/_variables.scss";
+@import "../../../sass/_variables.scss";
 
 .main-container {
   padding: 10px 15px;
@@ -10,9 +10,7 @@
 
 .main-header {
   font-size: 2em;
-  @media(min-width: 1024px) {
-    margin-bottom: 20px;
-  }
+  margin-bottom: 20px;
 }
 
 .fa-pencil {
@@ -22,7 +20,7 @@
   padding: 10px;
 }
 
-.input-row {
+.output-row {
   display: flex;
   flex-wrap: wrap;
   margin: 15px 0;
@@ -31,7 +29,7 @@
   }
 }
 
-.input-label {
+.output-label {
   background: $primary-dark-blue;
   color: $primary-white;
   font-size: 1.5em;
@@ -46,40 +44,13 @@
   }
 }
 
-.input-description {
-  border: none;
-  border-bottom: 4px solid $primary-dark-blue;
-  font-size: 1.5em;
-  font-weight: 900;
-  height: 50px;
-  width: 100%;
-  @media(min-width: 1024px) {
-    margin-left: 10px;
-    width: auto;
-  }
-
-  .input-description::placeholder {
-    color: $primary-dark-blue;
-  }
-}
-
-.input-cancel,
-.input-save {
-  border: none;
-  background: #ea4b36;
-  color: $primary-dark-blue;
+.output-description {
   font-size: 1.5em;
   font-weight: 900;
   height: 50px;
   padding: 10px 15px;
-  text-transform: uppercase;
-  width: 50%;
+  width: 100%;
   @media(min-width: 1024px) {
-    margin-top: 20px;
-    margin-right: 5px;
     width: auto;
   }
 }
- .input-save {
-   background: #2c97df;
- }
