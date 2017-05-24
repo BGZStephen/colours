@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FlashMessagesService } from "angular2-flash-messages"
-import { UsersApiService } from "../../services/users-api.service"
+import { UsersApiService } from "../../../services/users-api.service"
 import { Router } from "@angular/router"
 
 @Component({
