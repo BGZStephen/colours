@@ -9,7 +9,7 @@
       </div>
       <div class="palette-output-container" *ngIf="palette.paletteItems">
         <div class="palette-item" *ngFor="let paletteItem of palette.paletteItems | slice:0:8">
-          <div class="palette-item-color-display">
+          <div class="palette-item-color-display" [ngStyle]="{'background': '#' + paletteItem.hex}">
           </div>
           <div class="palette-item-description">
             <p>#{{paletteItem.hex}}</p>
