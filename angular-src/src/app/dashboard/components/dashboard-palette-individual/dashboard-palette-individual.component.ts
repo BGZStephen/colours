@@ -84,7 +84,7 @@ export class DashboardPaletteIndividualComponent implements OnInit {
     this.activatedRoute.params
     .map(params => params['paletteId'])
     .subscribe((paletteId) => {
-      let paletteObject = {paletteId: paletteId}
+      let paletteObject = {_id: paletteId}
       this.palettesApiService.getPaletteById(paletteObject)
       .subscribe(res => {
         console.log(res)

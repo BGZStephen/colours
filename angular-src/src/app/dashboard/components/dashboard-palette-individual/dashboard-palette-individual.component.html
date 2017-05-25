@@ -14,7 +14,7 @@
       <div class="add-colour-header-container">
         <h2 class="add-colour-header">Add Colour</h2>
       </div>
-      <form #f="ngForm" (ngSubmit)="addPaletteItem({paletteId: palette.paletteId, paletteItem: {hex: hex.value, description: description.value}})" class="add-colour-form">
+      <form #f="ngForm" (ngSubmit)="addPaletteItem({paletteId: palette._id, paletteItem: {hex: hex.value, description: description.value}})" class="add-colour-form">
         <div class="form-row">
           <label class="add-colour-label">Hex: </label>
           <input class="add-colour-input" type="text" placeholder="#369369" ngModel="{{hexConversion}}" id="hex" #hex name="hex" (keyup)="convertHexToRgb(hex.value)">
@@ -51,7 +51,7 @@
             <p class="palette-item-color">#{{paletteItem.hex}}</p>
             <p class="palette-item-description">{{paletteItem.description}}</p>
             <div class="palette-item-actions-container">
-              <i class="fa fa-trash action-delete" (click)="deletePaletteItem({paletteId: palette.paletteId, paletteItemId: paletteItem.paletteItemId})"></i>
+              <i class="fa fa-trash action-delete" (click)="deletePaletteItem({paletteId: palette._id, paletteItemId: paletteItem.paletteItemId})"></i>
             </div>
           </div>
         </div>

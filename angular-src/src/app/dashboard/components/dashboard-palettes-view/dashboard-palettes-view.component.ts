@@ -25,6 +25,7 @@ export class DashboardPalettesViewComponent implements OnInit {
     .subscribe(res => {
       if(res.success != false) {
         this.userPalettes = res;
+        console.log(this.userPalettes)
       }
     })
   }

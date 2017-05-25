@@ -9,15 +9,10 @@ const PaletteSchema = mongoose.Schema({
   },
   createdBy: {
     required: true,
-    type: Number
+    type: String
   },
   description: {
     type: String
-  },
-  paletteId: {
-    required: true,
-    type: Number,
-    unique: true
   },
   paletteItems: Array,
   name: {
@@ -66,20 +61,20 @@ module.exports.deleteOne = function(paletteObject){
 // add palleteItem
 module.exports.addPaletteItem = function(paletteObject){
   return new Promise(resolve => {
-    resolve(Palette.update({paletteId: paletteObject.paletteId}, {$push: {paletteItems: paletteObject.paletteItem}}))
+    resolve(Palette.update({_id: paletteObject.paletteId}, {$push: {paletteItems: paletteObject.paletteItem}}))
   })
 }
 
 // remove paletteItem
 module.exports.deletePaletteItem = function(paletteObject){
   return new Promise(resolve => {
-    resolve(Palette.update({paletteId: paletteObject.paletteId}, {$pull: {paletteItems: {paletteItemId: paletteObject.paletteItemId}}}))
+    resolve(Palette.update({_id: paletteObject.paletteId}, {$pull: {paletteItems: {paletteItemId: paletteObject.paletteItemId}}}))
   })
 }
 
 // update palette
 module.exports.updatePalette = function(paletteObject){
   return new Promise(resolve => {
-    resolve(Palette.update({paletteId: paletteObject.paletteId}, paletteObject))
+    resolve(Palette.update({_id: paletteObject.paletteId}, paletteObject))
   })
 }

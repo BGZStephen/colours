@@ -20,7 +20,7 @@ export class UsersApiService {
 
   getCurrentUser() {
     this.loadToken()
-    let userObject = {"userId": JSON.parse(this.user).userId}
+    let userObject = {"_id": JSON.parse(this.user)._id}
     return this.http.post("http://localhost:3006/users/getById", userObject)
     .map(res => res.json())
   }
@@ -53,7 +53,7 @@ export class UsersApiService {
   }
 
   updateProfile(userObject) {
-    userObject.userId = JSON.parse(this.user).userId
+    userObject._id = JSON.parse(this.user)._id
     return this.http.post("http://localhost:3006/users/update", userObject)
     .map(res => res.json())
   }

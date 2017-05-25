@@ -72,7 +72,7 @@ router.post("/create", (req, res, next) => {
 
   let paletteObject = new Palette({
     createdAt: createdAtDate,
-    createdBy: req.body.userId,
+    createdBy: req.body._id,
     description: req.body.description,
     name: req.body.name
   })
@@ -81,34 +81,19 @@ router.post("/create", (req, res, next) => {
     name: "paletteId"
   }
 
-  Counter.getOne(counterQuery)
+
+  Palette.create(paletteObject)
   .then(result => {
-    paletteObject.paletteId = result.count
-    if(result == null) {
-      return Promise.reject({success: false, message: "Unable to retrieve palette counter"})
-    } else {
-      return Palette.create(paletteObject)
-    }
-  }).then(result => {
     if(result.length == 0) {
       return Promise.reject({success: false, message: "Palette creation failed"})
     } else {
       return User.addPalette(paletteObject)
     }
   }).then(result => {
-    if(result.nModified == 0) {
-      return Promise.reject({success: false, message: "Failed to add palette to user"})
-    } else {
-      let newCount = paletteObject.paletteId += 1;
-      let counterIncrementQuery = {
-        count: newCount,
-        name: "paletteId"
-      }
-      return Counter.increment(counterIncrementQuery)
-    }
-  }).then(result => {
-    if(result.n >= 1) {
+    if(result.n != null) {
       return res.json({success: true, message: "Palette created successfully"})
+    } else {
+      return Promise.reject({success: false, message: "Failed to create Palette"})
     }
   }).catch(error => {
     console.log(error)
@@ -123,7 +108,7 @@ router.post("/deleteOne", (req, res, next) => {
   }
 
   let paletteQuery = {
-    paletteId: req.body.paletteId,
+    _id: req.body.paletteId,
   }
 
   Palette.getOne(paletteQuery)
@@ -155,7 +140,7 @@ router.post("/deleteOne", (req, res, next) => {
 // get by id
 router.post("/getById", (req, res, next) => {
   let paletteObject = {
-    paletteId: req.body.paletteId
+    _id: req.body._id
   }
 
   Palette.getOne(paletteObject)
@@ -190,12 +175,12 @@ router.post("/getByUserId", (req, res, next) => {
 router.post("/update", (req, res, next) => {
   let paletteObject = {
     description: req.body.description,
-    paletteId: req.body.paletteId,
+    _id: req.body._id,
     name: req.body.name
   }
 
   let paletteQuery = {
-    paletteId: req.body.paletteId,
+    _id: req.body._id,
   }
 
   Palette.getOne(paletteQuery)
