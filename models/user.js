@@ -28,11 +28,6 @@ const UserSchema = mongoose.Schema({
   projects: {
     type: Array,
   },
-  userId: {
-    required: true,
-    type: Number,
-    unique: true
-  },
   username: {
     required: true,
     type: String,
@@ -45,14 +40,14 @@ const User = module.exports = mongoose.model('User', UserSchema)
 // push palette to user palettes array
 module.exports.addPalette = function(palleteObject) {
   return new Promise(resolve => {
-    resolve(User.update({userId: palleteObject.createdBy}, {$push: {palettes: {paletteId: palleteObject.paletteId}}}))
+    resolve(User.update({_id: palleteObject.createdBy}, {$push: {palettes: {_id: palleteObject._id}}}))
   })
 }
 
 // pull palette to user palettes array
 module.exports.deletePalette = function(palleteObject) {
   return new Promise(resolve => {
-    resolve(User.update({userId: palleteObject.userId}, {$pull: {palettes: {paletteId: palleteObject.paletteId}}}))
+    resolve(User.update({_id: palleteObject._id}, {$pull: {palettes: {_id: palleteObject._id}}}))
   })
 }
 
@@ -111,13 +106,13 @@ module.exports.updatePassword = function(userObject) {
   return new Promise(resolve => {
     var salt = bcrypt.genSaltSync(10)
     var hash = bcrypt.hashSync(userObject.newPassword, salt)
-    resolve(User.update({userId: userObject.userId},{password: hash}))
+    resolve(User.update({_id: userObject.userId},{password: hash}))
   })
 }
 
 // update a users profile within the db
 module.exports.updateUser = function(userObject) {
   return new Promise(resolve => {
-    resolve(User.update({userId: userObject.userId}, userObject))
+    resolve(User.update({_id: userObject.userId}, userObject))
   })
 }

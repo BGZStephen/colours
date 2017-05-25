@@ -21,7 +21,7 @@ router.post("/authenticate", (req, res, next) => {
       return Promise.reject(res.json({success: false, message: "Incorrect email address or password"}))
     } else {
       userObject.storedHash = result.password
-      userObject.userId = result.userId // used for signing tokens for use with localStorage on front-end
+      userObject._id = result._id // used for signing tokens for use with localStorage on front-end
       return User.comparePassword(userObject)
     }
   }).then(result => {
@@ -35,7 +35,7 @@ router.post("/authenticate", (req, res, next) => {
         token: "JWT" + token,
         user: {
           email: userObject.email,
-          userId: userObject.userId,
+          _id: userObject._id,
           username: userObject.username
         }
       })
@@ -48,7 +48,7 @@ router.post("/authenticate", (req, res, next) => {
 // delete user
 router.post("/deleteOne", (req, res, next) => {
   let userObject = {
-    userId: req.body.userId
+    _id: req.body._id
   }
 
   User.getOne(userObject)
@@ -70,7 +70,7 @@ router.post("/deleteOne", (req, res, next) => {
 // get user by id
 router.post("/getById", (req, res, next) => {
   let userObject = {
-    userId: req.body.userId
+    _id: req.body._id
   }
 
   User.getOne(userObject)
@@ -139,21 +139,10 @@ router.post("/register", (req, res, next) => {
     password: req.body.password,
     username: req.body.username
   })
+  let usernameQuery = {username: userObject.username}
 
-  let counterQuery = { // set counter to call for assigning unique id
-    name: "userId"
-  }
-
-  Counter.getOne(counterQuery)
+  User.getOne(usernameQuery)
   .then(result => {
-    if(result == null) {
-      return Promise.reject(res.json({success: false, message: "Unable to retrieve user counter"}))
-    } else {
-      userObject.userId = result.count
-      let usernameQuery = {username: userObject.username}
-      return User.getOne(usernameQuery)
-    }
-  }).then(result => {
     if(result != null) {
       return Promise.reject(res.json({success: false, message: "Username already exists"}))
     } else {
@@ -167,15 +156,10 @@ router.post("/register", (req, res, next) => {
       return User.create(userObject)
     }
   }).then(result => {
-    let newCount = userObject.userId += 1;
-    let counterIncrementQuery = {
-      count: newCount,
-      name: "userId"
-    }
-    return Counter.increment(counterIncrementQuery)
-  }).then(result => {
-    if(result.n >= 1) {
+    if(result != null) {
       return res.json({success: true, message: "User created successfully"})
+    } else {
+      return Promise.reject(res.json({success: false, message: "Failed to create user"}))
     }
   }).catch(error => {
     console.log(error)
@@ -191,13 +175,13 @@ router.post("/update", (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     username: req.body.username,
-    userId: req.body.userId
+    _id: req.body._id
   }
 
   // check username to make sure it doesn't already exist except in the case of it being the updaters current username
   User.getOne({username: userObject.username})
   .then(result => {
-    if(result != null && result.userId != userObject.userId) {
+    if(result != null && result._id != userObject._id) {
       return Promise.reject(res.json({success: false, message: "Username already taken"}))
     } else {
       User.getOne({email: userObject.email})
@@ -223,12 +207,12 @@ router.post("/update", (req, res, next) => {
 router.post("/updatepassword", (req, res, next) => {
 
   let userObject = {
-    userId: req.body.userId,
+    _id: req.body._id,
     queryPassword: req.body.currentPassword,
     newPassword: req.body.newPassword
   }
 
-  User.getOne({userId: userObject.userId})
+  User.getOne({_id: userObject._id})
   .then(result => {
     if(result == null) {
       return Promise.reject(res.json({success: false, message: "Failed to retrieve user"}))
