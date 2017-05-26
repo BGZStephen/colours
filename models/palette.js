@@ -79,23 +79,11 @@ module.exports.deleteOne = function(paletteObject){
   })
 }
 
-// add palleteItem
-module.exports.addPaletteItem = function(paletteObject){
-  return new Promise(resolve => {
-    resolve(Palette.update({_id: paletteObject.paletteId}, {$push: {paletteItems: paletteObject.paletteItem}}))
-  })
-}
-
-// remove paletteItem
-module.exports.deletePaletteItem = function(paletteObject){
-  return new Promise(resolve => {
-    resolve(Palette.update({_id: paletteObject.paletteId}, {$pull: {paletteItems: {paletteItemId: paletteObject.paletteItemId}}}))
-  })
-}
-
 // update palette
 module.exports.updatePalette = function(paletteObject){
   return new Promise(resolve => {
     resolve(Palette.update({_id: paletteObject.paletteId}, paletteObject))
   })
 }
+
+// PALETTE MANAGEMENT END

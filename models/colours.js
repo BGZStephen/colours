@@ -5,12 +5,7 @@ const ColourLibrary = require('./colour-library')
 const ColourSchema = mongoose.Schema({
   createdAt: Date,
   createdBy: String,
-  hex: String,
-  rgb: {
-    red: Number,
-    green: Number,
-    blue: Number
-  }
+  hex: String
 })
 
 const Colour = module.exports = mongoose.model('Colour', ColourSchema)

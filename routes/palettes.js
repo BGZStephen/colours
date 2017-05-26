@@ -4,81 +4,16 @@ const config = require('../config/database');
 const User = require('../models/user');
 const Palette = require('../models/palette');
 
-// add paletteItem
-router.post("/addPaletteItem", (req, res, next) => {
-  let paletteObject = {
-    paletteId: req.body.paletteId,
-    paletteItem: {
-      description: req.body.paletteItem.description,
-      hex: req.body.paletteItem.hex,
-    },
-  }
-
-  counterQuery = { // used to check if counter already exists
-    name: "paletteItemId"
-  }
-
-  Counter.getOne(counterQuery)
-  .then(result => {
-    if(result == null) {
-      return Promise.reject(res.json({success: false, message: "Failed to retrieve counter"}))
-    } else {
-      paletteObject.paletteItem.paletteItemId = result.count
-      return Palette.addPaletteItem(paletteObject)
-    }
-  }).then(result => {
-    if(result.length == 0) {
-      return Promise.reject(res.json({success: false, message: "Failed to add PaletteItem"}))
-    } else {
-      let newCount = paletteObject.paletteItem.paletteItemId += 1;
-      let counterIncrementQuery = {
-        count: newCount,
-        name: "paletteItemId"
-      }
-      return Counter.increment(counterIncrementQuery)
-    }
-  }).then(result => {
-    if(result.nModified == 0) {
-      res.json({success: false, message: "Counter update failed"})
-    } else if(result.nModified >= 1) {
-      res.json({success: true, message: "Palette Item added successfully"})
-    }
-  }).catch(error => {
-    console.log(error)
-  })
-})
-
-// delete paletteItem
-router.post("/deletePaletteItem", (req, res, next) => {
-  let paletteObject = {
-    paletteId: req.body.paletteId,
-    paletteItemId: req.body.paletteItemId
-  }
-
-  Palette.deletePaletteItem(paletteObject)
-  .then(result => {
-    if(result.nModified == 0) {
-      return res.json({success: false, message: "Failed to delete PaletteItem (does it exist?)"})
-    } else {
-      return res.json({success: true, message: "PaletteItem deletion success"})
-    }
-  })
-})
-
 // create new Palette
 router.post("/create", (req, res, next) => {
   let createdAtDate = new Date().getTime() // define date for user creation
 
   let paletteObject = new Palette({
     createdAt: createdAtDate,
-    createdBy: req.body._id,
+    createdBy: req.body.createdBy,
     description: req.body.description,
     name: req.body.name
   })
-
-  counterQuery = { // used to check if counter already exists
-    name: "paletteId"
-  }
 
   Palette.create(paletteObject)
   .then(result => {

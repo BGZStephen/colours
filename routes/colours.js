@@ -9,12 +9,7 @@ router.post("/createForLibrary", (req, res, next) => {
   let colourObject = new Colour({
     createdAt: new Date(),
     createdBy: req.body.createdBy,
-    hex: req.body.hex,
-    rgb: {
-      red: req.body.rgb.red,
-      green: req.body.rgb.green,
-      blue: req.body.rgb.blue
-    }
+    hex: req.body.hex
   })
 
   Colour.create(colourObject)
@@ -39,12 +34,7 @@ router.post("/createForPalette", (req, res, next) => {
   let colourObject = new Colour({
     createdAt: new Date(),
     createdBy: req.body.createdBy,
-    hex: req.body.hex,
-    rgb: {
-      red: req.body.rgb.red,
-      green: req.body.rgb.green,
-      blue: req.body.rgb.blue
-    }
+    hex: req.body.hex
   })
 
   let paletteObject = {
@@ -54,7 +44,7 @@ router.post("/createForPalette", (req, res, next) => {
   Colour.create(colourObject)
   .then(result => {
     if(result != null) {
-      return ColourLibrary.addColourToPalette(colourObject, paletteObject)
+      return Palette.addColourToPalette(colourObject, paletteObject)
     }
   }).then(result => {
     if(result.nModified >= 1 ){
