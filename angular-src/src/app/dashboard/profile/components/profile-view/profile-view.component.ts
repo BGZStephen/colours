@@ -3,11 +3,11 @@ import { ProfileApiService } from "../../profile-api.service"
 import { Router } from "@angular/router"
 
 @Component({
-  selector: 'app-dashboard-profile',
-  templateUrl: './dashboard-profile.component.html',
-  styleUrls: ['./dashboard-profile.component.scss']
+  selector: 'app-profile-view',
+  templateUrl: './profile-view.component.html',
+  styleUrls: ['./profile-view.component.scss']
 })
-export class DashboardProfileComponent implements OnInit {
+export class ProfileViewComponent implements OnInit {
 
   constructor(
     private profileApiService: ProfileApiService,

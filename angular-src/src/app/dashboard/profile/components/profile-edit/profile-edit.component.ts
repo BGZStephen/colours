@@ -4,11 +4,11 @@ import { FlashMessagesService } from "angular2-flash-messages"
 import { Router } from "@angular/router"
 
 @Component({
-  selector: 'app-dashboard-profile-edit',
-  templateUrl: './dashboard-profile-edit.component.html',
-  styleUrls: ['./dashboard-profile-edit.component.scss']
+  selector: 'app-profile-edit',
+  templateUrl: './profile-edit.component.html',
+  styleUrls: ['./profile-edit.component.scss']
 })
-export class DashboardProfileEditComponent implements OnInit {
+export class ProfileEditComponent implements OnInit {
 
   constructor(
     private profileApiService: ProfileApiService,

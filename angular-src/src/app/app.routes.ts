@@ -16,7 +16,7 @@ import { DashboardPalettesManageComponent, DashboardPaletteIndividualComponent,
 
 //profile
 
-import { DashboardProfileComponent, DashboardProfileEditComponent, DashboardChangePasswordComponent } from "./dashboard/profile/components/profile-components-barrel"
+import { ProfileViewComponent, ProfileEditComponent, ProfileChangePasswordComponent } from "./dashboard/profile/components/profile-components-barrel"
 
 const APP_ROUTES: Routes = [
   {path: "", redirectTo: "/home/(siteOutlet:intro)", pathMatch: 'full'},
@@ -31,9 +31,9 @@ const APP_ROUTES: Routes = [
     {path: "palette-edit/:paletteId", component: DashboardPaletteEditComponent, outlet: "dashboardOutlet"},
     {path: "palettes-manage", component: DashboardPalettesManageComponent, outlet: "dashboardOutlet"},
     {path: "palettes-view", component: DashboardPalettesViewComponent, outlet: "dashboardOutlet"},
-    {path: "profile", component: DashboardProfileComponent, outlet: "dashboardOutlet"},
-    {path: "profile-edit", component: DashboardProfileEditComponent, outlet: "dashboardOutlet"},
-    {path: "profile-password-edit", component: DashboardChangePasswordComponent, outlet: "dashboardOutlet"},
+    {path: "profile", component: ProfileViewComponent, outlet: "dashboardOutlet"},
+    {path: "profile-edit", component: ProfileEditComponent, outlet: "dashboardOutlet"},
+    {path: "profile-password-edit", component: ProfileChangePasswordComponent, outlet: "dashboardOutlet"},
   ],  canActivate:[AuthGuard]}
 ]
 

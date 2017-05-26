@@ -9,13 +9,12 @@ import { FlashMessagesModule } from "angular2-flash-messages"
 import { ProfileApiService } from "./profile-api.service"
 
 // profile components
-import { DashboardProfileComponent, DashboardProfileEditComponent,
-          DashboardChangePasswordComponent } from './components/profile-components-barrel';
+import { ProfileViewComponent, ProfileEditComponent, ProfileChangePasswordComponent } from './components/profile-components-barrel';
 
 
 @NgModule({
   declarations: [
-    DashboardProfileComponent, DashboardProfileEditComponent, DashboardChangePasswordComponent,
+    ProfileViewComponent, ProfileEditComponent, ProfileChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,7 +24,7 @@ import { DashboardProfileComponent, DashboardProfileEditComponent,
     FlashMessagesModule,
   ],
   exports: [
-    DashboardProfileComponent, DashboardProfileEditComponent, DashboardChangePasswordComponent,
+    ProfileViewComponent, ProfileEditComponent, ProfileChangePasswordComponent,
   ],
   providers: [ProfileApiService]
 })
