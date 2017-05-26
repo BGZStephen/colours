@@ -7,8 +7,6 @@ import { FlashMessagesModule } from "angular2-flash-messages"
 
 // sevices
 import { DashboardApiService } from "./dashboard-api.service"
-import { UsersApiService } from "../services/users-api.service"
-import { PalettesApiService } from "../services/palettes-api.service"
 
 // views
 import {DashboardViewComponent } from '../views/views-barrel';
@@ -16,20 +14,17 @@ import {DashboardViewComponent } from '../views/views-barrel';
 // modules
 
 import { ProfileModule } from "./profile/profile.module"
+import { PalettesModule } from "./palettes/palettes.module"
 
 //components
 
 // dashboard specific
-import { DashboardNavbarComponent, DashboardNotificationBarComponent,DashboardPaletteIndividualComponent,
-         DashboardPalettesViewComponent, DashboardPaletteAddComponent, DashboardPaletteEditComponent,
-         DashboardPalettesManageComponent } from './components/dashboard-components-barrel';
+import { DashboardNavbarComponent, DashboardNotificationBarComponent } from './components/dashboard-components-barrel';
 
 
 @NgModule({
   declarations: [
-    DashboardViewComponent, DashboardNavbarComponent, DashboardNotificationBarComponent,
-    DashboardPalettesManageComponent, DashboardPaletteIndividualComponent, DashboardPalettesViewComponent,
-    DashboardPaletteAddComponent, DashboardPaletteEditComponent
+    DashboardViewComponent, DashboardNavbarComponent, DashboardNotificationBarComponent
   ],
   imports: [
     BrowserModule,
@@ -37,13 +32,12 @@ import { DashboardNavbarComponent, DashboardNotificationBarComponent,DashboardPa
     HttpModule,
     router,
     FlashMessagesModule,
-    ProfileModule
+    ProfileModule,
+    PalettesModule
   ],
   exports: [
     DashboardViewComponent, DashboardNavbarComponent, DashboardNotificationBarComponent,
-    DashboardPalettesManageComponent, DashboardPaletteIndividualComponent, DashboardPalettesViewComponent,
-    DashboardPaletteAddComponent, DashboardPaletteEditComponent
   ],
-  providers: [DashboardApiService, UsersApiService, PalettesApiService]
+  providers: [DashboardApiService]
 })
 export class DashboardModule { }

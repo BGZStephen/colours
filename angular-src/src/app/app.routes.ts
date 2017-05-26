@@ -11,8 +11,8 @@ import { HomeViewComponent, DashboardViewComponent} from './views/views-barrel';
 import { SiteIntroComponent, SiteRegisterComponent, SiteLoginComponent } from "./site/components/site-components-barrel"
 
 //dashboard
-import { DashboardPalettesManageComponent, DashboardPaletteIndividualComponent,
-        DashboardPalettesViewComponent, DashboardPaletteAddComponent, DashboardPaletteEditComponent } from "./dashboard/components/dashboard-components-barrel"
+import { PalettesManageComponent, PalettesViewComponent, PaletteViewComponent, PaletteAddComponent,
+         PaletteEditComponent } from "./dashboard/palettes/components/palettes-components-barrel"
 
 //profile
 
@@ -26,11 +26,11 @@ const APP_ROUTES: Routes = [
     {path: "login", component: SiteLoginComponent, outlet: "siteOutlet"},
   ]},
   {path: "dashboard", component: DashboardViewComponent, children: [
-    {path: "palette/:paletteId", component: DashboardPaletteIndividualComponent, outlet: "dashboardOutlet"},
-    {path: "palette-add", component: DashboardPaletteAddComponent, outlet: "dashboardOutlet"},
-    {path: "palette-edit/:paletteId", component: DashboardPaletteEditComponent, outlet: "dashboardOutlet"},
-    {path: "palettes-manage", component: DashboardPalettesManageComponent, outlet: "dashboardOutlet"},
-    {path: "palettes-view", component: DashboardPalettesViewComponent, outlet: "dashboardOutlet"},
+    {path: "palette/:paletteId", component: PaletteViewComponent, outlet: "dashboardOutlet"},
+    {path: "palette-add", component: PaletteAddComponent, outlet: "dashboardOutlet"},
+    {path: "palette-edit/:paletteId", component: PaletteEditComponent, outlet: "dashboardOutlet"},
+    {path: "palettes-manage", component: PalettesManageComponent, outlet: "dashboardOutlet"},
+    {path: "palettes-view", component: PalettesViewComponent, outlet: "dashboardOutlet"},
     {path: "profile", component: ProfileViewComponent, outlet: "dashboardOutlet"},
     {path: "profile-edit", component: ProfileEditComponent, outlet: "dashboardOutlet"},
     {path: "profile-password-edit", component: ProfileChangePasswordComponent, outlet: "dashboardOutlet"},

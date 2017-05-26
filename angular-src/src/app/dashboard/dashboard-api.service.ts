@@ -10,31 +10,8 @@ export class DashboardApiService {
 
   // user services
 
-  user: any;
-  authToken: any;
-
-  getCurrentUser() {
-    this.loadToken()
-    let userObject = {"_id": JSON.parse(this.user)._id}
-    return this.http.post("http://localhost:3006/users/getById", userObject)
-    .map(res => res.json())
-  }
-
-  loadToken() {
-    this.authToken = localStorage.getItem('token')
-    this.user = localStorage.getItem('user')
-  }
-
   logout() {
     localStorage.clear()
-    this.authToken = ""
-    this.user = ""
-  }
-
-  updateProfile(userObject) {
-    userObject._id = JSON.parse(this.user)._id
-    return this.http.post("http://localhost:3006/users/update", userObject)
-    .map(res => res.json())
   }
 
 }

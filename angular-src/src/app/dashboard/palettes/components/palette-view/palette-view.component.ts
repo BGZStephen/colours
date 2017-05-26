@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router"
 import { FlashMessagesService } from "angular2-flash-messages"
-import { PalettesApiService } from "../../../services/palettes-api.service"
+import { PalettesApiService } from "../../palettes-api.service"
 import "rxjs/Rx"
 
 @Component({
-  selector: 'app-dashboard-palette-individual',
-  templateUrl: './dashboard-palette-individual.component.html',
-  styleUrls: ['./dashboard-palette-individual.component.scss']
+  selector: 'app-palette-view',
+  templateUrl: './palette-view.component.html',
+  styleUrls: ['./palette-view.component.scss']
 })
-export class DashboardPaletteIndividualComponent implements OnInit {
+export class PaletteViewComponent implements OnInit {
 
   constructor(
     private palettesApiService: PalettesApiService,

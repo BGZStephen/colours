@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router"
-import { PalettesApiService } from "../../../services/palettes-api.service"
+import { PalettesApiService } from "../../palettes-api.service"
 
 @Component({
-  selector: 'app-dashboard-palettes-view',
-  templateUrl: './dashboard-palettes-view.component.html',
-  styleUrls: ['./dashboard-palettes-view.component.scss']
+  selector: 'app-palettes-view',
+  templateUrl: './palettes-view.component.html',
+  styleUrls: ['./palettes-view.component.scss']
 })
-export class DashboardPalettesViewComponent implements OnInit {
+export class PalettesViewComponent implements OnInit {
 
   constructor(
     private router: Router,

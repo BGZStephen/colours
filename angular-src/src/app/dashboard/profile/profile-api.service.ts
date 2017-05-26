@@ -24,6 +24,7 @@ export class ProfileApiService {
     this.authToken = localStorage.getItem('token')
     this.user = localStorage.getItem('user')
   }
+
   updateProfile(userObject) {
     userObject._id = JSON.parse(this.user)._id
     return this.http.post("http://localhost:3006/users/update", userObject)
