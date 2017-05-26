@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
-const Counter = require('../models/counter');
+const ColourLibrary = require('../models/colour-library');
 
 // admin update password
 
@@ -57,6 +57,10 @@ router.post("/deleteOne", (req, res, next) => {
       return Promise.reject(res.json({success: false, message: "User not found"}))
     } else {
       return User.deleteOne(userObject)
+    }
+  }).then(result => {
+    if(JSON.parse(result).n == 1) {
+      return ColourLibrary.deleteOne(userObject)
     }
   }).then(result => {
     if(JSON.parse(result).n == 1) {
@@ -157,7 +161,15 @@ router.post("/register", (req, res, next) => {
     }
   }).then(result => {
     if(result != null) {
-      return res.json({success: true, message: "User created successfully"})
+      let colourLibraryObject = new ColourLibrary({
+        createdAt: new Date(),
+        createdBy: result._id,
+      })
+      return ColourLibrary.create(colourLibraryObject)
+    }
+  }).then(result => {
+    if(result.nModified >= 1) {
+      res.json({success: true, message: "User created successfully"})
     } else {
       return Promise.reject(res.json({success: false, message: "Failed to create user"}))
     }

@@ -4,6 +4,7 @@ const config = require('../config/database')
 
 // user Schema
 const UserSchema = mongoose.Schema({
+  colourLibrary: String,
   createdAt: {
     type: Date,
   },

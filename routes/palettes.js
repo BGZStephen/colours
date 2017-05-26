@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const config = require('../config/database');
-const Counter = require('../models/counter');
 const User = require('../models/user');
 const Palette = require('../models/palette');
 
