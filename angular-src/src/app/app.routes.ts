@@ -4,7 +4,8 @@ import { Routes, RouterModule } from "@angular/router"
 import { AuthGuard } from "./guards/auth.guard"
 
 // views
-import { HomeViewComponent, DashboardViewComponent} from './views/views-barrel';
+import { SiteViewComponent } from "./site/site-view.component"
+import { DashboardViewComponent } from "./dashboard/dashboard-view.component"
 
 // components for aux routes
 // site
@@ -20,7 +21,7 @@ import { ProfileViewComponent, ProfileEditComponent, ProfileChangePasswordCompon
 
 const APP_ROUTES: Routes = [
   {path: "", redirectTo: "/home/(siteOutlet:intro)", pathMatch: 'full'},
-  {path: "home", component: HomeViewComponent, children: [
+  {path: "home", component: SiteViewComponent, children: [
     {path: "intro", component: SiteIntroComponent, outlet: "siteOutlet"},
     {path: "register", component: SiteRegisterComponent, outlet: "siteOutlet"},
     {path: "login", component: SiteLoginComponent, outlet: "siteOutlet"},

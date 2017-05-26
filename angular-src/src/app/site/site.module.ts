@@ -9,7 +9,7 @@ import { FlashMessagesModule } from "angular2-flash-messages"
 import { SiteApiService } from "./site-api.service"
 
 // views
-import { HomeViewComponent} from '../views/views-barrel';
+import { SiteViewComponent} from './site-view.component';
 
 //components
 
@@ -19,7 +19,7 @@ import { SiteNavbarComponent, SiteIntroComponent, SiteRegisterComponent, SiteLog
 
 @NgModule({
   declarations: [
-    HomeViewComponent,
+    SiteViewComponent,
     SiteNavbarComponent,
     SiteIntroComponent,
     SiteRegisterComponent,
@@ -33,7 +33,7 @@ import { SiteNavbarComponent, SiteIntroComponent, SiteRegisterComponent, SiteLog
     FlashMessagesModule
   ],
   exports: [
-    HomeViewComponent,
+    SiteViewComponent,
     SiteNavbarComponent,
     SiteIntroComponent,
     SiteRegisterComponent,

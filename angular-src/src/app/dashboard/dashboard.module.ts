@@ -9,7 +9,7 @@ import { FlashMessagesModule } from "angular2-flash-messages"
 import { DashboardApiService } from "./dashboard-api.service"
 
 // views
-import {DashboardViewComponent } from '../views/views-barrel';
+import {DashboardViewComponent } from './dashboard-view.component';
 
 // modules
 

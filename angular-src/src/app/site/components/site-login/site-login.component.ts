@@ -57,7 +57,6 @@ export class SiteLoginComponent implements OnInit {
   // set styling end
 
   login(userObject) {
-    console.log(userObject)
     this.siteApiService.authenticate(userObject)
     .subscribe(res => {
       if(res.success) {
