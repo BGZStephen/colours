@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FlashMessagesService } from "angular2-flash-messages"
-import { UsersApiService } from "../../../services/users-api.service"
+import { SiteApiService } from "../../site-api.service"
 import { Router } from "@angular/router"
 
 @Component({
@@ -12,7 +12,7 @@ export class SiteLoginComponent implements OnInit {
 
   constructor(
     private flashMessage: FlashMessagesService,
-    private usersApiService: UsersApiService,
+    private siteApiService: SiteApiService,
     private router: Router,
   ) { }
 
@@ -58,10 +58,10 @@ export class SiteLoginComponent implements OnInit {
 
   login(userObject) {
     console.log(userObject)
-    this.usersApiService.authenticate(userObject)
+    this.siteApiService.authenticate(userObject)
     .subscribe(res => {
       if(res.success) {
-        this.usersApiService.storeToken(res)
+        this.siteApiService.storeToken(res)
         this.flashMessage.show("Login successful", {cssClass: "flash-success", timeout: 1500})
         setTimeout(() => {
           this.router.navigate(['/dashboard']);

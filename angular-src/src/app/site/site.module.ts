@@ -6,8 +6,7 @@ import { router } from "../app.routes"
 import { FlashMessagesModule } from "angular2-flash-messages"
 
 // sevices
-import { UsersApiService } from "../services/users-api.service"
-import { PalettesApiService } from "../services/palettes-api.service"
+import { SiteApiService } from "./site-api.service"
 
 // views
 import { HomeViewComponent} from '../views/views-barrel';
@@ -40,5 +39,6 @@ import { SiteNavbarComponent, SiteIntroComponent, SiteRegisterComponent, SiteLog
     SiteRegisterComponent,
     SiteLoginComponent
   ],
+  providers: [SiteApiService],
 })
 export class SiteModule { }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FlashMessagesService } from "angular2-flash-messages"
-import { UsersApiService } from "../../../services/users-api.service"
+import { SiteApiService } from "../../site-api.service"
 import { Router } from "@angular/router"
 
 @Component({
@@ -12,7 +12,7 @@ export class SiteRegisterComponent implements OnInit {
 
   constructor(
     private flashMessage: FlashMessagesService,
-    private usersApiService: UsersApiService,
+    private siteApiService: SiteApiService,
     private router: Router,
   ) {}
 
@@ -60,7 +60,7 @@ export class SiteRegisterComponent implements OnInit {
 
   registerUser(userObject) {
     if(this.validate(userObject)) {
-      this.usersApiService.registerUser(userObject)
+      this.siteApiService.registerUser(userObject)
       .subscribe(res => {
         if(res.success) {
           this.flashMessage.show("Regisrtation successful", {cssClass: "flash-success", timeout: 2000})
