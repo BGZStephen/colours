@@ -45,7 +45,7 @@ module.exports.addPalette = function(palleteObject) {
   })
 }
 
-// pull palette to user palettes array
+// pull palette from user palettes array
 module.exports.deletePalette = function(palleteObject) {
   return new Promise(resolve => {
     resolve(User.update({_id: palleteObject._id}, {$pull: {palettes: {_id: palleteObject._id}}}))

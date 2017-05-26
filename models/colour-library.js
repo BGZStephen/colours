@@ -11,6 +11,24 @@ const ColourLibrarySchema = mongoose.Schema({
 
 const ColourLibrary = module.exports = mongoose.model('ColourLibrary', ColourLibrarySchema)
 
+// COLOURS MANAGEMENT
+
+// add Colour to Library
+module.exports.addColourToLibrary = function(colourObject) {
+  return new Promise(resolve => {
+    resolve(ColourLibrary.update({createdBy: colourObject.createdBy}, {$push: {colours: colourObject}}))
+  })
+}
+
+//remove Colour from Library
+module.exports.deleteColourFromLibrary = function(colourObject) {
+  return new Promise(resolve => {
+    resolve(ColourLibrary.update({createdBy: colourObject.createdBy}, {$pull: {colours: {_id: colourObject.colourId}}}))
+  })
+}
+
+// COLOURS MANAGEENT END
+
 // create new colourLibrary to db
 module.exports.create = function(colourLibraryObject) {
   return new Promise(resolve => {
@@ -24,7 +42,7 @@ module.exports.create = function(colourLibraryObject) {
   })
 }
 
-// delete one user from the db
+// delete colour library (only used when removing a user from the system, if used otherwise, it will break a profile)
 module.exports.deleteOne = function(colourLibraryObject){
   return new Promise(resolve => {
     resolve(ColourLibrary.findOne({createdBy: colourLibraryObject._id}).remove().exec())

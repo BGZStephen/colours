@@ -80,7 +80,6 @@ router.post("/create", (req, res, next) => {
     name: "paletteId"
   }
 
-
   Palette.create(paletteObject)
   .then(result => {
     if(result.length == 0) {
@@ -133,7 +132,6 @@ router.post("/deleteOne", (req, res, next) => {
   }).catch(error => {
     console.log(error)
   })
-
 })
 
 // get by id

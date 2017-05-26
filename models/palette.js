@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('../config/database')
+const ColourSchema = require('./colours').schema
 
 // counter Schema
 const PaletteSchema = mongoose.Schema({
@@ -14,7 +15,7 @@ const PaletteSchema = mongoose.Schema({
   description: {
     type: String
   },
-  paletteItems: Array,
+  colours: [ColourSchema],
   name: {
     required: true,
     type: String,
@@ -22,6 +23,26 @@ const PaletteSchema = mongoose.Schema({
 })
 
 const Palette = module.exports = mongoose.model('Palette', PaletteSchema)
+
+// COLOURS MANAGEMENT
+
+// add Colour to Library
+module.exports.addColourToPalette = function(colourObject, paletteObject) {
+  return new Promise(resolve => {
+    resolve(Palette.update({_id: paletteObject.paletteId}, {$push: {colours: colourObject}}))
+  })
+}
+
+// remove colour from palette
+module.exports.deleteColourFromPalette = function(paletteObject){
+  return new Promise(resolve => {
+    resolve(Palette.update({_id: paletteObject.paletteId}, {$pull: {colours: {_id: paletteObject.colourId}}}))
+  })
+}
+
+// COLOURS MANAGEMENT END
+
+// PALETTE MANAGEMENT
 
 // save new Palette to db
 module.exports.create = function(paletteObject) {
