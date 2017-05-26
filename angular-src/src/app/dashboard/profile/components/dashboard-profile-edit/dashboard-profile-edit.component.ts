@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersApiService } from "../../../services/users-api.service"
+import { ProfileApiService } from "../../profile-api.service"
 import { FlashMessagesService } from "angular2-flash-messages"
 import { Router } from "@angular/router"
 
@@ -11,7 +11,7 @@ import { Router } from "@angular/router"
 export class DashboardProfileEditComponent implements OnInit {
 
   constructor(
-    private usersApiService: UsersApiService,
+    private profileApiService: ProfileApiService,
     private flashMessage: FlashMessagesService,
     private router: Router
   ) { }
@@ -23,7 +23,7 @@ export class DashboardProfileEditComponent implements OnInit {
   user: object;
 
   loadUser() {
-    this.usersApiService.getCurrentUser()
+    this.profileApiService.getCurrentUser()
     .subscribe(res => {
       this.user = res
     })
@@ -34,7 +34,7 @@ export class DashboardProfileEditComponent implements OnInit {
   }
 
   updateProfile(userObject) {
-    this.usersApiService.updateProfile(userObject)
+    this.profileApiService.updateProfile(userObject)
     .subscribe(res => {
       if(res.success) {
         this.flashMessage.show("Profile updated successfuly", {cssClass: "flash-success--dashboard", timeout: 3000})

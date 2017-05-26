@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersApiService } from "../../../services/users-api.service"
+import { DashboardApiService } from "../../dashboard-api.service"
 import { Router } from "@angular/router"
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from "@angular/router"
 export class DashboardNavbarComponent implements OnInit {
 
   constructor(
-    private usersApiService: UsersApiService,
+    private dashboardApiService: DashboardApiService,
     private router: Router
   ) {}
 
@@ -66,7 +66,7 @@ export class DashboardNavbarComponent implements OnInit {
   // geneeral functions
 
   logout() {
-    this.usersApiService.logout()
+    this.dashboardApiService.logout()
     this.router.navigate(['/'])
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersApiService } from "../../../services/users-api.service"
+import { ProfileApiService } from "../../profile-api.service"
 import { Router } from "@angular/router"
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from "@angular/router"
 export class DashboardProfileComponent implements OnInit {
 
   constructor(
-    private usersApiService: UsersApiService,
+    private profileApiService: ProfileApiService,
     private router: Router
   ) { }
 
@@ -21,7 +21,7 @@ export class DashboardProfileComponent implements OnInit {
   user: object;
 
   loadUser() {
-    this.usersApiService.getCurrentUser()
+    this.profileApiService.getCurrentUser()
     .subscribe(res => {
       this.user = res
     })

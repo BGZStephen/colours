@@ -4,9 +4,6 @@
 
 export { DashboardNavbarComponent } from "./dashboard-navbar/dashboard-navbar.component"
 export { DashboardNotificationBarComponent } from "./dashboard-notification-bar/dashboard-notification-bar.component"
-export { DashboardProfileComponent } from "./dashboard-profile/dashboard-profile.component"
-export { DashboardProfileEditComponent } from "./dashboard-profile-edit/dashboard-profile-edit.component"
-export { DashboardChangePasswordComponent } from "./dashboard-change-password/dashboard-change-password.component"
 
 // dashboard palette specific
 

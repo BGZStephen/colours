@@ -3,22 +3,14 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { router } from "./app.routes"
-import { FlashMessagesModule } from "angular2-flash-messages"
 
 // modules
 import { AppComponent } from './app.component';
 import { SiteModule } from "./site/site.module"
 import { DashboardModule } from "./dashboard/dashboard.module"
 
-// sevices
-import { UsersApiService } from "./services/users-api.service"
-import { PalettesApiService } from "./services/palettes-api.service"
-
 // guards
 import { AuthGuard } from "./guards/auth.guard"
-
-// views
-import { HomeViewComponent, DashboardViewComponent } from './views/views-barrel';
 
 @NgModule({
   declarations: [
@@ -29,11 +21,10 @@ import { HomeViewComponent, DashboardViewComponent } from './views/views-barrel'
     FormsModule,
     HttpModule,
     router,
-    FlashMessagesModule,
     SiteModule,
     DashboardModule
   ],
-  providers: [UsersApiService, PalettesApiService, AuthGuard],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

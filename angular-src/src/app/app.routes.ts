@@ -11,9 +11,12 @@ import { HomeViewComponent, DashboardViewComponent} from './views/views-barrel';
 import { SiteIntroComponent, SiteRegisterComponent, SiteLoginComponent } from "./site/components/site-components-barrel"
 
 //dashboard
-import { DashboardProfileComponent, DashboardProfileEditComponent, DashboardChangePasswordComponent,
-        DashboardPalettesManageComponent, DashboardPaletteIndividualComponent,
+import { DashboardPalettesManageComponent, DashboardPaletteIndividualComponent,
         DashboardPalettesViewComponent, DashboardPaletteAddComponent, DashboardPaletteEditComponent } from "./dashboard/components/dashboard-components-barrel"
+
+//profile
+
+import { DashboardProfileComponent, DashboardProfileEditComponent, DashboardChangePasswordComponent } from "./dashboard/profile/components/profile-components-barrel"
 
 const APP_ROUTES: Routes = [
   {path: "", redirectTo: "/home/(siteOutlet:intro)", pathMatch: 'full'},

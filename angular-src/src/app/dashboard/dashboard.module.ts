@@ -6,25 +6,28 @@ import { router } from "../app.routes"
 import { FlashMessagesModule } from "angular2-flash-messages"
 
 // sevices
+import { DashboardApiService } from "./dashboard-api.service"
 import { UsersApiService } from "../services/users-api.service"
 import { PalettesApiService } from "../services/palettes-api.service"
 
 // views
 import {DashboardViewComponent } from '../views/views-barrel';
 
+// modules
+
+import { ProfileModule } from "./profile/profile.module"
+
 //components
 
 // dashboard specific
-import { DashboardNavbarComponent, DashboardNotificationBarComponent, DashboardProfileComponent,
-         DashboardProfileEditComponent, DashboardChangePasswordComponent, DashboardPalettesManageComponent,
-         DashboardPaletteIndividualComponent, DashboardPalettesViewComponent, DashboardPaletteAddComponent,
-         DashboardPaletteEditComponent } from './components/dashboard-components-barrel';
+import { DashboardNavbarComponent, DashboardNotificationBarComponent,DashboardPaletteIndividualComponent,
+         DashboardPalettesViewComponent, DashboardPaletteAddComponent, DashboardPaletteEditComponent,
+         DashboardPalettesManageComponent } from './components/dashboard-components-barrel';
 
 
 @NgModule({
   declarations: [
     DashboardViewComponent, DashboardNavbarComponent, DashboardNotificationBarComponent,
-    DashboardProfileComponent, DashboardProfileEditComponent, DashboardChangePasswordComponent,
     DashboardPalettesManageComponent, DashboardPaletteIndividualComponent, DashboardPalettesViewComponent,
     DashboardPaletteAddComponent, DashboardPaletteEditComponent
   ],
@@ -34,13 +37,13 @@ import { DashboardNavbarComponent, DashboardNotificationBarComponent, DashboardP
     HttpModule,
     router,
     FlashMessagesModule,
+    ProfileModule
   ],
   exports: [
     DashboardViewComponent, DashboardNavbarComponent, DashboardNotificationBarComponent,
-    DashboardProfileComponent, DashboardProfileEditComponent, DashboardChangePasswordComponent,
     DashboardPalettesManageComponent, DashboardPaletteIndividualComponent, DashboardPalettesViewComponent,
     DashboardPaletteAddComponent, DashboardPaletteEditComponent
   ],
-  providers: [UsersApiService, PalettesApiService]
+  providers: [DashboardApiService, UsersApiService, PalettesApiService]
 })
 export class DashboardModule { }
