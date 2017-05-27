@@ -15,9 +15,10 @@ const PaletteItem = module.exports = mongoose.model('PaletteItem', PaletteItemSc
 
 // COLOURS MANAGEMENT
 
-// add Colour to Library
+// add Colour to Palette
 module.exports.createPaletteItem = function(paletteItemObject, paletteObject) {
   return new Promise((resolve, reject) => {
+    // create / save the paletteItem to the paletteItems collection
     paletteItemObject.save().then(result => {
       if(result == null) {
         reject({success: false, message: "Failed to create Palette Item"})
@@ -28,7 +29,11 @@ module.exports.createPaletteItem = function(paletteItemObject, paletteObject) {
   })
 }
 
-// add Colour to Library
+/*
+delete individual or multiple paletteItems
+this function is loped when deleting a palette to ensure residual paletteItems
+don't remain and clog up the collection
+*/
 module.exports.deletePaletteItem = function(paletteItemObject) {
   PaletteItem.findOne({_id: paletteItemObject._id}).remove().exec()
 }

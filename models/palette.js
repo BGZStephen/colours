@@ -27,14 +27,14 @@ const Palette = module.exports = mongoose.model('Palette', PaletteSchema)
 
 // COLOURS MANAGEMENT
 
-// add Colour to Library
+// add PaletteItem to Palette
 module.exports.addPaletteItem = function(paletteItemObject, paletteObject) {
   return new Promise(resolve => {
     resolve(Palette.update({_id: paletteObject.paletteId}, {$push: {paletteItems: paletteItemObject}}))
   })
 }
 
-// remove colour from palette
+// remove paletteItem from Palette
 module.exports.deletePaletteItem = function(paletteItemObject){
   return new Promise(resolve => {
     resolve(Palette.update({_id: paletteItemObject.paletteId}, {$pull: {paletteItems: {_id: paletteItemObject.paletteItemId}}}))

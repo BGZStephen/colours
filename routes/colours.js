@@ -6,6 +6,7 @@ const Palette = require('../models/palette')
 const PaletteItem = require('../models/palette-item')
 const ColourLibrary = require('../models/colour-library')
 
+// create a Colour and add it to the users colour library
 router.post("/createForLibrary", (req, res, next) => {
   let colourObject = new Colour({
     createdAt: new Date(),
@@ -16,6 +17,7 @@ router.post("/createForLibrary", (req, res, next) => {
   Colour.create(colourObject)
   .then(result => {
     if(result != null) {
+      // pushes the colour Object to the Colours array within the Colour Library
       return ColourLibrary.addColourToLibrary(colourObject)
     }
   }).then(result => {
@@ -31,6 +33,12 @@ router.post("/createForLibrary", (req, res, next) => {
   })
 })
 
+/*
+Create a colour and add it to a specific paletteItem,
+which is then pushed to the corresponding palette's
+PaletteItems array
+*/
+
 router.post("/createForPalette", (req, res, next) => {
   let colourObject = new Colour({
     createdAt: new Date(),
@@ -45,6 +53,8 @@ router.post("/createForPalette", (req, res, next) => {
   Colour.create(colourObject)
   .then(result => {
     if(result != null) {
+
+      // define the new PaletteItem which fits the corresponding schema
       let paletteItemObject = new PaletteItem({
         createdAt: new Date(),
         createdBy: req.body.createdBy,
@@ -55,12 +65,17 @@ router.post("/createForPalette", (req, res, next) => {
         },
         description: req.body.description
       })
+      //Create a colour and then add it to the newly created paletteItem
       return PaletteItem.createPaletteItem(paletteItemObject, paletteObject)
     }
   }).then(result => {
     if(result == null) {
       Promise.reject({success: false, message: "Failed to create PaletteItem"})
     } else {
+      /*
+      using the paletteId outlined in the paetteObject,
+      push the newly created paletteItem to it
+      */
       return Palette.addPaletteItem(result, paletteObject)
     }
   }).then(result => {
@@ -69,6 +84,10 @@ router.post("/createForPalette", (req, res, next) => {
     } else {
       return res.json({success: true, message: "Colour successfully added to palette"})
     }
+    /*
+    final backup function in the event that the colour is not already in the
+    users library, this will ensure it's pushed there also
+    */
     ColourLibrary.addColourToLibrary(colourObject)
   })
   .catch(error => {
@@ -93,7 +112,7 @@ router.post("/deleteFromLibrary", (req, res, next) => {
   })
 })
 
-// delete paletteItem from Palette
+// delete colour from palette by removing it's containing paletteItem
 router.post("/deleteFromPalette", (req, res, next) => {
   let paletteItemObject = {
     paletteId: req.body.paletteId,
