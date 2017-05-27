@@ -38,6 +38,19 @@ const UserSchema = mongoose.Schema({
 const User = module.exports = mongoose.model('User', UserSchema)
 
 // push palette to user palettes array
+module.exports.newAddPalette = function(palleteObject) {
+  return new Promise(resolve => {
+    User.update({_id: palleteObject.createdBy}, {$push: {palettes: {_id: palleteObject._id}}}).then(result => {
+      if(result.n != null) {
+        resolve({success: true, message: "Palette added to user successfully"})
+      } else {
+        reject({success: false, message: "Failed to add Palette to user"})
+      }
+    })
+  })
+}
+
+// push palette to user palettes array
 module.exports.addPalette = function(palleteObject) {
   return new Promise(resolve => {
     resolve(User.update({_id: palleteObject.createdBy}, {$push: {palettes: {_id: palleteObject._id}}}))

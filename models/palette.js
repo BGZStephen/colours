@@ -47,22 +47,42 @@ module.exports.deletePaletteItem = function(paletteItemObject){
 
 // save new Palette to db
 module.exports.create = function(paletteObject) {
-  return new Promise(resolve => {
-    resolve(paletteObject.save())
+  return new Promise((resolve, reject) => {
+    paletteObject.save().then(result => {
+      if(result != null) {
+        resolve({success: true, message: "Palette created successfully"})
+      } else {
+        reject({success: false, message: "Failed to create palette"})
+      }
+    })
   })
 }
 
 // get one palette
 module.exports.getOne = function(paletteObject) {
-  return new Promise(resolve => {
-    resolve(Palette.findOne(paletteObject))
+  return new Promise((resolve, reject) => {
+    Palette.findOne(paletteObject).then(result => {
+      console.log(result)
+      if(result != null) {
+        resolve(result)
+      } else {
+        reject({success: false, message: "Failed to retrieve palette"})
+      }
+    })
   })
 }
 
 // get palettes by userId
 module.exports.getByUserId = function(paletteObject) {
-  return new Promise(resolve => {
-    resolve(Palette.find(paletteObject))
+  return new Promise((resolve, reject) => {
+    Palette.find(paletteObject).then(result => {
+      console.log(result.length)
+      if(result.length == 0) {
+        reject({success: false, message: "No palettes found for user"})
+      } else {
+        resolve(result)
+      }
+    })
   })
 }
 

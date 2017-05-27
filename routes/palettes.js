@@ -17,20 +17,12 @@ router.post("/create", (req, res, next) => {
   })
 
   Palette.create(paletteObject)
-  .then(result => {
-    if(result.length == 0) {
-      return Promise.reject({success: false, message: "Palette creation failed"})
-    } else {
-      return User.addPalette(paletteObject)
-    }
+  .then(() => {
+    return User.newAddPalette(paletteObject)
   }).then(result => {
-    if(result.n != null) {
-      return res.json({success: true, message: "Palette created successfully"})
-    } else {
-      return Promise.reject({success: false, message: "Failed to create Palette"})
-    }
+    res.json(result)
   }).catch(error => {
-    console.log(error)
+    res.json(error)
   })
 })
 
@@ -80,11 +72,9 @@ router.post("/getById", (req, res, next) => {
 
   Palette.getOne(paletteObject)
   .then(result => {
-    if(result == null) {
-      res.json({success: false, message: "No Palette Found"})
-    } else {
-      res.json(result)
-    }
+    res.json(result)
+  }).catch(error => {
+    res.json(error)
   })
 })
 
@@ -96,13 +86,9 @@ router.post("/getByUserId", (req, res, next) => {
 
   Palette.getByUserId(paletteObject)
   .then(result => {
-    if(result.length < 1) {
-      res.json({success: false, message: "No palettes found for user"})
-    } else {
-      res.json(result)
-    }
+    res.json(result)
   }).catch(error => {
-    console.log(error)
+    res.json(error)
   })
 })
 
