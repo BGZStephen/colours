@@ -3,6 +3,7 @@ const router = express.Router();
 const config = require('../config/database');
 const User = require('../models/user');
 const Palette = require('../models/palette');
+const PaletteItem = require('../models/palette-item');
 
 // create new Palette
 router.post("/create", (req, res, next) => {
@@ -49,6 +50,9 @@ router.post("/deleteOne", (req, res, next) => {
     if(result == null) {
       return Promise.reject(res.json({success: false, message: "No Palette Found"}))
     } else {
+      result.paletteItems.forEach(item => {
+        PaletteItem.deletePaletteItem(item)
+      })
       return User.deletePalette(paletteObject)
     }
   }).then(result => {
@@ -93,7 +97,7 @@ router.post("/getByUserId", (req, res, next) => {
   Palette.getByUserId(paletteObject)
   .then(result => {
     if(result.length < 1) {
-      return Promise.reject(res.json({success: false, message: "No palettes found for user"}))
+      res.json({success: false, message: "No palettes found for user"})
     } else {
       res.json(result)
     }

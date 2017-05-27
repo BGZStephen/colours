@@ -27,3 +27,8 @@ module.exports.createPaletteItem = function(paletteItemObject, paletteObject) {
     })
   })
 }
+
+// add Colour to Library
+module.exports.deletePaletteItem = function(paletteItemObject) {
+  PaletteItem.findOne({_id: paletteItemObject._id}).remove().exec()
+}

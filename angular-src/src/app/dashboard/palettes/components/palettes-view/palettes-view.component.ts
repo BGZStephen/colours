@@ -23,9 +23,10 @@ export class PalettesViewComponent implements OnInit {
   loadUserPalettes() {
     this.palettesApiService.getPalettesByUserId()
     .subscribe(res => {
-      if(res.success != false) {
+      if(res.success == false) {
+        this.userPalettes = [];
+      } else {
         this.userPalettes = res;
-        console.log(this.userPalettes)
       }
     })
   }

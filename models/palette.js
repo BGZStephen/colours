@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('../config/database')
-const PaletteItemSchema = require('./palette-item').schema
+const PaletteItem = require('./palette-item')
+const PaletteItemSchema = PaletteItem.schema
 
 // counter Schema
 const PaletteSchema = mongoose.Schema({
