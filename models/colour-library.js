@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('../config/database')
-const ColourSchema = require('./colours').schema
+const ColourSchema = require('./colour').schema
 const User = require('./user')
 
 const ColourLibrarySchema = mongoose.Schema({
@@ -16,7 +16,13 @@ const ColourLibrary = module.exports = mongoose.model('ColourLibrary', ColourLib
 // add Colour to Library
 module.exports.addColourToLibrary = function(colourObject) {
   return new Promise(resolve => {
-    resolve(ColourLibrary.update({createdBy: colourObject.createdBy}, {$push: {colours: colourObject}}))
+    ColourLibrary.findOne({hex: colourObject.hex}).then(result => {
+      if(result != null) {
+        resolve(result)
+      } else {
+        resolve(ColourLibrary.update({createdBy: colourObject.createdBy}, {$push: {colours: colourObject}}))
+      }
+    })
   })
 }
 

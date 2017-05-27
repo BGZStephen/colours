@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const config = require('../config/database');
-const Colour = require('../models/colours')
+const Colour = require('../models/colour')
 const Palette = require('../models/palette')
+const PaletteItem = require('../models/palette-item')
 const ColourLibrary = require('../models/colour-library')
 
 router.post("/createForLibrary", (req, res, next) => {
@@ -38,28 +39,44 @@ router.post("/createForPalette", (req, res, next) => {
   })
 
   let paletteObject = {
-    paletteId: req.body.paletteId
+    paletteId: req.body.paletteId,
   }
 
   Colour.create(colourObject)
   .then(result => {
     if(result != null) {
-      return Palette.addColourToPalette(colourObject, paletteObject)
+      let paletteItemObject = new PaletteItem({
+        createdAt: new Date(),
+        createdBy: req.body.createdBy,
+        colour: {
+          createdAt: result.createdAt,
+          createdBy: result.createdBy,
+          hex: result.hex
+        },
+        description: req.body.description
+      })
+      return PaletteItem.createPaletteItem(paletteItemObject, paletteObject)
     }
   }).then(result => {
-    if(result.nModified >= 1 ){
-      return res.json({success: true, message: "Added colour to palette"})
+    if(result == null) {
+      Promise.reject({success: false, message: "Failed to create PaletteItem"})
     } else {
-      console.log(result)
-      return Promise.reject(res.json({success: false, message: "Failed to add colour to palette"}))
+      return Palette.addPaletteItem(result, paletteObject)
     }
+  }).then(result => {
+    if(result.nModified == 0) {
+      return Promise.reject(res.json({success: false, message: "Failed to add PaletteItem to Palette"}))
+    } else {
+      return res.json({success: true, message: "Colour successfully added to palette"})
+    }
+    ColourLibrary.addColourToLibrary(colourObject)
   })
   .catch(error => {
     console.log(error)
   })
 })
 
-// delete paletteItem
+// delete colour from Library
 router.post("/deleteFromLibrary", (req, res, next) => {
   let colourObject = {
     createdBy: req.body.createdBy,
@@ -76,14 +93,14 @@ router.post("/deleteFromLibrary", (req, res, next) => {
   })
 })
 
-// delete paletteItem
+// delete paletteItem from Palette
 router.post("/deleteFromPalette", (req, res, next) => {
-  let paletteObject = {
+  let paletteItemObject = {
     paletteId: req.body.paletteId,
-    colourId: req.body.colourId
+    paletteItemId: req.body.paletteItemId
   }
 
-  Palette.deleteColourFromPalette(paletteObject)
+  Palette.deletePaletteItem(paletteItemObject)
   .then(result => {
     if(result.nModified == 0) {
       return res.json({success: false, message: "Failed to delete Colour (does it exist?)"})
