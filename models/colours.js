@@ -10,9 +10,15 @@ const ColourSchema = mongoose.Schema({
 
 const Colour = module.exports = mongoose.model('Colour', ColourSchema)
 
-// create new Colour - used in conjunction with adding colour to palette and / or libraries. Not used on it's own
+// find one colour by hex value
 module.exports.create = function(colourObject) {
   return new Promise(resolve => {
-    resolve(colourObject.save())
+    Colour.findOne({hex: colourObject.hex}).then(result => {
+      if(result != null) {
+        resolve(result)
+      } else {
+        resolve(colourObject.save())
+      }
+    })
   })
 }
