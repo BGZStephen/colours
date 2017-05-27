@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs')
 const config = require('../config/database')
+const PaletteSchema = require('./palette').schema
 
 // user Schema
 const UserSchema = mongoose.Schema({
@@ -23,9 +24,7 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String
   },
-  palettes: {
-    type: Array,
-  },
+  palettes: [PaletteSchema],
   projects: {
     type: Array,
   },
@@ -48,7 +47,7 @@ module.exports.addPalette = function(palleteObject) {
 // pull palette from user palettes array
 module.exports.deletePalette = function(palleteObject) {
   return new Promise(resolve => {
-    resolve(User.update({_id: palleteObject._id}, {$pull: {palettes: {_id: palleteObject._id}}}))
+    resolve(User.update({_id: palleteObject.userId}, {$pull: {palettes: {_id: palleteObject.paletteId}}}))
   })
 }
 

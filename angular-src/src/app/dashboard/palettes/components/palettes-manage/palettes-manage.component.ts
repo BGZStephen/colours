@@ -21,7 +21,7 @@ export class PalettesManageComponent implements OnInit {
   }
 
   deletePalette(paletteId) {
-    let paletteObject = {_id: paletteId}
+    let paletteObject = {paletteId: paletteId}
     this.palettesApiService.deletePalette(paletteObject)
     .subscribe(res => {
       this.loadUserPalettes()

@@ -10,14 +10,14 @@ export class PalettesApiService {
 
   user: any;
 
-  addColour(paletteObject) {
+  addPaletteItem(paletteObject) {
     this.loadToken()
     paletteObject.createdBy = JSON.parse(this.user)._id
     return this.http.post("http://localhost:3006/colours/createForPalette", paletteObject)
     .map(res => res.json())
   }
 
-  deleteColour(paletteObject) {
+  deletePaletteItem(paletteObject) {
     this.loadToken()
     paletteObject.createdBy = JSON.parse(this.user)._id
     return this.http.post("http://localhost:3006/colours/deleteFromPalette", paletteObject)
@@ -33,13 +33,8 @@ export class PalettesApiService {
 
   deletePalette(paletteObject) {
     this.loadToken()
-    paletteObject._id = JSON.parse(this.user)._id
+    paletteObject.userId = JSON.parse(this.user)._id
     return this.http.post("http://localhost:3006/palettes/deleteOne", paletteObject)
-    .map(res => res.json())
-  }
-
-  deletePaletteItem(paletteObject) {
-    return this.http.post("http://localhost:3006/palettes/deletePaletteItem", paletteObject)
     .map(res => res.json())
   }
 

@@ -27,8 +27,8 @@ export class PaletteViewComponent implements OnInit {
   rgbConversion: any = { "red": "051", "green": "102", "blue": "153"}
   palette: object;
 
-  addColour(paletteObject) {
-    this.palettesApiService.addColour(paletteObject)
+  addPaletteItem(paletteObject) {
+    this.palettesApiService.addPaletteItem(paletteObject)
     .subscribe(res => {
       if(res.success) {
         this.flashMessage.show("Palette item added", {cssClass: "flash-success--dashboard", timeout: 3000})
@@ -68,8 +68,8 @@ export class PaletteViewComponent implements OnInit {
     }
   }
 
-  deleteColour(paletteObject) {
-    this.palettesApiService.deleteColour(paletteObject)
+  deletePaletteItem(paletteObject) {
+    this.palettesApiService.deletePaletteItem(paletteObject)
     .subscribe(res => {
       if(res.success) {
         this.flashMessage.show("Palette item deleted", {cssClass: "flash-success--dashboard", timeout: 3000})

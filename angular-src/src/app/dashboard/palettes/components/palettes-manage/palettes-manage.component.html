@@ -9,12 +9,12 @@
         <i class="fa fa-pencil" (click)="setPalette(palette._id)"></i>
         <i class="fa fa-trash" (click)="deletePalette(palette._id)"></i>
       </div>
-      <div class="palette-output-container" *ngIf="palette.colours">
-        <div class="palette-item" *ngFor="let colour of palette.colours | slice:0:8">
-          <div class="palette-item-color-display" [ngStyle]="{'background': '#' + colour.hex}">
+      <div class="palette-output-container" *ngIf="palette.paletteItems">
+        <div class="palette-item" *ngFor="let paletteItem of palette.paletteItems | slice:0:8">
+          <div class="palette-item-color-display" [ngStyle]="{'background': '#' + paletteItem.colour.hex}">
           </div>
           <div class="palette-item-description">
-            <p>#{{colour.hex}}</p>
+            <p>#{{paletteItem.colour.hex}}</p>
           </div>
         </div>
       </div>

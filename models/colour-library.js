@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('../config/database')
-const ColourSchema = require('./colour').schema
+const ColourSchema = require('./colour')
 const User = require('./user')
 
 const ColourLibrarySchema = mongoose.Schema({

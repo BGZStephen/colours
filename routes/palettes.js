@@ -58,7 +58,6 @@ router.post("/deleteOne", (req, res, next) => {
       return Palette.deleteOne(paletteQuery)
     }
   }).then(result => {
-    console.log(result)
     if(JSON.parse(result).n == 1) {
       return res.json({success: true, message: "Palette deleted successfully"})
     } else {
