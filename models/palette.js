@@ -29,15 +29,28 @@ const Palette = module.exports = mongoose.model('Palette', PaletteSchema)
 
 // add PaletteItem to Palette
 module.exports.addPaletteItem = function(paletteItemObject, paletteObject) {
-  return new Promise(resolve => {
-    resolve(Palette.update({_id: paletteObject.paletteId}, {$push: {paletteItems: paletteItemObject}}))
+  return new Promise((resolve, reject) => {
+    Palette.update({_id: paletteObject.paletteId}, {$push: {paletteItems: paletteItemObject}}).then(result => {
+      console.log(result.nModified)
+      if(result.nModified >= 1) {
+        resolve({success: true, message: "Colour successfully added to palette"})
+      } else {
+        reject({success: false, message: "Failed to add PaletteItem to Palette"})
+      }
+    })
   })
 }
 
 // remove paletteItem from Palette
 module.exports.deletePaletteItem = function(paletteItemObject){
-  return new Promise(resolve => {
-    resolve(Palette.update({_id: paletteItemObject.paletteId}, {$pull: {paletteItems: {_id: paletteItemObject.paletteItemId}}}))
+  return new Promise((resolve, reject) => {
+    Palette.update({_id: paletteItemObject.paletteId}, {$pull: {paletteItems: {_id: paletteItemObject.paletteItemId}}}).then(result => {
+      if(result.nModified >= 1) {
+        resolve({success: true, message: "PaletteItem sucessfully removed"})
+      } else {
+        reject({success: false, message: "Failed to remove PaletteItem"})
+      }
+    })
   })
 }
 

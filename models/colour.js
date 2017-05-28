@@ -20,10 +20,16 @@ module.exports.create = function(colourObject) {
     Colour.findOne({hex: colourObject.hex}).then(result => {
       if(result != null) {
         // if so, simply return the colour
-        resolve(result)
+        resolve({success: true, message: "Colour saved successfully", colour: result})
       } else {
         // if not, add the colour to the colours collection
-        resolve(colourObject.save())
+        colourObject.save().then(result => {
+          if(result == null) {
+            reject({success: false, message: "Failed to save Colour to collection"})
+          } else {
+            resolve({success: true, message: "Colour saved successfully", colour: result})
+          }
+        })
       }
     })
   })

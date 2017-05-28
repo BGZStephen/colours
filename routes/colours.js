@@ -16,20 +16,13 @@ router.post("/createForLibrary", (req, res, next) => {
 
   Colour.create(colourObject)
   .then(result => {
-    if(result != null) {
       // pushes the colour Object to the Colours array within the Colour Library
-      return ColourLibrary.addColourToLibrary(colourObject)
-    }
+    return ColourLibrary.addColourToLibrary(result)
   }).then(result => {
-    if(result.nModified >= 1 ){
-      return res.json({success: true, message: "Added colour to library"})
-    } else {
-      console.log(result)
-      return Promise.reject(res.json({success: false, message: "Failed to add colour to library"}))
-    }
+    res.json(result)
   })
   .catch(error => {
-    console.log(error)
+    res.json(result)
   })
 })
 
@@ -52,46 +45,36 @@ router.post("/createForPalette", (req, res, next) => {
 
   Colour.create(colourObject)
   .then(result => {
-    if(result != null) {
-
-      // define the new PaletteItem which fits the corresponding schema
-      let paletteItemObject = new PaletteItem({
-        createdAt: new Date(),
-        createdBy: req.body.createdBy,
-        colour: {
-          createdAt: result.createdAt,
-          createdBy: result.createdBy,
-          hex: result.hex
-        },
-        description: req.body.description
-      })
-      //Create a colour and then add it to the newly created paletteItem
-      return PaletteItem.createPaletteItem(paletteItemObject, paletteObject)
-    }
+    // define the new PaletteItem which fits the corresponding schema
+    let paletteItemObject = new PaletteItem({
+      createdAt: new Date(),
+      createdBy: req.body.createdBy,
+      colour: {
+        createdAt: result.colour.createdAt,
+        createdBy: result.colour.createdBy,
+        hex: result.colour.hex
+      },
+      description: req.body.description
+    })
+    //Create a colour and then add it to the newly created paletteItem
+    return PaletteItem.createPaletteItem(paletteItemObject)
   }).then(result => {
-    if(result == null) {
-      Promise.reject({success: false, message: "Failed to create PaletteItem"})
-    } else {
-      /*
-      using the paletteId outlined in the paetteObject,
-      push the newly created paletteItem to it
-      */
-      return Palette.addPaletteItem(result, paletteObject)
-    }
-  }).then(result => {
-    if(result.nModified == 0) {
-      return Promise.reject(res.json({success: false, message: "Failed to add PaletteItem to Palette"}))
-    } else {
-      return res.json({success: true, message: "Colour successfully added to palette"})
-    }
     /*
     final backup function in the event that the colour is not already in the
     users library, this will ensure it's pushed there also
     */
     ColourLibrary.addColourToLibrary(colourObject)
+
+    /*
+    using the paletteId outlined in the paetteObject,
+    push the newly created paletteItem to it
+    */
+    return Palette.addPaletteItem(result, paletteObject)
+  }).then(result => {
+    res.json(result)
   })
   .catch(error => {
-    console.log(error)
+    res.json(error)
   })
 })
 
@@ -104,11 +87,9 @@ router.post("/deleteFromLibrary", (req, res, next) => {
 
   ColourLibrary.deleteColourFromLibrary(colourObject)
   .then(result => {
-    if(result.nModified == 0) {
-      return res.json({success: false, message: "Failed to delete Colour (does it exist?)"})
-    } else {
-      return res.json({success: true, message: "Colour removed from library."})
-    }
+    res.json(result)
+  }).catch(error => {
+    res.json(error)
   })
 })
 
@@ -120,12 +101,12 @@ router.post("/deleteFromPalette", (req, res, next) => {
   }
 
   Palette.deletePaletteItem(paletteItemObject)
-  .then(result => {
-    if(result.nModified == 0) {
-      return res.json({success: false, message: "Failed to delete Colour (does it exist?)"})
-    } else {
-      return res.json({success: true, message: "Colour removed from palette."})
-    }
+  .then(() => {
+    return PaletteItem.deletePaletteItem({_id: paletteItemObject.paletteItemId})
+  }).then(result => {
+    res.json(result)
+  }).catch(error => {
+    res.json(error)
   })
 })
 

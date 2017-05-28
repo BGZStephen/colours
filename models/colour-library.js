@@ -15,25 +15,38 @@ const ColourLibrary = module.exports = mongoose.model('ColourLibrary', ColourLib
 
 // add Colour to Library
 module.exports.addColourToLibrary = function(colourObject) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     // check if colour already exists to avoid duplication in the colours collection
     ColourLibrary.findOne({hex: colourObject.hex}).then(result => {
       if(result != null) {
         // if colour already exists, simply return it
-        resolve(result)
+        reject({success: false, message: "Colour already exists in Library"})
       } else {
         // else, push it to the colour library
-        resolve(ColourLibrary.update({createdBy: colourObject.createdBy}, {$push: {colours: colourObject}}))
+        ColourLibrary.update({createdBy: colourObject.createdBy}, {$push: {colours: colourObject}}).then(result => {
+          if(result.nModified >= 1 ){
+            resolve({success: true, message: "Added colour to library"})
+          } else {
+            reject(res.json({success: false, message: "Failed to add colour to library"}))
+          }
+        })
       }
     })
   })
 }
 
+
 //remove Colour from Library
 module.exports.deleteColourFromLibrary = function(colourObject) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     // remove colour from Library, this doesn't delete the colour from the collection
-    resolve(ColourLibrary.update({createdBy: colourObject.createdBy}, {$pull: {colours: {_id: colourObject.colourId}}}))
+    ColourLibrary.update({createdBy: colourObject.createdBy}, {$pull: {colours: {_id: colourObject.colourId}}}).then(result => {
+      if(result.nModified == 0) {
+        reject({success: false, message: "Failed to delete Colour (does it exist?)"})
+      } else {
+        resolve({success: true, message: "Colour removed from library."})
+      }
+    })
   })
 }
 

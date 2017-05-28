@@ -7,10 +7,9 @@ const PaletteItem = require('../models/palette-item');
 
 // create new Palette
 router.post("/create", (req, res, next) => {
-  let createdAtDate = new Date().getTime() // define date for user creation
 
   let paletteObject = new Palette({
-    createdAt: createdAtDate,
+    createdAt: new Date(),
     createdBy: req.body.createdBy,
     description: req.body.description,
     name: req.body.name
