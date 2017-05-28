@@ -38,13 +38,14 @@ const UserSchema = mongoose.Schema({
 const User = module.exports = mongoose.model('User', UserSchema)
 
 // push palette to user palettes array
-module.exports.newAddPalette = function(palleteObject) {
+module.exports.addColourLibrary = function(colourLibraryObject) {
   return new Promise(resolve => {
-    User.update({_id: palleteObject.createdBy}, {$push: {palettes: {_id: palleteObject._id}}}).then(result => {
-      if(result.n != null) {
-        resolve({success: true, message: "Palette added to user successfully"})
+    User.update({_id: colourLibraryObject.createdBy},{colourLibrary: colourLibraryObject._id}).then(result => {
+      console.log(result)
+      if(result.nModified >= 1) {
+        resolve({success: true, message: "User created successfully"})
       } else {
-        reject({success: false, message: "Failed to add Palette to user"})
+        reject({success: false, message: "Failed to add Colour Library to user"})
       }
     })
   })
@@ -53,7 +54,13 @@ module.exports.newAddPalette = function(palleteObject) {
 // push palette to user palettes array
 module.exports.addPalette = function(palleteObject) {
   return new Promise(resolve => {
-    resolve(User.update({_id: palleteObject.createdBy}, {$push: {palettes: {_id: palleteObject._id}}}))
+    User.update({_id: palleteObject.createdBy}, {$push: {palettes: {_id: palleteObject._id}}}).then(result => {
+      if(result.n != null) {
+        resolve({success: true, message: "Palette added to user successfully"})
+      } else {
+        reject({success: false, message: "Failed to add Palette to user"})
+      }
+    })
   })
 }
 
@@ -82,32 +89,69 @@ module.exports.deletePalette = function(palleteObject) {
 
 // save new User to db
 module.exports.create = function(userObject) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     var salt = bcrypt.genSaltSync(10)
     var hash = bcrypt.hashSync(userObject.password, salt)
     userObject.password = hash;
-    resolve(userObject.save())
+    userObject.save().then(result => {
+      if(result != null) {
+        resolve({success: true, message: "User created successfully", user: result})
+      } else {
+        reject({success: false, message: "User creation failed"})
+      }
+    })
   })
 }
 
 // delete one user from the db
 module.exports.deleteOne = function(userObject){
+  return new Promise((resolve, reject) => {
+    User.findOne(userObject).remove().exec().then(result => {
+      if(JSON.parse(result).n == 1) {
+        resolve({success: true, message: "User deleted successfully"})
+      } else {
+        reject({success: false, message: "Failed to delete user"})
+      }
+    })
+  })
+}
+
+// get one user from the database
+module.exports.doesntExist = function(userObject) {
   return new Promise(resolve => {
-    resolve(User.findOne(userObject).remove().exec())
+    User.findOne(userObject).then(result => {
+      if(result == null) {
+        resolve({success: true, message: "User doesn't exist"})
+      } else {
+        reject({success: false, message: "User already exists"})
+      }
+    })
   })
 }
 
 // get all users from the db (used for admin purposes)
 module.exports.getAll = function(userObject){
-  return new Promise(resolve => {
-    resolve(User.find({}))
+  return new Promise((resolve, reject) => {
+    User.find({}).then(result => {
+      if(result.length > 1) {
+        resolve(result)
+      } else {
+        reject({success: false, message: "No users found"})
+      }
+    })
   })
 }
 
 // get one user from the database
 module.exports.getOne = function(userObject) {
   return new Promise(resolve => {
-    resolve(User.findOne(userObject))
+    User.findOne(userObject).then(result => {
+      if(result == null) {
+        reject({success: false, message: "User not found"})
+      } else {
+        resolve(result)
+      }
+    })
   })
 }
 
@@ -115,7 +159,11 @@ module.exports.getOne = function(userObject) {
 module.exports.comparePassword = function(userObject) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(userObject.queryPassword, userObject.storedHash).then(res => {
-      resolve(res)
+      if(res == true) {
+        resolve({success: true, message: "Passwordds match"})
+      } else {
+        resolve({success: false, message: "Passwordds do not match"})
+      }
     })
   })
 }

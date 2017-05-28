@@ -17,31 +17,23 @@ router.post("/authenticate", (req, res, next) => {
 
   User.getOne({email: userObject.email})
   .then(result => {
-    if(result == null) {
-      return Promise.reject(res.json({success: false, message: "Incorrect email address or password"}))
-    } else {
-      userObject.storedHash = result.password
-      userObject._id = result._id // used for signing tokens for use with localStorage on front-end
-      return User.comparePassword(userObject)
-    }
-  }).then(result => {
-    if(result == false) {
-      return Promise.reject(res.json({success: false, message: "Incorrect email address or password"}))
-    } else {
-      const token = jwt.sign(userObject, config.secret, {expiresIn: 604800});
-      return res.json({
-        success: true,
-        message: "Authentication successful",
-        token: "JWT" + token,
-        user: {
-          email: userObject.email,
-          _id: userObject._id,
-          username: userObject.username
-        }
-      })
-    }
+    userObject.storedHash = result.password
+    userObject._id = result._id // used for signing tokens for use with localStorage on front-end
+    return User.comparePassword(userObject)
+  }).then(() => {
+    const token = jwt.sign(userObject, config.secret, {expiresIn: 604800});
+    return res.json({
+      success: true,
+      message: "Authentication successful",
+      token: "JWT" + token,
+      user: {
+        email: userObject.email,
+        _id: userObject._id,
+        username: userObject.username
+      }
+    })
   }).catch(error => {
-    console.log(error)
+    res.json(error)
   })
 })
 
@@ -51,23 +43,15 @@ router.post("/deleteOne", (req, res, next) => {
     _id: req.body._id
   }
 
-  User.getOne(userObject)
-  .then(result => {
-    if(result == null) {
-      return Promise.reject(res.json({success: false, message: "User not found"}))
-    } else {
-      return User.deleteOne(userObject)
-    }
+  User.doesntExist(userObject)
+  .then(() => {
+    return User.deleteOne(userObject)
+  }).then(() => {
+    return ColourLibrary.deleteOne(userObject)
   }).then(result => {
-    if(JSON.parse(result).n == 1) {
-      return ColourLibrary.deleteOne(userObject)
-    }
-  }).then(result => {
-    if(JSON.parse(result).n == 1) {
-      return res.json({success: true, message: "User deleted successfully"})
-    }
+    res.json(result)
   }).catch(error => {
-    console.log(error)
+    res.json(error)
   })
 })
 
@@ -79,11 +63,9 @@ router.post("/getById", (req, res, next) => {
 
   User.getOne(userObject)
   .then(result => {
-    if(result == null) {
-      return res.json({success: false, message: "User not found"})
-    } else {
-      return res.json(result)
-    }
+    res.json(result)
+  }).catch(error => {
+    res.json(error)
   })
 })
 
@@ -95,11 +77,9 @@ router.post("/getByUsername", (req, res, next) => {
 
   User.getOne(userObject)
   .then(result => {
-    if(result == null) {
-      return res.json({success: false, message: "User not found"})
-    } else {
-      return res.json(result)
-    }
+    res.json(result)
+  }).catch(error => {
+    res.json(error)
   })
 })
 
@@ -111,11 +91,9 @@ router.post("/getByEmail", (req, res, next) => {
 
   User.getOne(userObject)
   .then(result => {
-    if(result == null) {
-      return res.json({success: false, message: "User not found"})
-    } else {
-      return res.json(result)
-    }
+    res.json(result)
+  }).catch(error => {
+    res.json(error)
   })
 })
 
@@ -123,11 +101,9 @@ router.post("/getByEmail", (req, res, next) => {
 router.get("/getAll", (req, res, next) => {
   User.getAll()
   .then(result => {
-    if(result.length < 1) {
-      return res.json({success: false, message: "No users found"})
-    } else {
-      return res.json(result)
-    }
+    res.json(result)
+  }).catch(error => {
+    res.json(error)
   })
 })
 
@@ -143,40 +119,25 @@ router.post("/register", (req, res, next) => {
     password: req.body.password,
     username: req.body.username
   })
-  let usernameQuery = {username: userObject.username}
 
-  User.getOne(usernameQuery)
-  .then(result => {
-    if(result != null) {
-      return Promise.reject(res.json({success: false, message: "Username already exists"}))
-    } else {
-      let emailQuery = {email: userObject.email}
-      return User.getOne(emailQuery)
-    }
+  User.doesntExist({username: userObject.username})
+  .then(() => {
+    return User.doesntExist({email: userObject.email})
+  }).then(() => {
+    return User.create(userObject)
   }).then(result => {
-    if(result != null) {
-      return Promise.reject(res.json({success: false, message: "Email already exists"}))
-    } else {
-      return User.create(userObject)
-    }
+    let colourLibraryObject = new ColourLibrary({
+      createdAt: new Date(),
+      createdBy: result.user._id,
+    })
+    return ColourLibrary.create(colourLibraryObject)
   }).then(result => {
-    if(result != null) {
-      let colourLibraryObject = new ColourLibrary({
-        createdAt: new Date(),
-        createdBy: result._id,
-      })
-      return ColourLibrary.create(colourLibraryObject)
-    }
+    return User.addColourLibrary(result)
   }).then(result => {
-    if(result.nModified >= 1) {
-      res.json({success: true, message: "User created successfully"})
-    } else {
-      return Promise.reject(res.json({success: false, message: "Failed to create user"}))
-    }
+    res.json(result)
   }).catch(error => {
-    console.log(error)
+    res.json(error)
   })
-
 })
 
 // update user

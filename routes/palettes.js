@@ -17,7 +17,7 @@ router.post("/create", (req, res, next) => {
 
   Palette.create(paletteObject)
   .then(() => {
-    return User.newAddPalette(paletteObject)
+    return User.addPalette(paletteObject)
   }).then(result => {
     res.json(result)
   }).catch(error => {

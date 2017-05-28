@@ -63,7 +63,7 @@ module.exports.create = function(colourLibraryObject) {
       if(result == null) {
         reject({success: false, message: "Failed to create Colour Library"})
       } else {
-        resolve(User.update({_id: result.createdBy},{colourLibrary: result._id}))
+        resolve(result)
       }
     })
   })
@@ -72,6 +72,12 @@ module.exports.create = function(colourLibraryObject) {
 // delete colour library (only used when removing a user from the system, if used otherwise, it will break a profile)
 module.exports.deleteOne = function(colourLibraryObject){
   return new Promise(resolve => {
-    resolve(ColourLibrary.findOne({createdBy: colourLibraryObject._id}).remove().exec())
+    ColourLibrary.findOne({createdBy: colourLibraryObject._id}).remove().exec().then(result => {
+      if(JSON.parse(result).n == 1) {
+        resolve({success: true, message: "Colour Library deleted successfully"})
+      } else {
+        reject({success: false, message: "Failed to delete Colour Library"})
+      }
+    })
   })
 }
