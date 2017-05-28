@@ -60,7 +60,13 @@ module.exports.addPalette = function(palleteObject) {
 // pull palette from user palettes array
 module.exports.deletePalette = function(palleteObject) {
   return new Promise(resolve => {
-    resolve(User.update({_id: palleteObject.userId}, {$pull: {palettes: {_id: palleteObject.paletteId}}}))
+    User.update({_id: palleteObject.userId}, {$pull: {palettes: {_id: palleteObject.paletteId}}}).then(result => {
+      if(result.nModified == 0) {
+        reject({success: false, message: "Failed to pull palette from user Palettes"})
+      } else {
+        resolve(result)
+      }
+    })
   })
 }
 

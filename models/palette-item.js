@@ -35,5 +35,13 @@ this function is loped when deleting a palette to ensure residual paletteItems
 don't remain and clog up the collection
 */
 module.exports.deletePaletteItem = function(paletteItemObject) {
-  PaletteItem.findOne({_id: paletteItemObject._id}).remove().exec()
+  return new Promise((resolve, reject) => {
+    PaletteItem.findOne({_id: paletteItemObject._id}).remove().exec().then(result => {
+      if(JSON.parse(result).n == 1) {
+        resolve({success: true, message: "PaletteItem deleted successfully"})
+      } else {
+        reject({success: false, message: "PaletteItem deletion failed"})
+      }
+    })
+  })
 }

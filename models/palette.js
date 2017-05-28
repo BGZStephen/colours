@@ -95,15 +95,27 @@ module.exports.getAll = function(paletteObject) {
 
 // delete one palette
 module.exports.deleteOne = function(paletteObject){
-  return new Promise(resolve => {
-    resolve(Palette.findOne(paletteObject).remove().exec())
+  return new Promise((resolve, reject) => {
+    Palette.findOne(paletteObject).remove().then(result => {
+      if(JSON.parse(result).n == 1) {
+        resolve({success: true, message: "Palette deleted successfully"})
+      } else {
+        reject({success: false, message: "Palette deletion failed"})
+      }
+    })
   })
 }
 
 // update palette
 module.exports.updatePalette = function(paletteObject){
-  return new Promise(resolve => {
-    resolve(Palette.update({_id: paletteObject.paletteId}, paletteObject))
+  return new Promise((resolve, reject) => {
+    Palette.update({_id: paletteObject.paletteId}, paletteObject).then(result => {
+      if(result.nModified == 0) {
+        resolve({success: true, message: "Nothing to update"})
+      } else if(result.nModified >= 1) {
+        resolve({success: true, message: "User updated successfully"})
+      }
+    })
   })
 }
 

@@ -39,28 +39,18 @@ router.post("/deleteOne", (req, res, next) => {
 
   Palette.getOne(paletteQuery)
   .then(result => {
-    if(result == null) {
-      return Promise.reject(res.json({success: false, message: "No Palette Found"}))
-    } else {
-      result.paletteItems.forEach(item => {
-        PaletteItem.deletePaletteItem(item)
-      })
-      return User.deletePalette(paletteObject)
-    }
+    let paletteItems = result.paletteItems.map((item) => {
+      PaletteItem.deletePaletteItem(item)
+    })
+    Promise.all(paletteItems)
+  }).then(() => {
+    return User.deletePalette(paletteObject)
+  }).then(() => {
+    return Palette.deleteOne(paletteQuery)
   }).then(result => {
-    if(result.nModified == 0) {
-      return Promise.reject(res.json({success: false, message: "Failed to delete Palette"}))
-    } else {
-      return Palette.deleteOne(paletteQuery)
-    }
-  }).then(result => {
-    if(JSON.parse(result).n == 1) {
-      return res.json({success: true, message: "Palette deleted successfully"})
-    } else {
-      return Promise.reject(res.json({success: false, message: "User deletion failed"}))
-    }
+    res.json(result)
   }).catch(error => {
-    console.log(error)
+    res.json(error)
   })
 })
 
@@ -105,20 +95,12 @@ router.post("/update", (req, res, next) => {
   }
 
   Palette.getOne(paletteQuery)
-  .then(result => {
-    if(result == null) {
-      return Promise.reject(res.json({success: false, message: "Failed to retrieve Palette"}))
-    } else {
-      return Palette.updatePalette(paletteObject)
-    }
+  .then(() => {
+    return Palette.updatePalette(paletteObject)
   }).then(result => {
-    if(result.nModified == 0) {
-      res.json({success: true, message: "Nothing to update"})
-    } else if(result.nModified >= 1) {
-      res.json({success: true, message: "User updated successfully"})
-    }
+    res.json(result)
   }).catch(error => {
-    console.log(error)
+    res.json(error)
   })
 })
 

@@ -45,7 +45,7 @@ export class PaletteEditComponent implements OnInit {
     this.palettesApiService.updatePalette(paletteObject)
     .subscribe(res => {
       if(res.success) {
-        this.flashMessage.show("Palette updated successfuly", {cssClass: "flash-success--dashboard", timeout: 3000})
+        this.flashMessage.show(res.message, {cssClass: "flash-success--dashboard", timeout: 3000})
       } else {
         this.flashMessage.show("Failed to update Palette", {cssClass: "flash-failure--dashboard", timeout: 3000})
       }
