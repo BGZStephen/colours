@@ -41,7 +41,6 @@ const User = module.exports = mongoose.model('User', UserSchema)
 module.exports.addColourLibrary = function(colourLibraryObject) {
   return new Promise(resolve => {
     User.update({_id: colourLibraryObject.createdBy},{colourLibrary: colourLibraryObject._id}).then(result => {
-      console.log(result)
       if(result.nModified >= 1) {
         resolve({success: true, message: "User created successfully"})
       } else {
@@ -173,13 +172,25 @@ module.exports.updatePassword = function(userObject) {
   return new Promise(resolve => {
     var salt = bcrypt.genSaltSync(10)
     var hash = bcrypt.hashSync(userObject.newPassword, salt)
-    resolve(User.update({_id: userObject.userId},{password: hash}))
+    User.update({_id: userObject.userId},{password: hash}).then(result => {
+      if(result.nModified >= 1) {
+        resolve({success: true, message: "Password updated successfully"})
+      } else {
+        reject({success: false, message: "Password update failed"})
+      }
+    })
   })
 }
 
 // update a users profile within the db
 module.exports.updateUser = function(userObject) {
   return new Promise(resolve => {
-    resolve(User.update({_id: userObject.userId}, userObject))
+    User.update({_id: userObject.userId}, userObject).then(result => {
+      if(result.nModified == 0) {
+        resolve({success: true, message: "Nothing to update"})
+      } else if(result.nModified >= 1) {
+        resolve({success: true, message: "User updated successfully"})
+      }
+    })
   })
 }

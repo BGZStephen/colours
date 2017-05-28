@@ -30,7 +30,6 @@ export class PaletteEditComponent implements OnInit {
       let paletteObject = {_id: paletteId}
       this.palettesApiService.getPaletteById(paletteObject)
       .subscribe(res => {
-        console.log(res)
         this.palette = res
       })
     })

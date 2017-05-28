@@ -31,7 +31,6 @@ const Palette = module.exports = mongoose.model('Palette', PaletteSchema)
 module.exports.addPaletteItem = function(paletteItemObject, paletteObject) {
   return new Promise((resolve, reject) => {
     Palette.update({_id: paletteObject.paletteId}, {$push: {paletteItems: paletteItemObject}}).then(result => {
-      console.log(result.nModified)
       if(result.nModified >= 1) {
         resolve({success: true, message: "Colour successfully added to palette"})
       } else {
@@ -75,7 +74,6 @@ module.exports.create = function(paletteObject) {
 module.exports.getOne = function(paletteObject) {
   return new Promise((resolve, reject) => {
     Palette.findOne(paletteObject).then(result => {
-      console.log(result)
       if(result != null) {
         resolve(result)
       } else {
@@ -89,7 +87,6 @@ module.exports.getOne = function(paletteObject) {
 module.exports.getByUserId = function(paletteObject) {
   return new Promise((resolve, reject) => {
     Palette.find(paletteObject).then(result => {
-      console.log(result.length)
       if(result.length == 0) {
         reject({success: false, message: "No palettes found for user"})
       } else {

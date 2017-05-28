@@ -154,10 +154,10 @@ router.post("/update", (req, res, next) => {
   // check username to make sure it doesn't already exist except in the case of it being the updaters current username
   User.getOne({username: userObject.username})
   .then(result => {
-    if(result != null && result._id != userObject._id) {
+    if(result._id != userObject._id) {
       return Promise.reject(res.json({success: false, message: "Username already taken"}))
     } else {
-      User.getOne({email: userObject.email})
+      return User.getOne({email: userObject.email})
     }
   }).then(result => {
     if(result != null && result.email != userObject.email) {
@@ -166,13 +166,9 @@ router.post("/update", (req, res, next) => {
       return User.updateUser(userObject)
     }
   }).then(result => {
-    if(result.nModified == 0) {
-      res.json({success: true, message: "Nothing to update"})
-    } else if(result.nModified >= 1) {
-      res.json({success: true, message: "User updated successfully"})
-    }
+    res.json(result)
   }).catch(error => {
-    console.log(error)
+    res.json(error)
   })
 })
 
@@ -187,26 +183,14 @@ router.post("/updatepassword", (req, res, next) => {
 
   User.getOne({_id: userObject._id})
   .then(result => {
-    if(result == null) {
-      return Promise.reject(res.json({success: false, message: "Failed to retrieve user"}))
-    } else {
-      userObject.storedHash = result.password
-      return User.comparePassword(userObject)
-    }
+    userObject.storedHash = result.password
+    return User.comparePassword(userObject)
   }).then(result => {
-    if(result == false) {
-      return Promise.reject(res.json({success: false, message: "Current password entry doesn't match stored password"}))
-    } else {
-      return User.updatePassword(userObject)
-    }
+    return User.updatePassword(userObject)
   }).then(result => {
-    if(result.nModified >= 1) {
-      return res.json({success: true, message: "Password updated successfully"})
-    } else {
-      return Promise.reject(res.json({success: false, message: "Password update failed"}))
-    }
+    res.json(result)
   }).catch(error => {
-    console.log(error)
+    res.json(error)
   })
 })
 
