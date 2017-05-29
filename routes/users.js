@@ -188,6 +188,7 @@ router.post("/updatepassword", (req, res, next) => {
   }).then(result => {
     return User.updatePassword(userObject)
   }).then(result => {
+    console.log(result)
     res.json(result)
   }).catch(error => {
     res.json(error)

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router"
+import { FlashMessagesService } from "angular2-flash-messages"
+import { ProfileApiService } from "../../profile-api.service"
 
 @Component({
   selector: 'app-profile-change-password',
@@ -7,13 +10,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileChangePasswordComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private profileApiService: ProfileApiService,
+    private flashMessage: FlashMessagesService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
 
-  changePassword(userObject) {
-    console.log(userObject)
+  clearComponent() {
+    this.router.navigate(['/dashboard', {outlets: {'dashboardOutlet': null}}]);
+  }
+
+  updatePassword(userObject) {
+    if(userObject.currentPassword == userObject.newPassword) {
+      this.flashMessage.show("Current and New Password cannot match", {cssClass: "flash-failure--dashboard", timeout: 3000})
+    } else {
+      this.profileApiService.updatePassword(userObject)
+      .subscribe(res => {
+        if(res.success) {
+          this.flashMessage.show(res.message, {cssClass: "flash-success--dashboard", timeout: 3000})
+          this.clearComponent()
+        } else {
+          this.flashMessage.show(res.message, {cssClass: "flash-failure--dashboard", timeout: 3000})
+        }
+      })
+    }
   }
 
 }

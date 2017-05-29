@@ -161,7 +161,7 @@ module.exports.comparePassword = function(userObject) {
       if(res == true) {
         resolve({success: true, message: "Passwordds match"})
       } else {
-        resolve({success: false, message: "Passwordds do not match"})
+        reject({success: false, message: "Incorrect password"})
       }
     })
   })
@@ -169,10 +169,10 @@ module.exports.comparePassword = function(userObject) {
 
 // update password, used in association with comparePassword to check if submitted passwords match before actioning
 module.exports.updatePassword = function(userObject) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     var salt = bcrypt.genSaltSync(10)
     var hash = bcrypt.hashSync(userObject.newPassword, salt)
-    User.update({_id: userObject.userId},{password: hash}).then(result => {
+    User.update({_id: userObject._id},{password: hash}).then(result => {
       if(result.nModified >= 1) {
         resolve({success: true, message: "Password updated successfully"})
       } else {

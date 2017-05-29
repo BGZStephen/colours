@@ -26,8 +26,16 @@ export class ProfileApiService {
   }
 
   updateProfile(userObject) {
+    this.loadToken()
     userObject._id = JSON.parse(this.user)._id
     return this.http.post("http://localhost:3006/users/update", userObject)
+    .map(res => res.json())
+  }
+
+  updatePassword(userObject) {
+    this.loadToken()
+    userObject._id = JSON.parse(this.user)._id
+    return this.http.post("http://localhost:3006/users/updatePassword", userObject)
     .map(res => res.json())
   }
 
