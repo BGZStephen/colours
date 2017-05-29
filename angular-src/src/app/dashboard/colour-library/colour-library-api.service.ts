@@ -23,4 +23,13 @@ export class ColourLibraryApiService {
     .map(res => res.json())
   }
 
+  deleteColour(colourLibraryObject) {
+    this.loadToken()
+    colourLibraryObject.userId = JSON.parse(this.user)._id
+    return this.http.post("http://localhost:3006/colour-libraries/deleteColour", colourLibraryObject)
+    .map(res => res.json())
+  }
+
+  // colourId: req.body.colourId
+
 }

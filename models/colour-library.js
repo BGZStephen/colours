@@ -37,10 +37,11 @@ module.exports.addColourToLibrary = function(colourObject) {
 
 
 //remove Colour from Library
-module.exports.deleteColourFromLibrary = function(colourObject) {
+module.exports.deleteColour = function(colourLibraryObject) {
   return new Promise((resolve, reject) => {
     // remove colour from Library, this doesn't delete the colour from the collection
-    ColourLibrary.update({createdBy: colourObject.createdBy}, {$pull: {colours: {_id: colourObject.colourId}}}).then(result => {
+    console.log(colourLibraryObject.colourId)
+    ColourLibrary.update({createdBy: colourLibraryObject.userId}, {$pull: {colours: {hex: colourLibraryObject.hex}}}).then(result => {
       if(result.nModified == 0) {
         reject({success: false, message: "Failed to delete Colour (does it exist?)"})
       } else {

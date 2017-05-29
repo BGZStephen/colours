@@ -15,9 +15,21 @@ export class ColourLibraryViewComponent implements OnInit {
   colourLibrary: Array<object>
 
   ngOnInit() {
+    this.loadColourLibrary()
+  }
+
+  loadColourLibrary() {
     this.colourLibraryApiService.getColourLibrary()
     .subscribe(res => {
       this.colourLibrary = res;
+    })
+  }
+
+  deleteColour(colourLibraryObject) {
+    this.colourLibraryApiService.deleteColour(colourLibraryObject)
+    .subscribe(res => {
+      console.log(res)
+      this.loadColourLibrary()
     })
   }
 
