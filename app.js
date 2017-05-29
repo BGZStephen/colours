@@ -39,10 +39,12 @@ app.use(bodyParser.json())
 const users = require("./routes/users")
 const palettes = require("./routes/palettes")
 const colours = require("./routes/colours")
+const colourLibraries = require("./routes/colour-libraries")
 
 app.use('/users', users)
 app.use('/palettes', palettes)
 app.use('/colours', colours)
+app.use('/colour-libraries', colourLibraries)
 
 
 // index route
