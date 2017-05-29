@@ -63,7 +63,6 @@ router.post("/createForPalette", (req, res, next) => {
     final backup function in the event that the colour is not already in the
     users library, this will ensure it's pushed there also
     */
-    ColourLibrary.addColourToLibrary(colourObject)
 
     /*
     using the paletteId outlined in the paetteObject,
@@ -76,6 +75,7 @@ router.post("/createForPalette", (req, res, next) => {
   .catch(error => {
     res.json(error)
   })
+  ColourLibrary.addColourToLibrary(colourObject)
 })
 
 // delete colour from Library

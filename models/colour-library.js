@@ -17,10 +17,10 @@ const ColourLibrary = module.exports = mongoose.model('ColourLibrary', ColourLib
 module.exports.addColourToLibrary = function(colourObject) {
   return new Promise((resolve, reject) => {
     // check if colour already exists to avoid duplication in the colours collection
-    ColourLibrary.findOne({hex: colourObject.hex}).then(result => {
+    ColourLibrary.findOne({'colours.hex': colourObject.hex}).then(result => {
       if(result != null) {
         // if colour already exists, simply return it
-        reject({success: false, message: "Colour already exists in Library"})
+        resolve({success: false, message: "Colour already exists in Library"})
       } else {
         // else, push it to the colour library
         ColourLibrary.update({createdBy: colourObject.createdBy}, {$push: {colours: colourObject}}).then(result => {
