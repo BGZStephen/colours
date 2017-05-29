@@ -76,6 +76,28 @@
           </li>
         </ul>
       </li>
+      <li class="top-level-item" (mouseover)="hoverActive = 5" (mouseleave)="hoverActive = -1">
+        <div class="top-level-content" (click)="setComponent('colour-library')" [ngStyle]="hoverActive == 5 ? setHoverStyle(5) : {}">
+          <i class="fa fa-th"></i><p>Colour Library</p>
+        </div>
+      </li>
+      <!-- <li class="top-level-item" (mouseover)="hoverActive = 6" (mouseleave)="hoverActive = -1">
+        <div class="top-level-content" (click)="setActiveSubMenu(2)" [ngStyle]="hoverActive == 6 ? setHoverStyle(0) : {}">
+          <i class="fa fa-paint-brush"></i><p>Tools</p><i class="fa fa-caret-down"></i>
+        </div>
+        <ul class="second-level-list" [ngStyle]="setSubMenuStyle(2)">
+          <li class="second-level-item">
+            <div class="second-level-content" (click)="setComponent('palette-add')">
+              <i class="fa fa-plus"></i><p>RGB to Hex</p>
+            </div>
+          </li>
+          <li class="second-level-item">
+            <div class="second-level-content" (click)="setComponent('palettes-view')">
+              <i class="fa fa-search"></i><p>Hex to RGB</p>
+            </div>
+          </li>
+        </ul>
+      </li> -->
       <li class="top-level-item logout-item" (mouseover)="hoverActive = 4" (mouseleave)="hoverActive = -1">
         <div class="top-level-content" (click)="setActiveSubMenu(-1); logout()" [ngStyle]="hoverActive == 4 ? setHoverStyle(4) : {}">
           <i class="fa fa-power-off"></i><p>Logout</p>

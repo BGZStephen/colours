@@ -13,6 +13,7 @@ import {DashboardViewComponent } from './dashboard-view.component';
 
 // modules
 
+import { ColourLibraryModule } from "./colour-library/colour-library.module"
 import { ProfileModule } from "./profile/profile.module"
 import { PalettesModule } from "./palettes/palettes.module"
 
@@ -33,7 +34,8 @@ import { DashboardNavbarComponent, DashboardNotificationBarComponent } from './c
     router,
     FlashMessagesModule,
     ProfileModule,
-    PalettesModule
+    PalettesModule,
+    ColourLibraryModule
   ],
   exports: [
     DashboardViewComponent, DashboardNavbarComponent, DashboardNotificationBarComponent,

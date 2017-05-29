@@ -1,0 +1,18 @@
+<div class="main-container">
+  <div class="header-container">
+    <h2 class="main-header">Colour Library</h2>
+  </div>
+  <div class="output-container" *ngIf="colourLibrary">
+    <div class="colour-library-item" *ngFor="let colourItem of colourLibrary.colours">
+      <div class="colour-library-item-description-container">
+        <p class="colour-library-item-description">#{{colourItem.hex}}</p>
+      </div>
+      <div class="colour-preview-pane" [ngStyle]="{'background': '#' + colourItem.hex}">
+      </div>
+      <div class="actions-container">
+        <i class="fa fa-plus"></i>
+        <i class="fa fa-trash"></i>
+      </div>
+    </div>
+  </div>
+</div>

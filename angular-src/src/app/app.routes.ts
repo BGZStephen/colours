@@ -15,6 +15,8 @@ import { SiteIntroComponent, SiteRegisterComponent, SiteLoginComponent } from ".
 import { PalettesManageComponent, PalettesViewComponent, PaletteViewComponent, PaletteAddComponent,
          PaletteEditComponent } from "./dashboard/palettes/components/palettes-components-barrel"
 
+import { ColourLibraryViewComponent } from "./dashboard/colour-library/components/colour-library-components-barrel"
+
 //profile
 
 import { ProfileViewComponent, ProfileEditComponent, ProfileChangePasswordComponent } from "./dashboard/profile/components/profile-components-barrel"
@@ -27,6 +29,7 @@ const APP_ROUTES: Routes = [
     {path: "login", component: SiteLoginComponent, outlet: "siteOutlet"},
   ]},
   {path: "dashboard", component: DashboardViewComponent, children: [
+    {path: "colour-library", component: ColourLibraryViewComponent, outlet: "dashboardOutlet"},
     {path: "palette/:paletteId", component: PaletteViewComponent, outlet: "dashboardOutlet"},
     {path: "palette-add", component: PaletteAddComponent, outlet: "dashboardOutlet"},
     {path: "palette-edit/:paletteId", component: PaletteEditComponent, outlet: "dashboardOutlet"},
