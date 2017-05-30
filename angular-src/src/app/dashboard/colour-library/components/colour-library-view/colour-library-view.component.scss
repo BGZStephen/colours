@@ -16,6 +16,7 @@
 .output-container {
   display: flex;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .colour-library-item {
@@ -74,10 +75,107 @@
   padding: 6px 0;
   text-align: center;
   transition: all 0.5s ease;
-  width: 50%;
+  width: 100%;
 }
 
 .fa-trash:hover, .fa-plus:hover {
   color: $primary-dark-blue;
   background: #f3c500;
+}
+
+.add-colour-modal-container{
+  background: white;
+  overflow: hidden;
+  position: absolute;
+  transition: all 0.3s ease;
+  width: 100%;
+  z-index: 100;
+}
+
+.add-colour-form-container {
+
+}
+
+.add-colour-header {
+  background: #00be9c;
+  color: $primary-dark-blue;
+}
+
+.add-colour-form {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.add-colour-label {
+  background: #00be9c;
+  color: $primary-dark-blue;
+  display: inline-block;
+  font-size: 1.8em;
+  font-weight: 700;
+  height: 45px;
+  margin-bottom: 15px;
+  margin-right: 10px;
+  padding: 5px 15px
+}
+
+.add-colour-input {
+  border: none;
+  border-bottom: 3px solid #00be9c;
+  color: #00be9c;
+  display: inline-block;
+  font-size: 1.8em;
+  font-weight: 700;
+  height: 45px;
+  margin-bottom: 15px;
+  max-width: 100%;
+  padding: 5px;
+}
+
+.rgb-input {
+  width: 80px;
+}
+
+.input-cancel,
+.input-save {
+  border: none;
+  background: #ea4b36;
+  color: $primary-dark-blue;
+  cursor: pointer;
+  font-size: 1.5em;
+  font-weight: 900;
+  height: 50px;
+  padding: 10px 15px;
+  text-transform: uppercase;
+  width: 50%;
+  @media(min-width: 500px) {
+    margin-top: 10px;
+    margin-right: 5px;
+    width: auto;
+  }
+}
+ .input-save {
+   background: #2c97df;
+ }
+
+ .colour-add-row {
+   align-items: center;
+   display: flex;
+   height: 60px;
+ }
+
+.colour-add-preview-header {
+  color: $primary-dark-blue;
+  display: inline-block;
+  font-size: 1.8em;
+  margin-right: 20px;
+}
+
+.colour-add-preview {
+  display: inline-block;
+  height: 60px;
+  width: 60px;
 }

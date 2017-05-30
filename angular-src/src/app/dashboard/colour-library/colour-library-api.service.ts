@@ -16,10 +16,11 @@ export class ColourLibraryApiService {
     this.user = localStorage.getItem('user')
   }
 
-  getColourLibrary() {
+  addColour(colourLibraryObject) {
     this.loadToken()
-    let query = {_id: JSON.parse(this.user)._id}
-    return this.http.post("http://localhost:3006/colour-libraries/getByUserId", query)
+    colourLibraryObject.createdBy = JSON.parse(this.user)._id
+    console.log(colourLibraryObject)
+    return this.http.post("http://localhost:3006/colours/createForLibrary", colourLibraryObject)
     .map(res => res.json())
   }
 
@@ -29,6 +30,14 @@ export class ColourLibraryApiService {
     return this.http.post("http://localhost:3006/colour-libraries/deleteColour", colourLibraryObject)
     .map(res => res.json())
   }
+
+  getColourLibrary() {
+    this.loadToken()
+    let query = {_id: JSON.parse(this.user)._id}
+    return this.http.post("http://localhost:3006/colour-libraries/getByUserId", query)
+    .map(res => res.json())
+  }
+
 
   // colourId: req.body.colourId
 

@@ -14,15 +14,17 @@ router.post("/createForLibrary", (req, res, next) => {
     hex: req.body.hex
   })
 
+
   Colour.create(colourObject)
   .then(result => {
+    result.colour.createdBy = req.body.createdBy;
       // pushes the colour Object to the Colours array within the Colour Library
-    return ColourLibrary.addColourToLibrary(result)
+    return ColourLibrary.addColourToLibrary(result.colour)
   }).then(result => {
     res.json(result)
   })
   .catch(error => {
-    res.json(result)
+    res.json(error)
   })
 })
 
