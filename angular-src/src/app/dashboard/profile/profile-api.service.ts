@@ -12,11 +12,12 @@ export class ProfileApiService {
 
   user: any;
   authToken: any;
+  baseUrl: string = "http://localhost:3006/"
 
   getCurrentUser() {
     this.loadToken()
     let userObject = {"_id": JSON.parse(this.user)._id}
-    return this.http.post("http://localhost:3006/users/getById", userObject)
+    return this.http.post(this.baseUrl + "users/getById", userObject)
     .map(res => res.json())
   }
 
@@ -28,14 +29,14 @@ export class ProfileApiService {
   updateProfile(userObject) {
     this.loadToken()
     userObject._id = JSON.parse(this.user)._id
-    return this.http.post("http://localhost:3006/users/update", userObject)
+    return this.http.post(this.baseUrl + "users/update", userObject)
     .map(res => res.json())
   }
 
   updatePassword(userObject) {
     this.loadToken()
     userObject._id = JSON.parse(this.user)._id
-    return this.http.post("http://localhost:3006/users/updatePassword", userObject)
+    return this.http.post(this.baseUrl + "users/updatePassword", userObject)
     .map(res => res.json())
   }
 

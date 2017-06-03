@@ -10,6 +10,7 @@ export class ColourLibraryApiService {
 
   user: any;
   authToken: any;
+  baseUrl: string = "http://localhost:3006/"
 
   loadToken() {
     this.authToken = localStorage.getItem('token')
@@ -19,35 +20,35 @@ export class ColourLibraryApiService {
   addColour(colourLibraryObject) {
     this.loadToken()
     colourLibraryObject.createdBy = JSON.parse(this.user)._id
-    return this.http.post("http://localhost:3006/colours/createForLibrary", colourLibraryObject)
+    return this.http.post(this.baseUrl + "colours/createForLibrary", colourLibraryObject)
     .map(res => res.json())
   }
 
   addColourToPalette(colourLibraryObject) {
     this.loadToken()
     colourLibraryObject.createdBy = JSON.parse(this.user)._id
-    return this.http.post("http://localhost:3006/colours/createForPalette", colourLibraryObject)
+    return this.http.post(this.baseUrl + "colours/createForPalette", colourLibraryObject)
     .map(res => res.json())
   }
 
   deleteColour(colourLibraryObject) {
     this.loadToken()
     colourLibraryObject.userId = JSON.parse(this.user)._id
-    return this.http.post("http://localhost:3006/colour-libraries/deleteColour", colourLibraryObject)
+    return this.http.post(this.baseUrl + "colour-libraries/deleteColour", colourLibraryObject)
     .map(res => res.json())
   }
 
   getColourLibrary() {
     this.loadToken()
     let query = {_id: JSON.parse(this.user)._id}
-    return this.http.post("http://localhost:3006/colour-libraries/getByUserId", query)
+    return this.http.post(this.baseUrl + "colour-libraries/getByUserId", query)
     .map(res => res.json())
   }
 
   getUserPalettes() {
     this.loadToken()
     let query = {createdBy: JSON.parse(this.user)._id}
-    return this.http.post("http://localhost:3006/palettes/getByUserId", query)
+    return this.http.post(this.baseUrl + "palettes/getByUserId", query)
     .map(res => res.json())
   }
 

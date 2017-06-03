@@ -141,4 +141,14 @@ export class ColourLibraryViewComponent implements OnInit {
     }
   }
 
+  setRgbColor(color, value) {
+    if(color == "red") {
+      this.rgbConversion.red = value
+    } else if (color == "green") {
+      this.rgbConversion.green = value
+    } else if (color == "blue") {
+      this.rgbConversion.blue = value
+    }
+  }
+
 }

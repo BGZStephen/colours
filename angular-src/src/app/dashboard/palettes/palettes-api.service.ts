@@ -9,44 +9,45 @@ export class PalettesApiService {
   ) { }
 
   user: any;
+  baseUrl: string = "http://localhost:3006/"
 
   addPaletteItem(paletteObject) {
     this.loadToken()
     paletteObject.createdBy = JSON.parse(this.user)._id
-    return this.http.post("http://localhost:3006/colours/createForPalette", paletteObject)
+    return this.http.post(this.baseUrl + "colours/createForPalette", paletteObject)
     .map(res => res.json())
   }
 
   deletePaletteItem(paletteObject) {
     this.loadToken()
     paletteObject.createdBy = JSON.parse(this.user)._id
-    return this.http.post("http://localhost:3006/colours/deleteFromPalette", paletteObject)
+    return this.http.post(this.baseUrl + "colours/deleteFromPalette", paletteObject)
     .map(res => res.json())
   }
 
   createPalette(paletteObject) {
     this.loadToken()
     paletteObject.createdBy = JSON.parse(this.user)._id
-    return this.http.post("http://localhost:3006/palettes/create", paletteObject)
+    return this.http.post(this.baseUrl + "palettes/create", paletteObject)
     .map(res => res.json())
   }
 
   deletePalette(paletteObject) {
     this.loadToken()
     paletteObject.userId = JSON.parse(this.user)._id
-    return this.http.post("http://localhost:3006/palettes/deleteOne", paletteObject)
+    return this.http.post(this.baseUrl + "palettes/deleteOne", paletteObject)
     .map(res => res.json())
   }
 
   getPaletteById(paletteObject) {
-    return this.http.post("http://localhost:3006/palettes/getById", paletteObject)
+    return this.http.post(this.baseUrl + "palettes/getById", paletteObject)
     .map(res => res.json())
   }
 
   getPalettesByUserId() {
     this.loadToken()
     let userObject = {"createdBy": JSON.parse(this.user)._id}
-    return this.http.post("http://localhost:3006/palettes/getByUserId", userObject)
+    return this.http.post(this.baseUrl + "palettes/getByUserId", userObject)
     .map(res => res.json())
   }
 
@@ -55,7 +56,7 @@ export class PalettesApiService {
   }
 
   updatePalette(paletteObject) {
-    return this.http.post("http://localhost:3006/palettes/update", paletteObject)
+    return this.http.post(this.baseUrl + "palettes/update", paletteObject)
     .map(res => res.json())
   }
 
