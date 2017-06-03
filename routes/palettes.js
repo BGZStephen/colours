@@ -37,12 +37,11 @@ router.post("/deleteOne", (req, res, next) => {
 
   Palette.getOne(paletteQuery)
   .then(result => {
-    let paletteItems = result.paletteItems.map((item) => {
-      PaletteItem.deletePaletteItem(item)
-    })
-    Promise.all(paletteItems)
+    return [
+      PaletteItem.deletePaletteItems(result.paletteItems),
+      User.deletePalette(paletteObject)
+    ]
   })
-  .then(User.deletePalette(paletteObject))
   .then(Palette.deleteOne(paletteQuery))
   .then(result => {
     res.json(result)

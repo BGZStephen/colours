@@ -45,3 +45,10 @@ module.exports.deletePaletteItem = function(paletteItemObject) {
     })
   })
 }
+
+module.exports.deletePaletteItems = function(paletteItemArray) {
+  for(let paletteItem of paletteItemArray) {
+    console.log(paletteItem)
+    PaletteItem.findOne({_id: paletteItem._id}).remove().exec()
+  }
+}
