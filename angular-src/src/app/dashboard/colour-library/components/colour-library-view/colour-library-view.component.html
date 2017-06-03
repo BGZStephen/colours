@@ -40,10 +40,6 @@
             </div>
           </div>
           <div class="form-row">
-            <label class="add-colour-label">Description: </label>
-            <input class="add-colour-input" type="text" placeholder="Colour Description" name="description" #description ngModel>
-          </div>
-          <div class="form-row">
             <a class="input-cancel" (click)="toggleModal(1)">Cancel</a>
             <input type="submit" value="Add" class="input-save">
           </div>
@@ -57,14 +53,18 @@
     </div>
     <div class="add-to-palette-modal-container" [ngStyle]="activeModalStyle(2)">
       <div class="palettes-container" *ngIf="userPalettes">
-        <div class="palettes-intro">
+        <div class="palettes-row">
           <i class="fa fa-times fa-2x" (click)="toggleModal(2)"></i>
-          <div class="colour-add-preview" *ngIf="activeColour" [ngStyle]="{'background': '#' + activeColour}">
-          </div>
           <h3 class="palette-header">Add Colour to Palette</h3>
         </div>
+        <div class="palettes-row">
+          <div class="colour-add-preview" *ngIf="activeColour" [ngStyle]="{'background': '#' + activeColour}">
+          </div>
+          <label class="palette-colour-label">Description: </label>
+          <input class="palette-colour-input" type="text" placeholder="Colour Description" name="description" #description ngModel>
+        </div>
         <div class="palette" *ngFor="let palette of userPalettes">
-          <h3 class="palette-name">{{palette.name}}</h3>
+          <h3 class="palette-name" (click)="addColourToPalette({paletteId: palette._id, hex: activeColour, description: description.value})">{{palette.name}}</h3>
         </div>
       </div>
     </div>

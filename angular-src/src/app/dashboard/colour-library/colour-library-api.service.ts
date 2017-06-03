@@ -19,8 +19,14 @@ export class ColourLibraryApiService {
   addColour(colourLibraryObject) {
     this.loadToken()
     colourLibraryObject.createdBy = JSON.parse(this.user)._id
-    console.log(colourLibraryObject)
     return this.http.post("http://localhost:3006/colours/createForLibrary", colourLibraryObject)
+    .map(res => res.json())
+  }
+
+  addColourToPalette(colourLibraryObject) {
+    this.loadToken()
+    colourLibraryObject.createdBy = JSON.parse(this.user)._id
+    return this.http.post("http://localhost:3006/colours/createForPalette", colourLibraryObject)
     .map(res => res.json())
   }
 
