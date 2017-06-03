@@ -16,9 +16,8 @@ router.post("/create", (req, res, next) => {
   })
 
   Palette.create(paletteObject)
-  .then(() => {
-    return User.addPalette(paletteObject)
-  }).then(result => {
+  .then(User.addPalette(paletteObject))
+  .then(result => {
     res.json(result)
   }).catch(error => {
     res.json(error)
@@ -42,11 +41,10 @@ router.post("/deleteOne", (req, res, next) => {
       PaletteItem.deletePaletteItem(item)
     })
     Promise.all(paletteItems)
-  }).then(() => {
-    return User.deletePalette(paletteObject)
-  }).then(() => {
-    return Palette.deleteOne(paletteQuery)
-  }).then(result => {
+  })
+  .then(User.deletePalette(paletteObject))
+  .then(Palette.deleteOne(paletteQuery))
+  .then(result => {
     res.json(result)
   }).catch(error => {
     res.json(error)
@@ -94,9 +92,7 @@ router.post("/update", (req, res, next) => {
   }
 
   Palette.getOne(paletteQuery)
-  .then(() => {
-    return Palette.updatePalette(paletteObject)
-  }).then(result => {
+  .then(Palette.updatePalette(paletteObject)).then(result => {
     res.json(result)
   }).catch(error => {
     res.json(error)

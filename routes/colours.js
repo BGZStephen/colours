@@ -103,9 +103,8 @@ router.post("/deleteFromPalette", (req, res, next) => {
   }
 
   Palette.deletePaletteItem(paletteItemObject)
-  .then(() => {
-    return PaletteItem.deletePaletteItem({_id: paletteItemObject.paletteItemId})
-  }).then(result => {
+  .then(PaletteItem.deletePaletteItem({_id: paletteItemObject.paletteItemId}))
+  .then(result => {
     res.json(result)
   }).catch(error => {
     res.json(error)

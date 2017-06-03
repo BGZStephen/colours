@@ -44,11 +44,9 @@ router.post("/deleteOne", (req, res, next) => {
   }
 
   User.doesntExist(userObject)
-  .then(() => {
-    return User.deleteOne(userObject)
-  }).then(() => {
-    return ColourLibrary.deleteOne(userObject)
-  }).then(result => {
+  .then(User.deleteOne(userObject))
+  .then(ColourLibrary.deleteOne(userObject))
+  .then(result => {
     res.json(result)
   }).catch(error => {
     res.json(error)
@@ -121,18 +119,16 @@ router.post("/register", (req, res, next) => {
   })
 
   User.doesntExist({username: userObject.username})
-  .then(() => {
-    return User.doesntExist({email: userObject.email})
-  }).then(() => {
-    return User.create(userObject)
-  }).then(result => {
+  .then(User.doesntExist({email: userObject.email}))
+  .then(User.create(userObject))
+  .then(result => {
     let colourLibraryObject = new ColourLibrary({
       createdAt: new Date(),
       createdBy: result.user._id,
     })
     return ColourLibrary.create(colourLibraryObject)
   }).then(result => {
-    return User.addColourLibrary(result)
+    User.addColourLibrary(result)
   }).then(result => {
     res.json(result)
   }).catch(error => {
@@ -185,9 +181,9 @@ router.post("/updatepassword", (req, res, next) => {
   .then(result => {
     userObject.storedHash = result.password
     return User.comparePassword(userObject)
-  }).then(result => {
-    return User.updatePassword(userObject)
-  }).then(result => {
+  })
+  .then(User.updatePassword(userObject))
+  .then(result => {
     console.log(result)
     res.json(result)
   }).catch(error => {
