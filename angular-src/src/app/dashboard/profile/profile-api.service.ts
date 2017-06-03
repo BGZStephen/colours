@@ -12,7 +12,7 @@ export class ProfileApiService {
 
   user: any;
   authToken: any;
-  baseUrl: string = "http://localhost:3006/"
+  baseUrl: string = ""
 
   getCurrentUser() {
     this.loadToken()

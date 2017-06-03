@@ -9,7 +9,7 @@ export class PalettesApiService {
   ) { }
 
   user: any;
-  baseUrl: string = "http://localhost:3006/"
+  baseUrl: string = ""
 
   addPaletteItem(paletteObject) {
     this.loadToken()

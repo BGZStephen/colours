@@ -8,7 +8,7 @@ export class SiteApiService {
     private http: Http
   ) { }
 
-  baseUrl: string = "http://localhost:3006/"
+  baseUrl: string = ""
 
   authenticate(userObject) {
     return this.http.post(this.baseUrl + "users/authenticate", userObject)

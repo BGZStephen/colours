@@ -10,7 +10,7 @@ export class ColourLibraryApiService {
 
   user: any;
   authToken: any;
-  baseUrl: string = "http://localhost:3006/"
+  baseUrl: string = ""
 
   loadToken() {
     this.authToken = localStorage.getItem('token')
