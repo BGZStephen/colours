@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ColourLibraryApiService } from "../../colour-library-api.service"
+import { FlashMessagesService} from "angular2-flash-messages"
 
 @Component({
   selector: 'app-colour-library-view',
@@ -9,7 +10,8 @@ import { ColourLibraryApiService } from "../../colour-library-api.service"
 export class ColourLibraryViewComponent implements OnInit {
 
   constructor(
-    private colourLibraryApiService: ColourLibraryApiService
+    private colourLibraryApiService: ColourLibraryApiService,
+    private flashMessage: FlashMessagesService
   ) {}
 
   colourLibrary: Array<object>
@@ -31,14 +33,26 @@ export class ColourLibraryViewComponent implements OnInit {
     console.log(colourLibraryObject)
     this.colourLibraryApiService.addColour(colourLibraryObject)
     .subscribe(res => {
-      console.log(res)
+      if(res.success) {
+        this.flashMessage.show(res.message, {cssClass: "flash-success--dashboard", timeout: 2000})
+        this.activeModal = -1
+        this.loadColourLibrary()
+      } else {
+        this.flashMessage.show(res.message, {cssClass: "flash-failure--dashboard", timeout: 2000})
+      }
     })
   }
 
   deleteColour(colourLibraryObject) {
     this.colourLibraryApiService.deleteColour(colourLibraryObject)
     .subscribe(res => {
-      this.loadColourLibrary()
+      if(res.success) {
+        this.flashMessage.show(res.message, {cssClass: "flash-success--dashboard", timeout: 2000})
+        this.activeModal = -1
+        this.loadColourLibrary()
+      } else {
+        this.flashMessage.show(res.message, {cssClass: "flash-failure--dashboard", timeout: 2000})
+      }
     })
   }
 
