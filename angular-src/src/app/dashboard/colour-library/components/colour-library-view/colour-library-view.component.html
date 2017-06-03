@@ -10,7 +10,7 @@
       <div class="colour-preview-pane" [ngStyle]="{'background': '#369369'}">
       </div>
       <div class="actions-container">
-        <i class="fa fa-plus" (click)="toggleAddColourModal()"></i>
+        <i class="fa fa-plus" (click)="toggleModal(1)"></i>
       </div>
     </div>
     <div class="colour-library-item" *ngFor="let colourItem of colourLibrary.colours">
@@ -20,7 +20,7 @@
       <div class="colour-preview-pane" [ngStyle]="{'background': '#' + colourItem.hex}">
       </div>
       <div class="actions-container">
-        <i class="fa fa-plus"></i>
+        <i class="fa fa-plus" (click)="toggleModal(2); setActiveColour(colourItem.hex)" *ngIf="userPalettes"></i>
         <i class="fa fa-trash" (click)="deleteColour({hex: colourItem.hex})"></i>
       </div>
     </div>
@@ -44,7 +44,7 @@
             <input class="add-colour-input" type="text" placeholder="Colour Description" name="description" #description ngModel>
           </div>
           <div class="form-row">
-            <a class="input-cancel" (click)="toggleAddColourModal()">Cancel</a>
+            <a class="input-cancel" (click)="toggleModal(1)">Cancel</a>
             <input type="submit" value="Add" class="input-save">
           </div>
           <div class="colour-add-row">
@@ -53,6 +53,19 @@
             </div>
           </div>
         </form>
+      </div>
+    </div>
+    <div class="add-to-palette-modal-container" [ngStyle]="activeModalStyle(2)">
+      <div class="palettes-container" *ngIf="userPalettes">
+        <div class="palettes-intro">
+          <i class="fa fa-times fa-2x" (click)="toggleModal(2)"></i>
+          <div class="colour-add-preview" *ngIf="activeColour" [ngStyle]="{'background': '#' + activeColour}">
+          </div>
+          <h3 class="palette-header">Add Colour to Palette</h3>
+        </div>
+        <div class="palette" *ngFor="let palette of userPalettes">
+          <h3 class="palette-name">{{palette.name}}</h3>
+        </div>
       </div>
     </div>
   </div>

@@ -83,7 +83,8 @@
   background: #f3c500;
 }
 
-.add-colour-modal-container{
+.add-colour-modal-container,
+.add-to-palette-modal-container{
   background: white;
   overflow: hidden;
   position: absolute;
@@ -178,4 +179,57 @@
   display: inline-block;
   height: 60px;
   width: 60px;
+}
+
+.palettes-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.palette {
+  background: $primary-dark-blue;
+  padding: 10px;
+  width: 100%;
+  @media(min-width: 540px) {
+    width: 33.333%;
+  }
+  @media(min-width: 768px) {
+    width: 25%;
+  }
+  @media(min-width: 1024px) {
+    width: 25%;
+  }
+  @media(min-width: 1280px) {
+    width: 12.5%;
+  }
+  @media(min-width: 1600px) {
+    width: 10%;
+  }
+}
+
+.palettes-intro {
+  align-items: center;
+  display: flex;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.fa-times {
+  margin-right: 20px;
+}
+
+.fa-times:hover {
+  color: darken(red, 10%)
+}
+
+.palette-header {
+  color: $primary-dark-blue;
+  font-size: 1.3em;
+  margin-left: 20px;
+}
+
+.palette-name {
+  color: $primary-white;
+  font-size: 1.3em;
 }

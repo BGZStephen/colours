@@ -38,6 +38,13 @@ export class ColourLibraryApiService {
     .map(res => res.json())
   }
 
+  getUserPalettes() {
+    this.loadToken()
+    let query = {createdBy: JSON.parse(this.user)._id}
+    return this.http.post("http://localhost:3006/palettes/getByUserId", query)
+    .map(res => res.json())
+  }
+
 
   // colourId: req.body.colourId
 

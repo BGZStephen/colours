@@ -15,17 +15,20 @@ export class ColourLibraryViewComponent implements OnInit {
   ) {}
 
   colourLibrary: Array<object>
+  userPalettes: Array<object>
   activeModal: number = -1
+  activeColour: string;
 
   ngOnInit() {
     this.loadColourLibrary()
     this.convertRgbToHex()
+    this.getUserPalettes()
   }
   activeModalStyle(index) {
     if(index == this.activeModal) {
-      return {"opacity": "1", "max-height": "200vh"}
+      return {"opacity": "1", "min-height": "calc(100vh - 120px)", "max-height": "200vh"}
     } else {
-      return {"opacity": "0", "max-height": "0"}
+      return {"opacity": "0", "min-height": "0", "max-height": "0"}
     }
   }
 
@@ -56,6 +59,17 @@ export class ColourLibraryViewComponent implements OnInit {
     })
   }
 
+  getUserPalettes() {
+    this.colourLibraryApiService.getUserPalettes()
+    .subscribe(res => {
+      if(res.success == false) {
+
+      } else {
+        this.userPalettes = res;
+      }
+    })
+  }
+
   loadColourLibrary() {
     this.colourLibraryApiService.getColourLibrary()
     .subscribe(res => {
@@ -63,11 +77,19 @@ export class ColourLibraryViewComponent implements OnInit {
     })
   }
 
-  toggleAddColourModal() {
-    if(this.activeModal == 1) {
+  toggleModal(index) {
+    if(this.activeModal == index) {
       this.activeModal = -1
     } else {
-      this.activeModal = 1
+      this.activeModal = index
+    }
+  }
+
+  setActiveColour(hexValue?) {
+    if(hexValue) {
+      this.activeColour = hexValue
+    } else {
+      this.activeColour = ""
     }
   }
 
