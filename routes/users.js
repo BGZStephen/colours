@@ -21,7 +21,7 @@ router.post("/authenticate", (req, res, next) => {
     userObject._id = result._id // used for signing tokens for use with localStorage on front-end
     return User.comparePassword(userObject)
   }).then(() => {
-    const token = jwt.sign(userObject, config.secret, {expiresIn: 604800});
+    const token = jwt.sign(userObject._id, config.secret, {expiresIn: 604800});
     return res.json({
       success: true,
       message: "Authentication successful",
@@ -39,60 +39,45 @@ router.post("/authenticate", (req, res, next) => {
 
 // delete user
 router.post("/deleteOne", (req, res, next) => {
-  let userObject = {
-    _id: req.body._id
+
+  if(!req.get(Authorization)) {
+    res.status(401).json({error: "Authorisation token not supplied"})
   }
 
-  User.doesntExist(userObject)
-  .then(User.deleteOne(userObject))
-  .then(ColourLibrary.deleteOne(userObject))
-  .then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
+  let jwt = jwt.verify(req.get(Authorization), config.secret)
+
+  if(jwt == undefined) {
+    res.status(403).json({error: "Authorization token not valid"})
+  } else {
+    User.doesntExist({_id: jwt._id})
+    .then(User.deleteOne({_id: jwt._id}))
+    .then(ColourLibrary.deleteOne({_id: jwt._id}))
+    .then(result => {
+      res.json(result)
+    }).catch(error => {
+      res.json(error)
+    })
+  }
 })
 
 // get user by id
 router.post("/getById", (req, res, next) => {
-  let userObject = {
-    _id: req.body._id
+  if(!req.get(Authorization)) {
+    res.status(401).json({error: "Authorisation token not supplied"})
   }
 
-  User.getOne(userObject)
-  .then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
-})
+  let jwt = jwt.verify(req.get(Authorization), config.secret)
 
-// get user by username
-router.post("/getByUsername", (req, res, next) => {
-  let userObject = {
-    username: req.body.username
+  if(jwt == undefined) {
+    res.status(403).json({error: "Authorization token not valid"})
+  } else {
+    User.getOne({_id: jwt._id})
+    .then(result => {
+      res.json(result)
+    }).catch(error => {
+      res.json(error)
+    })
   }
-
-  User.getOne(userObject)
-  .then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
-})
-
-// get user by email
-router.post("/getByEmail", (req, res, next) => {
-  let userObject = {
-    email: req.body.email
-  }
-
-  User.getOne(userObject)
-  .then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
 })
 
 // get all users
