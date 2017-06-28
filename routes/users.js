@@ -38,13 +38,13 @@ router.post("/authenticate", (req, res, next) => {
 })
 
 // delete user
-router.post("/deleteOne", (req, res, next) => {
+router.delete("/:userId", (req, res, next) => {
 
-  if(!req.get(Authorization)) {
-    res.status(401).json({error: "Authorisation token not supplied"})
+  if(!req.get('Authorization')) {
+    return res.status(401).json({error: "Authorisation token not supplied"})
   }
 
-  let jwt = jwt.verify(req.get(Authorization), config.secret)
+  let jwt = jwt.verify(req.get('Authorization'), config.secret)
 
   if(jwt == undefined) {
     res.status(403).json({error: "Authorization token not valid"})
@@ -61,12 +61,12 @@ router.post("/deleteOne", (req, res, next) => {
 })
 
 // get user by id
-router.post("/getById", (req, res, next) => {
-  if(!req.get(Authorization)) {
+router.get("/:userId", (req, res, next) => {
+  if(!req.get('Authorization')) {
     res.status(401).json({error: "Authorisation token not supplied"})
   }
 
-  let jwt = jwt.verify(req.get(Authorization), config.secret)
+  let jwt = jwt.verify(req.get('Authorization'), config.secret)
 
   if(jwt == undefined) {
     res.status(403).json({error: "Authorization token not valid"})
@@ -81,7 +81,7 @@ router.post("/getById", (req, res, next) => {
 })
 
 // get all users
-router.get("/getAll", (req, res, next) => {
+router.get("", (req, res, next) => {
   User.getAll()
   .then(result => {
     res.json(result)
@@ -91,7 +91,7 @@ router.get("/getAll", (req, res, next) => {
 })
 
 // register user
-router.post("/register", (req, res, next) => {
+router.post("", (req, res, next) => {
   let createdAtDate = new Date().getTime() // define date for user creation
 
   let userObject = new User({
@@ -122,7 +122,7 @@ router.post("/register", (req, res, next) => {
 })
 
 // update user
-router.post("/update", (req, res, next) => {
+router.put("", (req, res, next) => {
 
   let userObject = {
     email: req.body.email,

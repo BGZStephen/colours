@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http } from "@angular/http"
+import { Http, Headers } from "@angular/http"
+import { environment } from "../../environments/environment"
 
 @Injectable()
 export class SiteApiService {
@@ -8,15 +9,21 @@ export class SiteApiService {
     private http: Http
   ) { }
 
-  baseUrl: string = ""
+  coloursApiUrl: String = environment.coloursApiUrl
 
   authenticate(userObject) {
-    return this.http.post(this.baseUrl + "users/authenticate", userObject)
+    let token = localStorage.getItem('token')
+    let headers = new Headers()
+    headers.append('Authorization', `${token}`)
+    return this.http.post(this.coloursApiUrl + "/users/authenticate", userObject)
     .map(res => res.json())
   }
 
   registerUser(userObject) {
-    return this.http.post(this.baseUrl + "users/register", userObject)
+    let token = localStorage.getItem('token')
+    let headers = new Headers()
+    headers.append('Authorization', `${token}`)
+    return this.http.post(this.coloursApiUrl + "/users", userObject)
     .map(res => res.json())
   }
 
