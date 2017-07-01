@@ -39,12 +39,12 @@ const User = module.exports = mongoose.model('User', UserSchema)
 
 // push palette to user palettes array
 module.exports.addColourLibrary = function(colourLibraryObject) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     User.update({_id: colourLibraryObject.createdBy},{colourLibrary: colourLibraryObject._id}).then(result => {
       if(result.nModified >= 1) {
         resolve()
       } else {
-        reject({error: "Failed to add Colour Library to user"})
+        reject("Failed to add Colour Library to user")
       }
     })
   })
@@ -52,12 +52,12 @@ module.exports.addColourLibrary = function(colourLibraryObject) {
 
 // push palette to user palettes array
 module.exports.addPalette = function(palleteObject) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     User.update({_id: palleteObject.createdBy}, {$push: {palettes: {_id: palleteObject._id}}}).then(result => {
       if(result.n != null) {
         resolve()
       } else {
-        reject({error: "Failed to add Palette to user"})
+        reject("Failed to add Palette to user")
       }
     })
   })
@@ -65,10 +65,10 @@ module.exports.addPalette = function(palleteObject) {
 
 // pull palette from user palettes array
 module.exports.deletePalette = function(palleteObject) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     User.update({_id: palleteObject.userId}, {$pull: {palettes: {_id: palleteObject.paletteId}}}).then(result => {
       if(result.nModified == 0) {
-        reject({error: "Failed to pull palette from user Palettes"})
+        reject("Failed to pull palette from user Palettes")
       } else {
         resolve()
       }
@@ -86,7 +86,7 @@ module.exports.create = function(userObject) {
       if(result != null) {
         resolve(result)
       } else {
-        reject({error: "User creation failed"})
+        reject("User creation failed")
       }
     })
   })
@@ -99,7 +99,7 @@ module.exports.deleteOne = function(userObject){
       if(JSON.parse(result).n == 1) {
         resolve()
       } else {
-        reject({error: "Failed to delete user"})
+        reject("Failed to delete user")
       }
     })
   })
@@ -107,12 +107,13 @@ module.exports.deleteOne = function(userObject){
 
 // get one user from the database
 module.exports.doesntExist = function(userObject) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     User.findOne(userObject).then(result => {
+      console.log(result)
       if(result == null) {
         resolve()
       } else {
-        reject({error: "User already exists"})
+        reject("User already exists")
       }
     })
   })
@@ -125,7 +126,7 @@ module.exports.getAll = function(userObject){
       if(result.length > 1) {
         resolve(result)
       } else {
-        reject({error: "No users found"})
+        reject("No users found")
       }
     })
   })
@@ -133,10 +134,10 @@ module.exports.getAll = function(userObject){
 
 // get one user from the database
 module.exports.getOne = function(userObject) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     User.findOne(userObject).then(result => {
       if(result == null) {
-        reject({error: "User not found"})
+        reject("User not found")
       } else {
         resolve(result)
       }
@@ -151,7 +152,7 @@ module.exports.comparePassword = function(userObject) {
       if(res == true) {
         resolve()
       } else {
-        reject({error: "Incorrect password"})
+        reject("Incorrect password")
       }
     })
   })
@@ -166,7 +167,7 @@ module.exports.updatePassword = function(userObject) {
       if(result.nModified >= 1) {
         resolve()
       } else {
-        reject({error: "Password update failed"})
+        reject("Password update failed")
       }
     })
   })
@@ -174,14 +175,14 @@ module.exports.updatePassword = function(userObject) {
 
 // update a users profile within the db
 module.exports.updateUser = function(userObject) {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     User.update({_id: userObject.userId}, userObject).then(result => {
       if(result.nModified == 0) {
         resolve()
       } else if(result.nModified >= 1) {
         resolve()
       } else {
-        reject({error: "User update failed"})
+        reject("User update failed")
       }
     })
   })

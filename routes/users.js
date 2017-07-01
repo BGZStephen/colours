@@ -39,7 +39,8 @@ router.post("/authenticate", (req, res, next) => {
       })
     }).catch(error => {
       console.log(error)
-      res.status(500).json(error)
+      res.statusMessage = error
+      res.status(500).send(error)
     })
   }
 })
@@ -63,7 +64,8 @@ router.delete("/:userId", (req, res, next) => {
       res.sendStatus(200)
     }).catch(error => {
       console.log(error)
-      res.status(500).json(error)
+      res.statusMessage = error
+      res.status(500).send(error)
     })
   }
 })
@@ -84,7 +86,8 @@ router.get("/:userId", (req, res, next) => {
       res.status(200).json(result)
     }).catch(error => {
       console.log(error)
-      res.status(500).json(error)
+      res.statusMessage = error
+      res.status(500).send(error)
     })
   }
 })
@@ -102,7 +105,8 @@ router.get("", (req, res, next) => {
       res.status(200).json(result)
     }).catch(error => {
       console.log(error)
-      res.status(500).json(error)
+      res.statusMessage = error
+      res.status(500).send(error)
     })
   }
 
@@ -110,8 +114,6 @@ router.get("", (req, res, next) => {
 
 // register user
 router.post("", (req, res, next) => {
-
-  console.log(req.query.siteAuthToken)
 
   if(!req.query.siteAuthToken) {
     return res.status(401).json({error: "Authorisation token not supplied"})
@@ -130,12 +132,14 @@ router.post("", (req, res, next) => {
     })
 
     User.doesntExist({username: userObject.username})
-    .then(User.doesntExist({email: userObject.email}))
+    .then(result => {
+      console.log(result)
+      return User.doesntExist({email: userObject.email})
+    })
     .then(() => {
       return User.create(userObject)
     })
     .then(result => {
-      console.log(result)
       let colourLibraryObject = new ColourLibrary({
         createdAt: new Date(),
         createdBy: result.user._id,
@@ -147,7 +151,8 @@ router.post("", (req, res, next) => {
       res.sendStatus(200)
     }).catch(error => {
       console.log(error)
-      res.status(500).json(error)
+      res.statusMessage = error
+      res.status(500).send(error)
     })
   }
 })
@@ -167,13 +172,13 @@ router.put("", (req, res, next) => {
   User.getOne({username: userObject.username})
   .then(result => {
     if(result._id != userObject._id) {
-      return Promise.reject(res.json({success: false, message: "Username already taken"}))
+      return Promise.reject({error: "Username already taken"})
     } else {
       return User.getOne({email: userObject.email})
     }
   }).then(result => {
     if(result != null && result.email != userObject.email) {
-      return Promise.reject(res.json({success: false, message: "Email address already registered"}))
+      return Promise.reject({error: "Email address already registered"})
     } else {
       return User.updateUser(userObject)
     }
@@ -181,7 +186,8 @@ router.put("", (req, res, next) => {
     res.sendStatus(200)
   }).catch(error => {
     console.log(error)
-    res.status(500).json(error)
+    res.statusMessage = error.error
+    res.status(500).send(error)
   })
 })
 
@@ -206,7 +212,8 @@ router.post("/updatepassword", (req, res, next) => {
     res.sendStatus(200)
   }).catch(error => {
     console.log(error)
-    res.status(500).json(error)
+    res.statusMessage = error
+    res.status(500).send(error)
   })
 })
 
