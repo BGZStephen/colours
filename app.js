@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const bodyParser = require('body-parser')
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -27,9 +26,6 @@ const app = express()
 // cors setup
 app.use(cors())
 
-// static folder for public views
-app.use(express.static(path.join(__dirname, 'public')))
-
 // body partser initialize
 app.use(bodyParser.json())
 
@@ -48,19 +44,14 @@ app.use('/colour-libraries', colourLibraries)
 
 
 // index route
-app.get('/', (req, res) => {
-  res.send('Invalid Endpoint')
-})
-
-// default route
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'))
+  res.send('Invalid Endpoint')
 })
 
 // start server
 
 // define port
-const port = 3006
+const port = 3000
 
 app.listen(port, () => {
   console.log("Server started, listening on port " + port)
