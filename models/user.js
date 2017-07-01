@@ -42,9 +42,9 @@ module.exports.addColourLibrary = function(colourLibraryObject) {
   return new Promise(resolve => {
     User.update({_id: colourLibraryObject.createdBy},{colourLibrary: colourLibraryObject._id}).then(result => {
       if(result.nModified >= 1) {
-        resolve({success: true, message: "User created successfully"})
+        resolve()
       } else {
-        reject({success: false, message: "Failed to add Colour Library to user"})
+        reject({error: "Failed to add Colour Library to user"})
       }
     })
   })
@@ -55,9 +55,9 @@ module.exports.addPalette = function(palleteObject) {
   return new Promise(resolve => {
     User.update({_id: palleteObject.createdBy}, {$push: {palettes: {_id: palleteObject._id}}}).then(result => {
       if(result.n != null) {
-        resolve({success: true, message: "Palette added to user successfully"})
+        resolve()
       } else {
-        reject({success: false, message: "Failed to add Palette to user"})
+        reject({error: "Failed to add Palette to user"})
       }
     })
   })
@@ -68,23 +68,13 @@ module.exports.deletePalette = function(palleteObject) {
   return new Promise(resolve => {
     User.update({_id: palleteObject.userId}, {$pull: {palettes: {_id: palleteObject.paletteId}}}).then(result => {
       if(result.nModified == 0) {
-        reject({success: false, message: "Failed to pull palette from user Palettes"})
+        reject({error: "Failed to pull palette from user Palettes"})
       } else {
-        resolve(result)
+        resolve()
       }
     })
   })
 }
-
-// push project to user projects array
-// module.exports.addProject = function(projectObject, callback) {
-//
-// }
-
-// pull project to user projects array
-// module.exports.deleteProject = function(projectObject, callback) {
-//
-// }
 
 // save new User to db
 module.exports.create = function(userObject) {
@@ -94,9 +84,9 @@ module.exports.create = function(userObject) {
     userObject.password = hash;
     userObject.save().then(result => {
       if(result != null) {
-        resolve({success: true, message: "User created successfully", user: result})
+        resolve(result)
       } else {
-        reject({success: false, message: "User creation failed"})
+        reject({error: "User creation failed"})
       }
     })
   })
@@ -107,9 +97,9 @@ module.exports.deleteOne = function(userObject){
   return new Promise((resolve, reject) => {
     User.findOne(userObject).remove().exec().then(result => {
       if(JSON.parse(result).n == 1) {
-        resolve({success: true, message: "User deleted successfully"})
+        resolve()
       } else {
-        reject({success: false, message: "Failed to delete user"})
+        reject({error: "Failed to delete user"})
       }
     })
   })
@@ -120,9 +110,9 @@ module.exports.doesntExist = function(userObject) {
   return new Promise(resolve => {
     User.findOne(userObject).then(result => {
       if(result == null) {
-        resolve({success: true, message: "User doesn't exist"})
+        resolve()
       } else {
-        reject({success: false, message: "User already exists"})
+        reject({error: "User already exists"})
       }
     })
   })
@@ -135,7 +125,7 @@ module.exports.getAll = function(userObject){
       if(result.length > 1) {
         resolve(result)
       } else {
-        reject({success: false, message: "No users found"})
+        reject({error: "No users found"})
       }
     })
   })
@@ -146,7 +136,7 @@ module.exports.getOne = function(userObject) {
   return new Promise(resolve => {
     User.findOne(userObject).then(result => {
       if(result == null) {
-        reject({success: false, message: "User not found"})
+        reject({error: "User not found"})
       } else {
         resolve(result)
       }
@@ -159,9 +149,9 @@ module.exports.comparePassword = function(userObject) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(userObject.queryPassword, userObject.storedHash).then(res => {
       if(res == true) {
-        resolve({success: true, message: "Passwordds match"})
+        resolve()
       } else {
-        reject({success: false, message: "Incorrect password"})
+        reject({error: "Incorrect password"})
       }
     })
   })
@@ -174,9 +164,9 @@ module.exports.updatePassword = function(userObject) {
     var hash = bcrypt.hashSync(userObject.newPassword, salt)
     User.update({_id: userObject._id},{password: hash}).then(result => {
       if(result.nModified >= 1) {
-        resolve({success: true, message: "Password updated successfully"})
+        resolve()
       } else {
-        reject({success: false, message: "Password update failed"})
+        reject({error: "Password update failed"})
       }
     })
   })
@@ -187,9 +177,11 @@ module.exports.updateUser = function(userObject) {
   return new Promise(resolve => {
     User.update({_id: userObject.userId}, userObject).then(result => {
       if(result.nModified == 0) {
-        resolve({success: true, message: "Nothing to update"})
+        resolve()
       } else if(result.nModified >= 1) {
-        resolve({success: true, message: "User updated successfully"})
+        resolve()
+      } else {
+        reject({error: "User update failed"})
       }
     })
   })

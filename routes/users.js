@@ -38,7 +38,8 @@ router.post("/authenticate", (req, res, next) => {
         }
       })
     }).catch(error => {
-      res.json(error)
+      console.log(error)
+      res.status(500).json(error)
     })
   }
 })
@@ -59,9 +60,10 @@ router.delete("/:userId", (req, res, next) => {
     .then(User.deleteOne({_id: jwt._id}))
     .then(ColourLibrary.deleteOne({_id: jwt._id}))
     .then(result => {
-      res.json(result)
+      res.sendStatus(200)
     }).catch(error => {
-      res.json(error)
+      console.log(error)
+      res.status(500).json(error)
     })
   }
 })
@@ -79,9 +81,10 @@ router.get("/:userId", (req, res, next) => {
   } else {
     User.getOne({_id: jwt._id})
     .then(result => {
-      res.json(result)
+      res.status(200).json(result)
     }).catch(error => {
-      res.json(error)
+      console.log(error)
+      res.status(500).json(error)
     })
   }
 })
@@ -96,9 +99,10 @@ router.get("", (req, res, next) => {
   } else {
     User.getAll()
     .then(result => {
-      res.json(result)
+      res.status(200).json(result)
     }).catch(error => {
-      res.json(error)
+      console.log(error)
+      res.status(500).json(error)
     })
   }
 
@@ -140,9 +144,10 @@ router.post("", (req, res, next) => {
     }).then(result => {
       return User.addColourLibrary(result)
     }).then(result => {
-      res.json(result)
+      res.sendStatus(200)
     }).catch(error => {
-      res.json(error)
+      console.log(error)
+      res.status(500).json(error)
     })
   }
 })
@@ -173,9 +178,10 @@ router.put("", (req, res, next) => {
       return User.updateUser(userObject)
     }
   }).then(result => {
-    res.json(result)
+    res.sendStatus(200)
   }).catch(error => {
-    res.json(error)
+    console.log(error)
+    res.status(500).json(error)
   })
 })
 
@@ -197,10 +203,10 @@ router.post("/updatepassword", (req, res, next) => {
     return User.updatePassword(userObject)
   })
   .then(result => {
-    console.log(result)
-    res.json(result)
+    res.sendStatus(200)
   }).catch(error => {
-    res.json(error)
+    console.log(error)
+    res.status(500).json(error)
   })
 })
 
