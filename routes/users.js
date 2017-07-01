@@ -10,31 +10,37 @@ const ColourLibrary = require('../models/colour-library');
 // authanticate
 router.post("/authenticate", (req, res, next) => {
 
-  let userObject = {
-    email: req.body.email,
-    queryPassword: req.body.password,
-  }
+  if(!req.query.siteAuthToken) {
+    return res.status(401).json({error: "Authorisation token not supplied"})
+  } else if(req.query.siteAuthToken != config.siteAuthToken) {
+    return res.status(403).json({error: "Unauthorized access, access denied"})
+  } else {
+    let userObject = {
+      email: req.body.email,
+      queryPassword: req.body.password,
+    }
 
-  User.getOne({email: userObject.email})
-  .then(result => {
-    userObject.storedHash = result.password
-    userObject._id = result._id // used for signing tokens for use with localStorage on front-end
-    return User.comparePassword(userObject)
-  }).then(() => {
-    const token = jwt.sign(userObject._id, config.secret, {expiresIn: 604800});
-    return res.json({
-      success: true,
-      message: "Authentication successful",
-      token: "JWT" + token,
-      user: {
-        email: userObject.email,
-        _id: userObject._id,
-        username: userObject.username
-      }
+    User.getOne({email: userObject.email})
+    .then(result => {
+      userObject.storedHash = result.password
+      userObject._id = result._id // used for signing tokens for use with localStorage on front-end
+      return User.comparePassword(userObject)
+    }).then(() => {
+      const token = jwt.sign(userObject._id, config.secret, {expiresIn: 604800});
+      return res.json({
+        success: true,
+        message: "Authentication successful",
+        token: "JWT" + token,
+        user: {
+          email: userObject.email,
+          _id: userObject._id,
+          username: userObject.username
+        }
+      })
+    }).catch(error => {
+      res.json(error)
     })
-  }).catch(error => {
-    res.json(error)
-  })
+  }
 })
 
 // delete user
@@ -82,43 +88,63 @@ router.get("/:userId", (req, res, next) => {
 
 // get all users
 router.get("", (req, res, next) => {
-  User.getAll()
-  .then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
+
+  if(!req.query.adminAuthToken) {
+    return res.status(401).json({error: "Authorisation token not supplied"})
+  } else if(req.query.adminAuthToken != config.adminAuthToken) {
+    return res.status(403).json({error: "Unauthorized access, access denied"})
+  } else {
+    User.getAll()
+    .then(result => {
+      res.json(result)
+    }).catch(error => {
+      res.json(error)
+    })
+  }
+
 })
 
 // register user
 router.post("", (req, res, next) => {
-  let createdAtDate = new Date().getTime() // define date for user creation
 
-  let userObject = new User({
-    createdAt: createdAtDate,
-    email: req.body.email,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    password: req.body.password,
-    username: req.body.username
-  })
+  console.log(req.query.siteAuthToken)
 
-  User.doesntExist({username: userObject.username})
-  .then(User.doesntExist({email: userObject.email}))
-  .then(User.create(userObject))
-  .then(result => {
-    let colourLibraryObject = new ColourLibrary({
-      createdAt: new Date(),
-      createdBy: result.user._id,
+  if(!req.query.siteAuthToken) {
+    return res.status(401).json({error: "Authorisation token not supplied"})
+  } else if(req.query.siteAuthToken != config.siteAuthToken) {
+    return res.status(403).json({error: "Unauthorized access, access denied"})
+  } else {
+    let createdAtDate = new Date().getTime() // define date for user creation
+
+    let userObject = new User({
+      createdAt: createdAtDate,
+      email: req.body.email,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      password: req.body.password,
+      username: req.body.username
     })
-    return ColourLibrary.create(colourLibraryObject)
-  }).then(result => {
-    User.addColourLibrary(result)
-  }).then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
+
+    User.doesntExist({username: userObject.username})
+    .then(User.doesntExist({email: userObject.email}))
+    .then(() => {
+      return User.create(userObject)
+    })
+    .then(result => {
+      console.log(result)
+      let colourLibraryObject = new ColourLibrary({
+        createdAt: new Date(),
+        createdBy: result.user._id,
+      })
+      return ColourLibrary.create(colourLibraryObject)
+    }).then(result => {
+      return User.addColourLibrary(result)
+    }).then(result => {
+      res.json(result)
+    }).catch(error => {
+      res.json(error)
+    })
+  }
 })
 
 // update user
@@ -167,7 +193,9 @@ router.post("/updatepassword", (req, res, next) => {
     userObject.storedHash = result.password
     return User.comparePassword(userObject)
   })
-  .then(User.updatePassword(userObject))
+  .then(() => {
+    return User.updatePassword(userObject)
+  })
   .then(result => {
     console.log(result)
     res.json(result)
