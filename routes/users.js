@@ -20,17 +20,20 @@ router.post("/authenticate", (req, res, next) => {
       queryPassword: req.body.password,
     }
 
+    let userId;
+
     User.getOne({email: userObject.email})
     .then(result => {
       userObject.storedHash = result.password
       userObject._id = result._id // used for signing tokens for use with localStorage on front-end
+      userId = result._id
       return User.comparePassword(userObject)
     }).then(() => {
-      const token = jwt.sign(userObject._id, config.secret, {expiresIn: 604800});
+      const token = jwt.sign({userId: userId}, config.secret, {expiresIn: 604800});
       return res.json({
         success: true,
         message: "Authentication successful",
-        token: "JWT" + token,
+        token: token,
         user: {
           email: userObject.email,
           _id: userObject._id,
@@ -52,9 +55,9 @@ router.delete("/:userId", (req, res, next) => {
     return res.status(401).json({error: "Authorisation token not supplied"})
   }
 
-  let jwt = jwt.verify(req.get('Authorization'), config.secret)
+  let verifiedJwt = jwt.verify(req.get('Authorization'), config.secret)
 
-  if(jwt == undefined) {
+  if(verifiedJwt == undefined) {
     res.status(403).json({error: "Authorization token not valid"})
   } else {
     User.doesntExist({_id: jwt._id})
@@ -76,12 +79,12 @@ router.get("/:userId", (req, res, next) => {
     res.status(401).json({error: "Authorisation token not supplied"})
   }
 
-  let jwt = jwt.verify(req.get('Authorization'), config.secret)
+  let verifiedJwt = jwt.verify(req.get('Authorization'), config.secret)
 
-  if(jwt == undefined) {
+  if(verifiedJwt == undefined) {
     res.status(403).json({error: "Authorization token not valid"})
   } else {
-    User.getOne({_id: jwt._id})
+    User.getOne({_id: verifiedJwt.userId})
     .then(result => {
       res.status(200).json(result)
     }).catch(error => {
