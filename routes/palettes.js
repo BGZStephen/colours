@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const config = require('../config/database');
+const config = require('../config');
 const User = require('../models/user');
 const Palette = require('../models/palette');
 const PaletteItem = require('../models/palette-item');

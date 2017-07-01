@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const config = require('../config/database')
+const config = require('../config')
 const PaletteItem = require('./palette-item')
 const PaletteItemSchema = PaletteItem.schema
 
