@@ -4,7 +4,7 @@ const config = require('../config');
 const ColourLibrary = require('../models/colour-library');
 
 // delete colour from users library
-router.put(":colourLibraryId", (req, res, next) => {
+router.put("/:colourLibraryId", (req, res, next) => {
 
   if(!req.get('Authorization')) {
     return res.status(401).json({error: "Authorisation token not supplied"})
