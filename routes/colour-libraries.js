@@ -4,34 +4,54 @@ const config = require('../config');
 const ColourLibrary = require('../models/colour-library');
 
 // delete colour from users library
-router.post("/deleteColour", (req, res, next) => {
+router.put(":colourLibraryId", (req, res, next) => {
 
-  let colourLibraryObject = {
-    userId: req.body.userId,
-    hex: req.body.hex
+  if(!req.get('Authorization')) {
+    return res.status(401).json({error: "Authorisation token not supplied"})
   }
 
-  ColourLibrary.deleteColour(colourLibraryObject)
-  .then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
+  let verifiedJwt = jwt.verify(req.get('Authorization'), config.secret)
+
+  if(verifiedJwt == undefined) {
+    res.status(403).json({error: "Authorization token not valid"})
+  } else {
+    let colourLibraryObject = {
+      userId: req.body.userId,
+      hex: req.body.hex
+    }
+
+    ColourLibrary.deleteColour(colourLibraryObject)
+    .then(result => {
+      res.json(result)
+    }).catch(error => {
+      res.json(error)
+    })
+  }
 })
 
 // get users colour library
-router.post("/getByUserId", (req, res, next) => {
+router.get("/:colourLibraryId", (req, res, next) => {
 
-  let colourLibraryObject = {
-    _id: req.body._id
+  if(!req.get('Authorization')) {
+    return res.status(401).json({error: "Authorisation token not supplied"})
   }
 
-  ColourLibrary.getOne(colourLibraryObject)
-  .then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
+  let verifiedJwt = jwt.verify(req.get('Authorization'), config.secret)
+
+  if(verifiedJwt == undefined) {
+    res.status(403).json({error: "Authorization token not valid"})
+  } else {
+    let colourLibraryObject = {
+      _id: req.body._id
+    }
+
+    ColourLibrary.getOne(colourLibraryObject)
+    .then(result => {
+      res.json(result)
+    }).catch(error => {
+      res.json(error)
+    })
+  }
 })
 
 
