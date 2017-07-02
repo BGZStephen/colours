@@ -6,96 +6,137 @@ const Palette = require('../models/palette');
 const PaletteItem = require('../models/palette-item');
 
 // create new Palette
-router.post("/create", (req, res, next) => {
+router.post("", (req, res, next) => {
 
-  let paletteObject = new Palette({
-    createdAt: new Date(),
-    createdBy: req.body.createdBy,
-    description: req.body.description,
-    name: req.body.name
-  })
+  if(!req.get('Authorization')) {
+    return res.status(401).json({error: "Authorisation token not supplied"})
+  }
 
-  Palette.create(paletteObject)
-  .then(User.addPalette(paletteObject))
-  .then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
+  let verifiedJwt = jwt.verify(req.get('Authorization'), config.secret)
+
+  if(verifiedJwt == undefined) {
+    res.status(403).json({error: "Authorization token not valid"})
+  } else {
+    let paletteObject = new Palette({
+      createdAt: new Date(),
+      createdBy: req.body.createdBy,
+      description: req.body.description,
+      name: req.body.name
+    })
+
+    Palette.create(paletteObject)
+    .then(User.addPalette(paletteObject))
+    .then(result => {
+      res.json(result)
+    }).catch(error => {
+      res.json(error)
+    })
+  }
 })
 
 // delete palette
-router.post("/deleteOne", (req, res, next) => {
-  let paletteObject = {
-    paletteId: req.body.paletteId,
-    userId: req.body.userId
+router.delete("/:paletteId", (req, res, next) => {
+
+  if(!req.get('Authorization')) {
+    return res.status(401).json({error: "Authorisation token not supplied"})
   }
 
-  let paletteQuery = {
-    _id: req.body.paletteId,
-  }
+  let verifiedJwt = jwt.verify(req.get('Authorization'), config.secret)
 
-  Palette.getOne(paletteQuery)
-  .then(result => {
-    return [
-      PaletteItem.deletePaletteItems(result.paletteItems),
-      User.deletePalette(paletteObject)
-    ]
-  })
-  .then(Palette.deleteOne(paletteQuery))
-  .then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
+  if(verifiedJwt == undefined) {
+    res.status(403).json({error: "Authorization token not valid"})
+  } else {
+    let paletteObject = {
+      paletteId: req.body.paletteId,
+      userId: req.body.userId
+    }
+
+    let paletteQuery = {
+      _id: req.body.paletteId,
+    }
+
+    Palette.getOne(paletteQuery)
+    .then(result => {
+      return [
+        PaletteItem.deletePaletteItems(result.paletteItems),
+        User.deletePalette(paletteObject)
+      ]
+    })
+    .then(Palette.deleteOne(paletteQuery))
+    .then(result => {
+      res.json(result)
+    }).catch(error => {
+      res.json(error)
+    })
+  }
 })
 
 // get by id
-router.post("/getById", (req, res, next) => {
-  let paletteObject = {
-    _id: req.body._id
+router.get("/:id", (req, res, next) => {
+  if(!req.get('Authorization')) {
+    return res.status(401).json({error: "Authorisation token not supplied"})
   }
 
-  Palette.getOne(paletteObject)
-  .then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
-})
+  let verifiedJwt = jwt.verify(req.get('Authorization'), config.secret)
 
-// get by user
-router.post("/getByUserId", (req, res, next) => {
-  let paletteObject = {
-    createdBy: req.body.createdBy
+  if(verifiedJwt == undefined) {
+    res.status(403).json({error: "Authorization token not valid"})
+  } else {
+    let paletteObject = {
+      _id: req.body._id
+    }
+
+    Palette.getOne(paletteObject)
+    .then(result => {
+      res.json(result)
+    }).catch(error => {
+      res.json(error)
+    })
+  })
+
+  // get by user
+  router.get("", (req, res, next) => {
+    let paletteObject = {
+      createdBy: req.body.createdBy
+    }
+
+    Palette.getByUserId(paletteObject)
+    .then(result => {
+      res.json(result)
+    }).catch(error => {
+      res.json(error)
+    })
   }
-
-  Palette.getByUserId(paletteObject)
-  .then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
 })
 
 // update
-router.post("/update", (req, res, next) => {
-  let paletteObject = {
-    description: req.body.description,
-    _id: req.body._id,
-    name: req.body.name
+router.put("/:paletteId", (req, res, next) => {
+  if(!req.get('Authorization')) {
+    return res.status(401).json({error: "Authorisation token not supplied"})
   }
 
-  let paletteQuery = {
-    _id: req.body._id,
-  }
+  let verifiedJwt = jwt.verify(req.get('Authorization'), config.secret)
 
-  Palette.getOne(paletteQuery)
-  .then(Palette.updatePalette(paletteObject)).then(result => {
-    res.json(result)
-  }).catch(error => {
-    res.json(error)
-  })
+  if(verifiedJwt == undefined) {
+    res.status(403).json({error: "Authorization token not valid"})
+  } else {
+    let paletteObject = {
+      description: req.body.description,
+      _id: req.body._id,
+      name: req.body.name
+    }
+
+    let paletteQuery = {
+      _id: req.body._id,
+    }
+
+    Palette.getOne(paletteQuery)
+    .then(Palette.updatePalette(paletteObject)).then(result => {
+      res.json(result)
+    }).catch(error => {
+      res.json(error)
+    })
+  }
 })
 
 module.exports = router;
