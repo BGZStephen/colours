@@ -83,19 +83,6 @@ module.exports.getOne = function(paletteObject) {
   })
 }
 
-// get palettes by userId
-module.exports.getByUserId = function(paletteObject) {
-  return new Promise((resolve, reject) => {
-    Palette.find(paletteObject).then(result => {
-      if(result.length == 0) {
-        reject({success: false, message: "No palettes found for user"})
-      } else {
-        resolve(result)
-      }
-    })
-  })
-}
-
 // get all palettes
 module.exports.getAll = function(paletteObject) {
   return new Promise(resolve => {

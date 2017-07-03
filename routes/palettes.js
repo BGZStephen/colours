@@ -82,25 +82,20 @@ router.get("/:id", (req, res, next) => {
   if(verifiedJwt == undefined) {
     res.status(403).json({error: "Authorization token not valid"})
   } else {
-    let paletteObject = {
-      _id: req.body._id
+
+    let paletteObject
+
+    if(req.body.type == "id") {
+      paletteObject = {
+        _id: req.body._id
+      }
+    } else if(req.body.type == "userId") {
+      paletteObject = {
+        createdBy: req.body.createdBy
+      }
     }
 
     Palette.getOne(paletteObject)
-    .then(result => {
-      res.json(result)
-    }).catch(error => {
-      res.json(error)
-    })
-  })
-
-  // get by user
-  router.get("", (req, res, next) => {
-    let paletteObject = {
-      createdBy: req.body.createdBy
-    }
-
-    Palette.getByUserId(paletteObject)
     .then(result => {
       res.json(result)
     }).catch(error => {
