@@ -17,7 +17,7 @@ router.put("/:colourLibraryId", (req, res, next) => {
     res.status(403).json({error: "Authorization token not valid"})
   } else {
     let colourLibraryObject = {
-      userId: req.body.userId,
+      _id: req.body._id,
       hex: req.body.hex
     }
 
