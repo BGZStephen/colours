@@ -86,7 +86,7 @@ module.exports.deleteOne = function(colourLibraryObject){
 // delete colour library (only used when removing a user from the system, if used otherwise, it will break a profile)
 module.exports.getOne = function(colourLibraryObject){
   return new Promise((resolve, reject) => {
-    ColourLibrary.findOne({createdBy: colourLibraryObject._id}).then(result => {
+    ColourLibrary.findOne({_id: colourLibraryObject._id}).then(result => {
       if(result != null) {
         resolve(result)
       } else {

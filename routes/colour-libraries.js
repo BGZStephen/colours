@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const config = require('../config');
+const jwt = require('jsonwebtoken')
 const ColourLibrary = require('../models/colour-library');
 
 // delete colour from users library
@@ -42,7 +43,7 @@ router.get("/:colourLibraryId", (req, res, next) => {
     res.status(403).json({error: "Authorization token not valid"})
   } else {
     let colourLibraryObject = {
-      _id: req.body._id
+      _id: verifiedJwt.colourLibraryId
     }
 
     ColourLibrary.getOne(colourLibraryObject)

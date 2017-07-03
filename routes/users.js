@@ -18,21 +18,25 @@ router.post("/authenticate", (req, res, next) => {
       queryPassword: req.body.password,
     }
 
-    let userId;
+    let jwtObject = {};
 
     User.getOne({email: userObject.email})
     .then(result => {
       userObject.storedHash = result.password
       userObject._id = result._id // used for signing tokens for use with localStorage on front-end
-      userId = result._id
+
+      // assign values to store within the jwt
+      jwtObject.userId = result._id
+      jwtObject.colourLibraryId = result.colourLibrary
       return User.comparePassword(userObject)
     }).then(() => {
-      const token = jwt.sign({userId: userId}, config.secret, {expiresIn: 604800});
+      const token = jwt.sign(jwtObject, config.secret, {expiresIn: 604800});
       return res.json({
         success: true,
         message: "Authentication successful",
         token: token,
         user: {
+          colourLibraryId: jwtObject.colourLibraryId,
           email: userObject.email,
           _id: userObject._id,
           username: userObject.username
