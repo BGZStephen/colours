@@ -20,14 +20,14 @@ module.exports.addColourToLibrary = function(colourObject) {
     ColourLibrary.findOne({'colours.hex': colourObject.hex}).then(result => {
       if(result != null) {
         // if colour already exists, simply return it
-        resolve({success: false, message: "Colour already exists in Library"})
+        resolve()
       } else {
         // else, push it to the colour library
         ColourLibrary.update({createdBy: colourObject.createdBy}, {$push: {colours: colourObject}}).then(result => {
           if(result.nModified >= 1 ){
-            resolve({success: true, message: "Added colour to library"})
+            resolve()
           } else {
-            reject(res.json({success: false, message: "Failed to add colour to library"}))
+            reject("Failed to add colour to library")
           }
         })
       }
@@ -43,9 +43,9 @@ module.exports.deleteColour = function(colourLibraryObject) {
     console.log(colourLibraryObject._id)
     ColourLibrary.update({_id: colourLibraryObject._id}, {$pull: {colours: {hex: colourLibraryObject.hex}}}).then(result => {
       if(result.nModified == 0) {
-        reject({success: false, message: "Failed to delete Colour (does it exist?)"})
+        reject("Failed to delete Colour (does it exist?)")
       } else {
-        resolve({success: true, message: "Colour removed from library."})
+        resolve()
       }
     })
   })
@@ -62,7 +62,7 @@ module.exports.create = function(colourLibraryObject) {
     */
     colourLibraryObject.save().then(result => {
       if(result == null) {
-        reject({success: false, message: "Failed to create Colour Library"})
+        reject("Failed to create Colour Library")
       } else {
         resolve(result)
       }
@@ -75,9 +75,9 @@ module.exports.deleteOne = function(colourLibraryObject){
   return new Promise(resolve => {
     ColourLibrary.findOne({createdBy: colourLibraryObject._id}).remove().exec().then(result => {
       if(JSON.parse(result).n == 1) {
-        resolve({success: true, message: "Colour Library deleted successfully"})
+        resolve()
       } else {
-        reject({success: false, message: "Failed to delete Colour Library"})
+        reject("Failed to delete Colour Library")
       }
     })
   })
@@ -90,7 +90,7 @@ module.exports.getOne = function(colourLibraryObject){
       if(result != null) {
         resolve(result)
       } else {
-        reject({success: false, message: "Failed to retrieve Colour Library"})
+        reject("Failed to retrieve Colour Library")
       }
     })
   })

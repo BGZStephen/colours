@@ -5,8 +5,9 @@ const Colour = require('../models/colour')
 const Palette = require('../models/palette')
 const PaletteItem = require('../models/palette-item')
 const ColourLibrary = require('../models/colour-library')
+const jwt = require('jsonwebtoken')
 
-// create a Colour and add it to the users colour library
+// create a Colour and add it to the users colour library or palette
 router.post("", (req, res, next) => {
 
   if(!req.get('Authorization')) {
@@ -26,17 +27,16 @@ router.post("", (req, res, next) => {
         hex: req.body.hex
       })
 
-
       Colour.create(colourObject)
       .then(result => {
         result.colour.createdBy = req.body.createdBy;
         // pushes the colour Object to the Colours array within the Colour Library
         return ColourLibrary.addColourToLibrary(result.colour)
       }).then(result => {
-        res.json(result)
+        res.sendStatus(200)
       })
       .catch(error => {
-        res.json(error)
+        res.status(500).json(error)
       })
     } else if(req.body.type == "palette") {
       let colourObject = new Colour({
@@ -76,17 +76,17 @@ router.post("", (req, res, next) => {
         */
         return Palette.addPaletteItem(result, paletteObject)
       }).then(result => {
-        res.json(result)
+        res.sensStatus(200)
       })
       .catch(error => {
-        res.json(error)
+        res.status(500).json(error)
       })
       ColourLibrary.addColourToLibrary(colourObject)
     }
   }
 })
 
-// delete colour from Library
+// delete colour from palette or library
 router.put("/colourId", (req, res, next) => {
 
   if(!req.get('Authorization')) {
@@ -107,9 +107,9 @@ router.put("/colourId", (req, res, next) => {
 
       ColourLibrary.deleteColourFromLibrary(colourObject)
       .then(result => {
-        res.json(result)
+        res.sendStatus(200)
       }).catch(error => {
-        res.json(error)
+        res.status(500).json(error)
       })
     } else if (req.body.type == "palette") {
       let paletteItemObject = {
@@ -120,9 +120,9 @@ router.put("/colourId", (req, res, next) => {
       Palette.deletePaletteItem(paletteItemObject)
       .then(PaletteItem.deletePaletteItem({_id: paletteItemObject.paletteItemId}))
       .then(result => {
-        res.json(result)
+        res.sendStatus(200)
       }).catch(error => {
-        res.json(error)
+        res.status(500).json(error)
       })
     }
   }
