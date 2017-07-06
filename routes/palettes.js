@@ -47,20 +47,16 @@ router.delete("/:paletteId", (req, res, next) => {
   if(verifiedJwt == undefined) {
     res.status(403).json({error: "Authorization token not valid"})
   } else {
-    let paletteObject = {
-      paletteId: req.body.paletteId,
-      userId: req.body.userId
-    }
 
     let paletteQuery = {
-      _id: req.body.paletteId,
+      _id: req.params.paletteId,
     }
 
     Palette.getOne(paletteQuery)
     .then(result => {
       return [
         PaletteItem.deletePaletteItems(result.paletteItems),
-        User.deletePalette(paletteObject)
+        User.deletePalette({paletteId: result._id, userId: result.createdBy})
       ]
     })
     .then(Palette.deleteOne(paletteQuery))
@@ -73,7 +69,7 @@ router.delete("/:paletteId", (req, res, next) => {
 })
 
 // get by id
-router.post("/:id", (req, res, next) => {
+router.get("", (req, res, next) => {
   if(!req.get('Authorization')) {
     return res.status(401).json({error: "Authorisation token not supplied"})
   }
@@ -84,11 +80,9 @@ router.post("/:id", (req, res, next) => {
     res.status(403).json({error: "Authorization token not valid"})
   } else {
 
-    let paletteObject
-
-    if(req.body.type == "id") {
+    if(req.query._id) {
       paletteObject = {
-        _id: req.body._id
+        _id: req.query._id
       }
 
       Palette.getOne(paletteObject)
@@ -98,9 +92,9 @@ router.post("/:id", (req, res, next) => {
         res.json(error)
       })
 
-    } else if(req.body.type == "userId") {
+    } else if(req.query.userId) {
       paletteObject = {
-        createdBy: req.body.createdBy
+        createdBy: req.query.userId
       }
 
       Palette.getByUserId(paletteObject)
