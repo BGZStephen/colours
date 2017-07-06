@@ -4,6 +4,7 @@ const config = require('../config');
 const User = require('../models/user');
 const Palette = require('../models/palette');
 const PaletteItem = require('../models/palette-item');
+const jwt = require('jsonwebtoken')
 
 // create new Palette
 router.post("", (req, res, next) => {
@@ -72,7 +73,7 @@ router.delete("/:paletteId", (req, res, next) => {
 })
 
 // get by id
-router.get("/:id", (req, res, next) => {
+router.post("/:id", (req, res, next) => {
   if(!req.get('Authorization')) {
     return res.status(401).json({error: "Authorisation token not supplied"})
   }
@@ -89,18 +90,26 @@ router.get("/:id", (req, res, next) => {
       paletteObject = {
         _id: req.body._id
       }
+
+      Palette.getOne(paletteObject)
+      .then(result => {
+        res.json(result)
+      }).catch(error => {
+        res.json(error)
+      })
+
     } else if(req.body.type == "userId") {
       paletteObject = {
         createdBy: req.body.createdBy
       }
-    }
 
-    Palette.getOne(paletteObject)
-    .then(result => {
-      res.json(result)
-    }).catch(error => {
-      res.json(error)
-    })
+      Palette.getByUserId(paletteObject)
+      .then(result => {
+        res.json(result)
+      }).catch(error => {
+        res.json(error)
+      })
+    }
   }
 })
 
